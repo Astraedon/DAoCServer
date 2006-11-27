@@ -393,6 +393,11 @@
             Trigger Faction
             </summary>
         </member>
+        <member name="F:DOL.Database.DBLootGenerator.m_regionID">
+            <summary>
+            Trigger Region
+            </summary>
+        </member>
         <member name="F:DOL.Database.DBLootGenerator.m_lootGeneratorClass">
             <summary>
             Class of the Loot Generator
@@ -426,6 +431,11 @@
         <member name="P:DOL.Database.DBLootGenerator.MobFaction">
             <summary>
             MobFaction
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBLootGenerator.RegionID">
+            <summary>
+            Mobs Region ID
             </summary>
         </member>
         <member name="P:DOL.Database.DBLootGenerator.LootGeneratorClass">
@@ -1713,241 +1723,6 @@ an attempt to attach to a different database).</para>
         <member name="M:MySql.Data.MySqlClient.CharSetMap.InitializeMapping">
             <summary>
             
-            </summary>
-        </member>
-        <member name="T:DOL.Database.DBStyleSubstitute">
-            <summary>
-            TODO: add neccessary fields for styles
-            </summary>
-        </member>
-        <member name="T:DOL.Database.DBStyle">
-            <summary>
-            TODO: add neccessary fields for styles
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_ID">
-            <summary>
-            The ID of this style
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_Name">
-            <summary>
-            The name of this style
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_SpecKeyName">
-            <summary>
-            The name of the spec needed for this style "None" for no requirement
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_SpecLevelRequirement">
-            <summary>
-            The level of specialisation required to gain this style
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_Icon">
-            <summary>
-            The icon for this style
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_EnduranceCost">
-            <summary>
-            The fatique cost for this style in % of total fatique
-            Will be modified by weapon speed and Realm Abilities
-            	>=5(low), >=10(medium), >=15(high)
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_StealthRequirement">
-            <summary>
-            Style requires stealth
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_openingRequirementType">
-            <summary>
-            The opening requirement of this style
-            	0 = offensive opening eg. style in reply to your previous action
-            	1 = defensive opening eg. style in reply to enemy previous action
-            	2 = positional opening eg. front, side, or back
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_openingRequirementValue">
-            <summary>
-            opening requirement value
-            for offensive openings the styleid of the required style before this
-            for defensive openings the styleid of the enemy style required before this
-            for positional openings:
-            	0 = back of enemy
-            	1 = side of enemy
-            	2 = front of enemy
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_AttackResultRequirement">
-            <summary>
-            The required result of the previous attack.
-            For offensive styles the attack result of your last attack
-            For defensive styles the attack result of your enemies last attack
-            	0 = any
-            	1 = miss
-            	2 = hit
-            	3 = parry
-            	4 = block
-            	5 = evade
-            	6 = fumble
-            	7 = style
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_WeaponTypeRequirement">
-            <summary>
-            This holds the type of weapon needed for this style
-            See "eObjectType" for values
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_growthRate">
-            <summary>
-            GrowthRate as used in Wyrd's spreadsheet
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_SpecialType">
-            <summary>
-            The type of special style result beside damage
-            	0 = no special
-            	1 = effect
-            	2 = taunt
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_BonusToHit">
-            <summary>
-            The bonus to hit value for this style
-            below 0 = penalty
-            above 0 = bonus
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_BonusToDefense">
-            <summary>
-            The bonus to defense for this style
-            below 0 = penalty
-            above 0 = bonus
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_TwoHandAnimation">
-            <summary>
-            The animation ID for 2h weapon styles
-            </summary>
-        </member>
-        <member name="F:DOL.Database.DBStyle.m_RandomProc">
-            <summary>
-            Randomly cast a proc
-            </summary>
-        </member>
-        <member name="M:DOL.Database.DBStyle.#ctor">
-            <summary>
-            The Constructor
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.ID">
-            <summary>
-            The Style ID
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.Name">
-            <summary>
-            The Style Name
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.SpecKeyName">
-            <summary>
-            The Style SpecKeyName
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.SpecLevelRequirement">
-            <summary>
-            The Style Spec Level Requirement
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.EnduranceCost">
-            <summary>
-            The Style Endurance Cost
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.StealthRequirement">
-            <summary>
-            The Style Stealth Requirement
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.OpeningRequirementType">
-            <summary>
-            The Style Opening Requirement Type
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.OpeningRequirementValue">
-            <summary>
-            The Style Opening Requirement Value
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.AttackResultRequirement">
-            <summary>
-            The Style Attack Result Requirement
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.WeaponTypeRequirement">
-            <summary>
-            The Style Weapon Type Requirement
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.GrowthRate">
-            <summary>
-            The Style Growth Rate
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.SpecialType">
-            <summary>
-            The Style Special Type
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.BonusToHit">
-            <summary>
-            The Style Bonus To Hit
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.BonusToDefense">
-            <summary>
-            The Style Bonus to Defense
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.TwoHandAnimation">
-            <summary>
-            The Style Two Hand Animation
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.RandomProc">
-             <summary>
-            (procs) The Style should Randomly cast a proc 
-             </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyle.AutoSave">
-            <summary>
-            Autosave in table?
-            </summary>
-        </member>
-        <member name="M:DOL.Database.DBStyleSubstitute.#ctor">
-            <summary>
-            The Constructor
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyleSubstitute.ID">
-            <summary>
-            The Style Substitute ID, must not be unique to be able to reuse a style 
-            more than once.
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyleSubstitute.ClassId">
-            <summary>
-            The Style Substitute Class ID
-            </summary>
-        </member>
-        <member name="P:DOL.Database.DBStyleSubstitute.AutoSave">
-            <summary>
-            AutoSave in table?
             </summary>
         </member>
         <member name="T:DOL.Database.DBKeep">
@@ -7140,6 +6915,215 @@ public void ShowException()
             Creates a new Inventoryitem based on the given ItemTemplate
             </summary>
             <param name="inventoryItem"></param>
+        </member>
+        <member name="T:DOL.Database.DBStyle">
+            <summary>
+            TODO: add neccessary fields for styles
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_ID">
+            <summary>
+            The ID of this style
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_Name">
+            <summary>
+            The name of this style
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_SpecKeyName">
+            <summary>
+            The name of the spec needed for this style "None" for no requirement
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_SpecLevelRequirement">
+            <summary>
+            The level of specialisation required to gain this style
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_Icon">
+            <summary>
+            The icon for this style
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_EnduranceCost">
+            <summary>
+            The fatique cost for this style in % of total fatique
+            Will be modified by weapon speed and Realm Abilities
+            	>=5(low), >=10(medium), >=15(high)
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_StealthRequirement">
+            <summary>
+            Style requires stealth
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_openingRequirementType">
+            <summary>
+            The opening requirement of this style
+            	0 = offensive opening eg. style in reply to your previous action
+            	1 = defensive opening eg. style in reply to enemy previous action
+            	2 = positional opening eg. front, side, or back
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_openingRequirementValue">
+            <summary>
+            opening requirement value
+            for offensive openings the styleid of the required style before this
+            for defensive openings the styleid of the enemy style required before this
+            for positional openings:
+            	0 = back of enemy
+            	1 = side of enemy
+            	2 = front of enemy
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_AttackResultRequirement">
+            <summary>
+            The required result of the previous attack.
+            For offensive styles the attack result of your last attack
+            For defensive styles the attack result of your enemies last attack
+            	0 = any
+            	1 = miss
+            	2 = hit
+            	3 = parry
+            	4 = block
+            	5 = evade
+            	6 = fumble
+            	7 = style
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_WeaponTypeRequirement">
+            <summary>
+            This holds the type of weapon needed for this style
+            See "eObjectType" for values
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_growthRate">
+            <summary>
+            GrowthRate as used in Wyrd's spreadsheet
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_SpecialType">
+            <summary>
+            The type of special style result beside damage
+            	0 = no special
+            	1 = effect
+            	2 = taunt
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_BonusToHit">
+            <summary>
+            The bonus to hit value for this style
+            below 0 = penalty
+            above 0 = bonus
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_BonusToDefense">
+            <summary>
+            The bonus to defense for this style
+            below 0 = penalty
+            above 0 = bonus
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_TwoHandAnimation">
+            <summary>
+            The animation ID for 2h weapon styles
+            </summary>
+        </member>
+        <member name="F:DOL.Database.DBStyle.m_RandomProc">
+            <summary>
+            Randomly cast a proc
+            </summary>
+        </member>
+        <member name="M:DOL.Database.DBStyle.#ctor">
+            <summary>
+            The Constructor
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.ID">
+            <summary>
+            The Style ID
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.Name">
+            <summary>
+            The Style Name
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.SpecKeyName">
+            <summary>
+            The Style SpecKeyName
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.SpecLevelRequirement">
+            <summary>
+            The Style Spec Level Requirement
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.EnduranceCost">
+            <summary>
+            The Style Endurance Cost
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.StealthRequirement">
+            <summary>
+            The Style Stealth Requirement
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.OpeningRequirementType">
+            <summary>
+            The Style Opening Requirement Type
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.OpeningRequirementValue">
+            <summary>
+            The Style Opening Requirement Value
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.AttackResultRequirement">
+            <summary>
+            The Style Attack Result Requirement
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.WeaponTypeRequirement">
+            <summary>
+            The Style Weapon Type Requirement
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.GrowthRate">
+            <summary>
+            The Style Growth Rate
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.SpecialType">
+            <summary>
+            The Style Special Type
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.BonusToHit">
+            <summary>
+            The Style Bonus To Hit
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.BonusToDefense">
+            <summary>
+            The Style Bonus to Defense
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.TwoHandAnimation">
+            <summary>
+            The Style Two Hand Animation
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.RandomProc">
+             <summary>
+            (procs) The Style should Randomly cast a proc 
+             </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.AutoSave">
+            <summary>
+            Autosave in table?
+            </summary>
         </member>
         <member name="P:DOL.Database.ServerProperty.AutoSave">
             <summary>

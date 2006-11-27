@@ -28354,7 +28354,12 @@
         </member>
         <member name="F:DOL.GS.LootMgr.m_mobGuildGenerators">
             <summary>
-            List of Lootgenerators related by mobgiuld
+            List of Lootgenerators related by mobguild
+            </summary>
+        </member>
+        <member name="F:DOL.GS.LootMgr.m_mobRegionGenerators">
+            <summary>
+            List of Lootgenerators related by region ID
             </summary>
         </member>
         <member name="M:DOL.GS.LootMgr.Init">
@@ -28386,7 +28391,7 @@
             <param name="mobguild"></param>
             <param name="mobfaction"></param>
         </member>
-        <member name="M:DOL.GS.LootMgr.RegisterLootGenerator(DOL.GS.ILootGenerator,System.String,System.String,System.String)">
+        <member name="M:DOL.GS.LootMgr.RegisterLootGenerator(DOL.GS.ILootGenerator,System.String,System.String,System.String,System.Int32)">
             <summary>
             Register a generator for the given parameters,
             If all parameters are null a global generaotr for all mobs will be registered
