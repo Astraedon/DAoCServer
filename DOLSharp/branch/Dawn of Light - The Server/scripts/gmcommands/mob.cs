@@ -1151,6 +1151,8 @@ namespace DOL.GS.Scripts
 						else
 						{
 							targetMob.LoadTemplate(template);
+							targetMob.NPCTemplate = template as NpcTemplate;
+							targetMob.SaveIntoDatabase();
 							DisplayMessage(client, "updated npc based on template " + id, new object[] { });
 						}
 						break;
