@@ -3555,11 +3555,6 @@
             The Styles for this NPC
             </summary>
         </member>
-        <member name="P:DOL.GS.GameNPC.Abilities">
-            <summary>
-            The Abilities for this NPC
-            </summary>
-        </member>
         <member name="T:DOL.GS.GameNPC.eFlags">
             <summary>
             Various flags for this npc
