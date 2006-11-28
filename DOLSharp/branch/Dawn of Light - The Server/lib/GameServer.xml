@@ -9665,14 +9665,6 @@
             <param name="duration">The effectduration in secounds</param>
             <param name="value">The increment of effective level</param>
         </member>
-        <member name="M:DOL.GS.Effects.JuggernautEffect.LivingLeftWorld(DOL.Events.DOLEvent,System.Object,System.EventArgs)">
-            <summary>
-            Called when the Effectowning living dies, is released or whatever
-            </summary>
-            <param name="e">The event which was raised</param>
-            <param name="sender">Sender of the event</param>
-            <param name="args">EventArgs associated with the event</param>
-        </member>
         <member name="M:DOL.GS.Effects.JuggernautEffect.Cancel(System.Boolean)">
             <summary>
             Called when effect is to be cancelled
@@ -26207,12 +26199,6 @@
             (readonly) The growth rate of the style
             </summary>
         </member>
-        <member name="P:DOL.GS.Styles.Style.SpecialType">
-            <summary>
-            (readonly) The type of special effect applied to the target
-            if this style is executed successfully.
-            </summary>
-        </member>
         <member name="P:DOL.GS.Styles.Style.BonusToHit">
             <summary>
             (readonly) The bonus to hit if this style get's executed successfully
@@ -26321,27 +26307,6 @@
         <member name="F:DOL.GS.Styles.Style.eAttackResult.Style">
             <summary>
             A style is required
-            </summary>
-        </member>
-        <member name="T:DOL.GS.Styles.Style.eSpecialType">
-            <summary>
-            The type of special effect applied on the target if
-            the style gets executed successfully
-            </summary>
-        </member>
-        <member name="F:DOL.GS.Styles.Style.eSpecialType.None">
-            <summary>
-            No special effect
-            </summary>
-        </member>
-        <member name="F:DOL.GS.Styles.Style.eSpecialType.Effect">
-            <summary>
-            An effect, like a spell (eg. Bleeding)
-            </summary>
-        </member>
-        <member name="F:DOL.GS.Styles.Style.eSpecialType.Taunt">
-            <summary>
-            Taunt/Detaunt
             </summary>
         </member>
         <member name="T:DOL.GS.Styles.Style.SpecialWeaponType">
@@ -29335,7 +29300,12 @@
             <param name="line">the line of spell</param>
             <returns>list of Spells</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:DOL.GS.GamePlayer.RefreshSpecDependantSkills(System.Boolean)" -->
+        <member name="M:DOL.GS.GamePlayer.RefreshSpecDependantSkills(System.Boolean)">
+            <summary>
+            updates the list of available styles
+            </summary>
+            <param name="sendMessages">sends "you learn" messages if true</param>
+        </member>
         <!-- Badly formed XML comment ignored for member "M:DOL.GS.GamePlayer.UpdateSpellLineLevels(System.Boolean)" -->
         <member name="M:DOL.GS.GamePlayer.OnSkillTrained(DOL.GS.Specialization)">
             <summary>
