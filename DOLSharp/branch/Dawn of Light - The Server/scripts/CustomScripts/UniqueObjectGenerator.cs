@@ -12,7 +12,7 @@ namespace DOL.GS
 		/// </summary>
 		/// <param name="mob"></param>
 		/// <returns></returns>
-		public override LootList GenerateLoot(GameMob mob, GameObject killer)
+		public override LootList GenerateLoot(GameNPC mob, GameObject killer)
 		{
 			LootList loot = base.GenerateLoot(mob, killer);
 
@@ -23,7 +23,7 @@ namespace DOL.GS
 			return loot;
 		}
 
-		public static InventoryItem GenerateUniqueItem(GameMob mob, GameObject killer)
+		public static InventoryItem GenerateUniqueItem(GameNPC mob, GameObject killer)
 		{
 			InventoryItem item = new InventoryItem();
 			//item realm

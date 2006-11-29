@@ -32,6 +32,7 @@ namespace DOL.GS.GameEvents
 		public Queue m_animPlayerQueue = new Queue();
 		public Queue m_portPlayerQueue = new Queue();
 		public Queue m_portDestinationQueue = new Queue();
+		protected GameNPC sfx;
 		//constructor
         public TeleportNPC(ushort region, int x, int y, int z, ushort heading,
                              ushort model, byte realm, string name, string guild,
@@ -202,6 +203,31 @@ namespace DOL.GS.GameEvents
 		public void SendReply(GamePlayer target, string msg)
 		{
 			target.Out.SendMessage(msg, eChatType.CT_Say, eChatLoc.CL_PopupWindow);
+		}
+
+		public override bool AddToWorld()
+		{
+			if (!base.AddToWorld()) return false;
+			GameNPC mob = new GameNPC();
+			mob.Name = "teleport spell effect";
+			mob.Flags = (uint)GameNPC.eFlags.PEACE + (uint)GameNPC.eFlags.DONTSHOWNAME;
+			mob.Size = 255;
+			mob.CurrentRegion = this.CurrentRegion;
+			mob.X = this.X;
+			mob.Y = this.Y;
+			mob.Z = this.Z;
+			mob.Model = 0x783;
+			mob.Heading = this.Heading;
+			if (mob.AddToWorld())
+				sfx = mob;
+			return true;
+		}
+		public override bool RemoveFromWorld()
+		{
+			if (!base.RemoveFromWorld()) return false;
+			if (sfx != null)
+				sfx.Delete();
+			return true;
 		}
 	}
 }

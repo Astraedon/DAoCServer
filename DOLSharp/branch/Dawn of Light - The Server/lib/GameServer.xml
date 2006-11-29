@@ -14,11 +14,6 @@
             The mother class for all class trainers
             </summary>
         </member>
-        <member name="T:DOL.GS.GameMob">
-            <summary>
-            This class represents a monster in the game!
-            </summary>
-        </member>
         <member name="T:DOL.GS.GameNPC">
             <summary>
             This class is the baseclass for all Non Player Characters like
@@ -2974,6 +2969,17 @@
             </summary>
             <param name="obj">template to load from</param>
         </member>
+        <member name="M:DOL.GS.GameNPC.DeleteFromDatabase">
+            <summary>
+            Deletes the mob from the database
+            </summary>
+        </member>
+        <member name="M:DOL.GS.GameNPC.SaveIntoDatabase">
+            <summary>
+            Saves a mob into the db if it exists, it is
+            updated, else it creates a new object in the DB
+            </summary>
+        </member>
         <member name="M:DOL.GS.GameNPC.LoadTemplate(DOL.GS.INpcTemplate)">
             <summary>
             Load a NPC template onto this NPC
@@ -3164,6 +3170,13 @@
             <param name="firstLetterUppercase"></param>
             <returns>aggro state as string</returns>
         </member>
+        <member name="M:DOL.GS.GameNPC.GetExamineMessages(DOL.GS.GamePlayer)">
+            <summary>
+            Adds messages to ArrayList which are sent when object is targeted
+            </summary>
+            <param name="player">GamePlayer that is examining this object</param>
+            <returns>list with string messages</returns>
+        </member>
         <member name="M:DOL.GS.GameNPC.Interact(DOL.GS.GamePlayer)">
             <summary>
             This function is called from the ObjectInteractRequestHandler
@@ -3253,6 +3266,56 @@
             <param name="attacker"></param>
             <param name="attackType"></param>
             <returns></returns>
+        </member>
+        <member name="F:DOL.GS.GameNPC.m_respawnInterval">
+            <summary>
+            The time to wait before each mob respawn
+            </summary>
+        </member>
+        <member name="F:DOL.GS.GameNPC.m_respawnTimer">
+            <summary>
+            A timer that will respawn this mob
+            </summary>
+        </member>
+        <member name="F:DOL.GS.GameNPC.m_respawnTimerLock">
+            <summary>
+            The sync object for respawn timer modifications
+            </summary>
+        </member>
+        <member name="M:DOL.GS.GameNPC.StartRespawn">
+            <summary>
+            Starts the Respawn Timer
+            </summary>
+        </member>
+        <member name="M:DOL.GS.GameNPC.RespawnTimerCallback(DOL.GS.RegionTimer)">
+            <summary>
+            The callback that will respawn this mob
+            </summary>
+            <param name="respawnTimer">the timer calling this callback</param>
+            <returns>the new interval</returns>
+        </member>
+        <member name="M:DOL.GS.GameNPC.HealthRegenerationTimerCallback(DOL.GS.RegionTimer)">
+            <summary>
+            Callback timer for health regeneration
+            </summary>
+            <param name="selfRegenerationTimer">the regeneration timer</param>
+            <returns>the new interval</returns>
+        </member>
+        <member name="M:DOL.GS.GameNPC.AttackCriticalChance(DOL.Database.InventoryItem)">
+            <summary>
+            The chance for a critical hit
+            </summary>
+        </member>
+        <member name="M:DOL.GS.GameNPC.StopAttack">
+            <summary>
+            Stops all attack actions, including following target
+            </summary>
+        </member>
+        <member name="M:DOL.GS.GameNPC.DropLoot(DOL.GS.GameObject)">
+            <summary>
+            This method is called to drop loot after this mob dies
+            </summary>
+            <param name="killer">The killer</param>
         </member>
         <member name="M:DOL.GS.GameNPC.StartSpellAttack(DOL.GS.GameObject)">
             <summary>
@@ -3545,6 +3608,21 @@
             Checks whether Living has ability to use lefthanded weapons
             </summary>
         </member>
+        <member name="P:DOL.GS.GameNPC.RespawnInterval">
+            <summary>
+            The Respawn Interval of this mob in milliseconds
+            </summary>
+        </member>
+        <member name="P:DOL.GS.GameNPC.IsAlive">
+            <summary>
+            Is the mob alive
+            </summary>
+        </member>
+        <member name="P:DOL.GS.GameNPC.IsRespawning">
+            <summary>
+            Is the mob respawning
+            </summary>
+        </member>
         <member name="P:DOL.GS.GameNPC.Spells">
             <summary>
             property of spell array of NPC
@@ -3648,136 +3726,6 @@
             <summary>
             This function is called when the npc is close to its target
             It will fire the CloseToTarget event
-            </summary>
-        </member>
-        <member name="F:DOL.GS.GameMob.log">
-            <summary>
-            Defines a logger for this class.
-            </summary>
-        </member>
-        <member name="M:DOL.GS.GameMob.SaveIntoDatabase">
-            <summary>
-            Saves a mob into the db if it exists, it is
-            updated, else it creates a new object in the DB
-            </summary>
-        </member>
-        <member name="M:DOL.GS.GameMob.LoadFromDatabase(DOL.Database.DataObject)">
-            <summary>
-            Loads a merchant from the DB
-            </summary>
-            <param name="mobobject">The mob DB object</param>
-        </member>
-        <member name="M:DOL.GS.GameMob.DeleteFromDatabase">
-            <summary>
-            Deletes the mob from the database
-            </summary>
-        </member>
-        <member name="F:DOL.GS.GameMob.m_respawnInterval">
-            <summary>
-            The time to wait before each mob respawn
-            </summary>
-        </member>
-        <member name="F:DOL.GS.GameMob.m_respawnTimer">
-            <summary>
-            A timer that will respawn this mob
-            </summary>
-        </member>
-        <member name="F:DOL.GS.GameMob.m_respawnTimerLock">
-            <summary>
-            The sync object for respawn timer modifications
-            </summary>
-        </member>
-        <member name="M:DOL.GS.GameMob.StartRespawn">
-            <summary>
-            Starts the Respawn Timer
-            </summary>
-        </member>
-        <member name="M:DOL.GS.GameMob.RespawnTimerCallback(DOL.GS.RegionTimer)">
-            <summary>
-            The callback that will respawn this mob
-            </summary>
-            <param name="respawnTimer">the timer calling this callback</param>
-            <returns>the new interval</returns>
-        </member>
-        <member name="M:DOL.GS.GameMob.HealthRegenerationTimerCallback(DOL.GS.RegionTimer)">
-            <summary>
-            Callback timer for health regeneration
-            </summary>
-            <param name="selfRegenerationTimer">the regeneration timer</param>
-            <returns>the new interval</returns>
-        </member>
-        <member name="M:DOL.GS.GameMob.AttackCriticalChance(DOL.Database.InventoryItem)">
-            <summary>
-            The chance for a critical hit
-            </summary>
-        </member>
-        <member name="M:DOL.GS.GameMob.Die(DOL.GS.GameObject)">
-            <summary>
-            Called when the mob should die
-            </summary>
-            <param name="killer">the killer of this mob</param>
-        </member>
-        <member name="M:DOL.GS.GameMob.StartAttack(DOL.GS.GameObject)">
-            <summary>
-            Called to attack a target!
-            </summary>
-            <param name="attackTarget">the target to attack</param>
-        </member>
-        <member name="M:DOL.GS.GameMob.StopAttack">
-            <summary>
-            Stops all attack actions, including following target
-            </summary>
-        </member>
-        <member name="M:DOL.GS.GameMob.DropLoot(DOL.GS.GameObject)">
-            <summary>
-            This method is called to drop loot after this mob dies
-            </summary>
-            <param name="killer">The killer</param>
-        </member>
-        <member name="M:DOL.GS.GameMob.GetAggroLevelString(DOL.GS.GamePlayer,System.Boolean)">
-            <summary>
-            How friendly this mob is to player
-            </summary>
-            <param name="player">GamePlayer that is examining this object</param>
-            <param name="firstLetterUppercase"></param>
-            <returns>aggro state as string</returns>
-        </member>
-        <member name="M:DOL.GS.GameMob.GetExamineMessages(DOL.GS.GamePlayer)">
-            <summary>
-            Adds messages to ArrayList which are sent when object is targeted
-            </summary>
-            <param name="player">GamePlayer that is examining this object</param>
-            <returns>list with string messages</returns>
-        </member>
-        <member name="M:DOL.GS.GameMob.Delete">
-            <summary>
-            Marks this object as deleted!
-            </summary>
-        </member>
-        <member name="M:DOL.GS.GameMob.#ctor">
-            <summary>
-            Constructor to create a new mob
-            </summary>
-        </member>
-        <member name="M:DOL.GS.GameMob.#ctor(DOL.GS.INpcTemplate)">
-            <summary>
-            Create a GameMob from a NPC template
-            </summary>
-            <param name="template"></param>
-        </member>
-        <member name="P:DOL.GS.GameMob.RespawnInterval">
-            <summary>
-            The Respawn Interval of this mob in milliseconds
-            </summary>
-        </member>
-        <member name="P:DOL.GS.GameMob.IsAlive">
-            <summary>
-            Is the mob alive
-            </summary>
-        </member>
-        <member name="P:DOL.GS.GameMob.IsRespawning">
-            <summary>
-            Is the mob respawning
             </summary>
         </member>
         <member name="M:DOL.GS.GameTrainer.#ctor">
@@ -9287,7 +9235,7 @@
             </summary>
             
         </member>
-        <member name="M:DOL.GS.ILootGenerator.GenerateLoot(DOL.GS.GameMob,DOL.GS.GameObject)">
+        <member name="M:DOL.GS.ILootGenerator.GenerateLoot(DOL.GS.GameNPC,DOL.GS.GameObject)">
             <summary>
             Generates a list of ItemTemplates that this mob should drop
             </summary>		
@@ -9304,7 +9252,7 @@
             special one with priority>0 for a special mob that should use the default generator.
             </summary>
         </member>
-        <member name="M:DOL.GS.LootGeneratorBase.GenerateLoot(DOL.GS.GameMob,DOL.GS.GameObject)">
+        <member name="M:DOL.GS.LootGeneratorBase.GenerateLoot(DOL.GS.GameNPC,DOL.GS.GameObject)">
             <summary>
             Generate loot for given mob
             </summary>
@@ -11957,11 +11905,6 @@
             Variable holding whether or not players can broadcast in this area
             </summary>
         </member>
-        <member name="F:DOL.GS.AbstractArea.CheckLOS">
-            <summary>
-            Variable holding whether or not to check for LOS for spells in this area
-            </summary>
-        </member>
         <member name="F:DOL.GS.AbstractArea.m_ID">
             <summary>
             The ID of the Area eg. 15 ( == index in Region.m_areas array)
@@ -12008,6 +11951,16 @@
             Called whenever a player enters the given area
             </summary>
             <param name="player"></param>
+        </member>
+        <member name="P:DOL.GS.AbstractArea.CheckLOS">
+            <summary>
+            Variable holding whether or not to check for LOS for spells in this area
+            </summary>
+        </member>
+        <member name="P:DOL.GS.AbstractArea.DisplayMessage">
+            <summary>
+            Display entered message
+            </summary>
         </member>
         <member name="P:DOL.GS.AbstractArea.ID">
             <summary>
@@ -18422,7 +18375,7 @@
             At the moment this generaotr only adds money to the loot
             </summary>
         </member>
-        <member name="M:DOL.GS.LootGeneratorMoney.GenerateLoot(DOL.GS.GameMob,DOL.GS.GameObject)">
+        <member name="M:DOL.GS.LootGeneratorMoney.GenerateLoot(DOL.GS.GameNPC,DOL.GS.GameObject)">
             <summary>
             Generate loot for given mob
             </summary>
@@ -20710,6 +20663,21 @@
         <member name="P:DOL.GS.Effects.TimedEffect.RemainingTime">
             <summary>
             Remaining Time of the effect in milliseconds
+            </summary>
+        </member>
+        <member name="T:DOL.GS.DatabaseConverters.Version004">
+            <summary>
+            Converts the database format to the version 3
+            </summary>
+        </member>
+        <member name="F:DOL.GS.DatabaseConverters.Version004.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="M:DOL.GS.DatabaseConverters.Version004.ConvertDatabase">
+            <summary>
+            we need to make use of the new poison fields
             </summary>
         </member>
         <member name="T:DOL.GS.MetalWorking">
@@ -28361,7 +28329,7 @@
             <param name="mobguild"></param>
             <param name="mobfaction"></param>
         </member>
-        <member name="M:DOL.GS.LootMgr.GetLoot(DOL.GS.GameMob,DOL.GS.GameObject)">
+        <member name="M:DOL.GS.LootMgr.GetLoot(DOL.GS.GameNPC,DOL.GS.GameObject)">
             <summary>
             Returns the lot for the given Mob
             </summary>		
@@ -28369,7 +28337,7 @@
             <param name="killer"></param>
             <returns></returns>
         </member>
-        <member name="M:DOL.GS.LootMgr.GetLootGenerators(DOL.GS.GameMob)">
+        <member name="M:DOL.GS.LootMgr.GetLootGenerators(DOL.GS.GameNPC)">
             <summary>
             Returns the ILootGenerators for the given mobs
             </summary>
