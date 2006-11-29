@@ -382,7 +382,7 @@ namespace DOL.GS.Scripts
 					}
 				case "create":
 					{
-						string theType = "DOL.GS.GameMob";
+						string theType = "DOL.GS.GameNPC";
 						if (args.Length > 2)
 							theType = args[2];
 
