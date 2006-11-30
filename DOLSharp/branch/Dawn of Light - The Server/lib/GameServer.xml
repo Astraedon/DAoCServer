@@ -18009,11 +18009,6 @@
             Gets the current region time in milliseconds
             </summary>
         </member>
-        <member name="P:DOL.GS.Region.BindPoints">
-            <summary>
-            Gets the current regions bindpoints
-            </summary>
-        </member>
         <member name="P:DOL.GS.Region.IsDisabled">
             <summary>
             Is this region disabled
@@ -28177,6 +28172,11 @@
         <member name="P:DOL.GS.NpcTemplate.Name">
             <summary>
             Gets the template npc name
+            </summary>
+        </member>
+        <member name="P:DOL.GS.NpcTemplate.ClassType">
+            <summary>
+            Gets the template npc class type
             </summary>
         </member>
         <member name="P:DOL.GS.NpcTemplate.GuildName">
