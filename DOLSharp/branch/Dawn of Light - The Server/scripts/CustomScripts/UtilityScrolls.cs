@@ -5,11 +5,22 @@ using DOL.Events;
 using DOL.GS;
 using DOL.GS.Effects;
 using DOL.GS.GameEvents;
+using log4net;
+
+/*
+ * Utility Scrolls v2.0
+ * Etaew - Dawn of Light
+ */
 
 namespace DOL.GS.GameEvents
 {
 	public class UtilityScrollsEvent
 	{
+		/// <summary>
+		/// Defines a logger for this class.
+		/// </summary>
+		public static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
 		/*
 		 * TODO: add loot generator for dropping scrolls
 		 * add loot generator for dropping seals
@@ -22,7 +33,10 @@ namespace DOL.GS.GameEvents
 		 */
 		[ScriptLoadedEvent]
 		public static void OnScriptLoaded(DOLEvent e, object sender, EventArgs args)
-		{ }
+		{
+			LootMgr.RegisterLootGenerator(new LootGeneratorUtilityScrolls(), "", "", "", 0);
+			log.Info("Utility Scroll System Loaded!");
+		}
 
 		#region Spells
 		#region Trainer
@@ -120,7 +134,7 @@ namespace DOL.GS.GameEvents
 					m_trainerScroll.Id_nb = "trainer_scroll";
 					m_trainerScroll.IsDropable = true;
 					m_trainerScroll.IsPickable = true;
-					m_trainerScroll.IsTradable = true;
+					m_trainerScroll.IsTradable = false;
 					m_trainerScroll.Item_Type = 41;
 					m_trainerScroll.Level = 1;
 					m_trainerScroll.MaxCharges = 1;
@@ -148,7 +162,7 @@ namespace DOL.GS.GameEvents
 					m_merchantScroll.Id_nb = "merchant_scroll";
 					m_merchantScroll.IsDropable = true;
 					m_merchantScroll.IsPickable = true;
-					m_merchantScroll.IsTradable = true;
+					m_merchantScroll.IsTradable = false;
 					m_merchantScroll.Item_Type = 41;
 					m_merchantScroll.Level = 1;
 					m_merchantScroll.MaxCharges = 1;
@@ -176,7 +190,7 @@ namespace DOL.GS.GameEvents
 					m_healerScroll.Id_nb = "healer_scroll";
 					m_healerScroll.IsDropable = true;
 					m_healerScroll.IsPickable = true;
-					m_healerScroll.IsTradable = true;
+					m_healerScroll.IsTradable = false;
 					m_healerScroll.Item_Type = 41;
 					m_healerScroll.Level = 1;
 					m_healerScroll.MaxCharges = 1;
@@ -250,7 +264,7 @@ namespace DOL.GS.GameEvents
 					m_healerTemplate.Flags += (byte)GameNPC.eFlags.TRANSPARENT;
 					m_healerTemplate.GuildName = "Healer";
 					m_healerTemplate.Name = "Summoned Healer";
-					m_healerTemplate.ClassType = "DOL.GS.GameHealer";
+					m_healerTemplate.ClassType = "DOL.GS.Scripts.GameHealer";
 					m_healerTemplate.Model = "50";
 					m_healerTemplate.TemplateId = 602;
 					NpcTemplateMgr.AddTemplate(m_healerTemplate);
@@ -270,6 +284,18 @@ namespace DOL.GS
 		public override LootList GenerateLoot(GameNPC mob, GameObject killer)
 		{
 			LootList list = base.GenerateLoot(mob, killer);
+			#region Trainer
+			if (Util.Chance((int)(100 / (GameServer.ServerRules.GetExperienceForLevel(killer.Level) / mob.ExperienceValue))))
+				list.AddFixed(UtilityScrollsEvent.TrainerScroll);
+			#endregion
+			#region Merchant
+			if (Util.Chance(2))
+				list.AddFixed(UtilityScrollsEvent.MerchantScroll);
+			#endregion
+			#region Healer
+			if (Util.Chance((int)Math.Max(1, killer.GetConLevel(mob) + 1)))
+				list.AddFixed(UtilityScrollsEvent.HealerScroll);
+			#endregion
 			return list;
 		}
 	}
