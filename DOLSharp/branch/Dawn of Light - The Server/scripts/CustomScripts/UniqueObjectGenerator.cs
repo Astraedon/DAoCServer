@@ -82,8 +82,7 @@ namespace DOL.GS
 			item.Durability = condition;
 			item.MaxDurability = condition;
 
-			//item weight : TODO:..... Generate weight based on object type / armor part?
-			item.Weight = 22;
+			item.Weight = GenerateItemWeight((eObjectType)item.Object_Type, (eInventorySlot)item.Item_Type);
 
 			item.CrafterName = "Unique Object";
 			item.Gold = (short)(item.Level / 8);
@@ -2318,6 +2317,117 @@ namespace DOL.GS
 			else if (item.Hand == 2)
 				return 30;
 			else return 40;
+		}
+
+		public static int GenerateItemWeight(eObjectType type, eInventorySlot slot)
+		{
+			switch (type)
+			{
+				case eObjectType.LeftAxe:
+				case eObjectType.Flexible:
+				case eObjectType.Axe:
+				case eObjectType.Blades:
+				case eObjectType.HandToHand:
+					return 25;
+				case eObjectType.CompositeBow:
+				case eObjectType.RecurvedBow:
+				case eObjectType.Longbow:
+				case eObjectType.Blunt:
+				case eObjectType.CrushingWeapon:
+				case eObjectType.Fired:
+				case eObjectType.Hammer:
+				case eObjectType.Piercing:
+				case eObjectType.SlashingWeapon:
+				case eObjectType.Sword:
+				case eObjectType.ThrustWeapon:
+					return 30;
+				case eObjectType.Crossbow:
+				case eObjectType.Spear:
+				case eObjectType.CelticSpear:
+				case eObjectType.Staff:
+				case eObjectType.TwoHandedWeapon:
+					return 40;
+				case eObjectType.Scale:
+				case eObjectType.Chain:
+					{
+						switch (slot)
+						{
+							case eInventorySlot.ArmsArmor: return 48;
+							case eInventorySlot.FeetArmor: return 32;
+							case eInventorySlot.HandsArmor: return 32;
+							case eInventorySlot.HeadArmor: return 32;
+							case eInventorySlot.LegsArmor: return 56;
+							case eInventorySlot.TorsoArmor: return 80;
+						}
+						return 0;
+					}
+				case eObjectType.Cloth:
+					{
+						switch (slot)
+						{
+							case eInventorySlot.ArmsArmor: return 8;
+							case eInventorySlot.FeetArmor: return 8;
+							case eInventorySlot.HandsArmor: return 8;
+							case eInventorySlot.HeadArmor: return 32;
+							case eInventorySlot.LegsArmor: return 14;
+							case eInventorySlot.TorsoArmor: return 20;
+						}
+						return 0;
+					}
+				case eObjectType.Instrument:
+					return 15;
+				case eObjectType.LargeWeapons:
+					return 50;
+				case eObjectType.Leather:
+					{
+						switch (slot)
+						{
+							case eInventorySlot.ArmsArmor: return 24;
+							case eInventorySlot.FeetArmor: return 16;
+							case eInventorySlot.HandsArmor: return 16;
+							case eInventorySlot.HeadArmor: return 16;
+							case eInventorySlot.LegsArmor: return 28;
+							case eInventorySlot.TorsoArmor: return 40;
+						}
+						return 0;
+					}
+				case eObjectType.Magical:
+					return 5;
+				case eObjectType.Plate:
+					{
+						switch (slot)
+						{
+							case eInventorySlot.ArmsArmor: return 54;
+							case eInventorySlot.FeetArmor: return 36;
+							case eInventorySlot.HandsArmor: return 36;
+							case eInventorySlot.HeadArmor: return 40;
+							case eInventorySlot.LegsArmor: return 63;
+							case eInventorySlot.TorsoArmor: return 90;
+						}
+						return 0;
+					}
+				case eObjectType.PolearmWeapon:
+					return 60;
+				case eObjectType.Reinforced:
+				case eObjectType.Studded:
+					{
+						switch (slot)
+						{
+							case eInventorySlot.ArmsArmor: return 36;
+							case eInventorySlot.FeetArmor: return 24;
+							case eInventorySlot.HandsArmor: return 24;
+							case eInventorySlot.HeadArmor: return 24;
+							case eInventorySlot.LegsArmor: return 42;
+							case eInventorySlot.TorsoArmor: return 60;
+						}
+						return 0;
+					}
+				case eObjectType.Scythe:
+					return 40;
+				case eObjectType.Shield:
+					return 31;
+			}
+			return 10;
 		}
 
 		public enum eGenerateType
