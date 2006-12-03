@@ -11900,11 +11900,6 @@
             this will slightly increase memory usage on server
             </summary>		
         </member>
-        <member name="F:DOL.GS.AbstractArea.CanBroadcast">
-            <summary>
-            Variable holding whether or not players can broadcast in this area
-            </summary>
-        </member>
         <member name="F:DOL.GS.AbstractArea.m_ID">
             <summary>
             The ID of the Area eg. 15 ( == index in Region.m_areas array)
@@ -11952,6 +11947,11 @@
             </summary>
             <param name="player"></param>
         </member>
+        <member name="P:DOL.GS.AbstractArea.CanBroadcast">
+            <summary>
+            Variable holding whether or not players can broadcast in this area
+            </summary>
+        </member>
         <member name="P:DOL.GS.AbstractArea.CheckLOS">
             <summary>
             Variable holding whether or not to check for LOS for spells in this area
@@ -11960,6 +11960,11 @@
         <member name="P:DOL.GS.AbstractArea.DisplayMessage">
             <summary>
             Display entered message
+            </summary>
+        </member>
+        <member name="P:DOL.GS.AbstractArea.IsSafeArea">
+            <summary>
+            Can players be attacked by other players in this area
             </summary>
         </member>
         <member name="P:DOL.GS.AbstractArea.ID">
@@ -32258,6 +32263,11 @@
         <member name="T:DOL.GS.PacketHandler.Client.v168.DetailDisplayHandler">
             <summary>
             delve button shift+i = detail of spell object...
+            </summary>
+        </member>
+        <member name="F:DOL.GS.PacketHandler.Client.v168.DetailDisplayHandler.log">
+            <summary>
+            Defines a logger for this class.
             </summary>
         </member>
         <member name="M:DOL.GS.PacketHandler.Client.v168.DetailDisplayHandler.WriteClassicWeaponInfos(System.Collections.ArrayList,DOL.Database.ItemTemplate,DOL.GS.GameClient)">

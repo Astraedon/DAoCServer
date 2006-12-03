@@ -52,6 +52,7 @@ namespace DOL.GS.GameEvents
 					spell.CastTime = 0;
 					spell.ClientEffect = 0;
 					spell.Duration = 60;
+					spell.Description = "Summons a Trainer at your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
 					spell.Name = "Trainer Spell";
 					spell.Range = 0;
 					spell.SpellID = 64000;
@@ -78,6 +79,7 @@ namespace DOL.GS.GameEvents
 					spell.CastTime = 0;
 					spell.ClientEffect = 0;
 					spell.Duration = 60;
+					spell.Description = "Summons a Merchant at your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
 					spell.Name = "Merchant Spell";
 					spell.Range = 0;
 					spell.SpellID = 64001;
@@ -104,6 +106,7 @@ namespace DOL.GS.GameEvents
 					spell.CastTime = 0;
 					spell.ClientEffect = 0;
 					spell.Duration = 60;
+					spell.Description = "Summons a Trainer to your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
 					spell.Name = "Healer Spell";
 					spell.Range = 0;
 					spell.SpellID = 64002;
@@ -285,7 +288,7 @@ namespace DOL.GS
 		{
 			LootList list = base.GenerateLoot(mob, killer);
 			#region Trainer
-			if (Util.Chance((int)(100 / (GameServer.ServerRules.GetExperienceForLevel(killer.Level) / mob.ExperienceValue))))
+			if (Util.Chance(Math.Max(1, (int)(100 / (GameServer.ServerRules.GetExperienceForLevel(killer.Level) / mob.ExperienceValue)) / 4)))
 				list.AddFixed(UtilityScrollsEvent.TrainerScroll);
 			#endregion
 			#region Merchant
@@ -293,7 +296,7 @@ namespace DOL.GS
 				list.AddFixed(UtilityScrollsEvent.MerchantScroll);
 			#endregion
 			#region Healer
-			if (Util.Chance((int)Math.Max(1, killer.GetConLevel(mob) + 1)))
+			if (Util.Chance((int)Math.Max(1, killer.GetConLevel(mob) + 1 / 2)))
 				list.AddFixed(UtilityScrollsEvent.HealerScroll);
 			#endregion
 			return list;
