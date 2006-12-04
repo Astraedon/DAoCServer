@@ -992,9 +992,9 @@
             <summary>
             Called when the living is gaining experience
             </summary>
-            <param name="expBase">base amount of xp to gain</param>
-            <param name="expCampBonus">camp bonus to base exp</param>
-            <param name="expGroupBonus">group bonus to base exp</param>
+            <param name="expTotal">total amount of xp to gain</param>
+            <param name="expCampBonus">camp bonus to display</param>
+            <param name="expGroupBonus">group bonus to display</param>
             <param name="sendMessage">should exp gain message be sent</param>
         </member>
         <member name="M:DOL.GS.GameLiving.GainRealmPoints(System.Int64)">
@@ -4931,6 +4931,11 @@
             Name of class
             </summary>
         </member>
+        <member name="F:DOL.GS.CharacterClassSpec.m_femaleName">
+            <summary>
+            Female name of class
+            </summary>
+        </member>
         <member name="F:DOL.GS.CharacterClassSpec.m_basename">
             <summary>
             Base of this class
@@ -7532,6 +7537,11 @@
         <member name="F:DOL.Events.GameLivingEvent.CastFinished">
             <summary>
             The CastFinished event is fired whenever the living finishes casting a spell
+            </summary>
+        </member>
+        <member name="F:DOL.Events.GameLivingEvent.HealthChanged">
+            <summary>
+            The HealthChanged event is fired whenever the GameLiving's health is changed
             </summary>
         </member>
         <member name="M:DOL.Events.GamePlayerEvent.#ctor(System.String)">
@@ -32882,6 +32892,31 @@
         <member name="F:DOL.AI.Brain.eAggressionState.Passive">
             <summary>
             Attack only on order
+            </summary>
+        </member>
+        <member name="T:DOL.Events.HealthChangedEventArgs">
+            <summary>
+            Holds the arguments for the Dying event of GameLivings
+            </summary>
+        </member>
+        <member name="F:DOL.Events.HealthChangedEventArgs.m_changesource">
+            <summary>
+            The source of changing
+            </summary>
+        </member>
+        <member name="F:DOL.Events.HealthChangedEventArgs.m_changetype">
+            <summary>
+            The type of changing
+            </summary>
+        </member>
+        <member name="F:DOL.Events.HealthChangedEventArgs.m_changeamount">
+            <summary>
+            The amount of changing
+            </summary>
+        </member>
+        <member name="M:DOL.Events.HealthChangedEventArgs.#ctor(DOL.GS.GameObject,DOL.GS.GameLiving.eHealthChangeType,System.Int32)">
+            <summary>
+            Constructs a new Dying event args
             </summary>
         </member>
     </members>
