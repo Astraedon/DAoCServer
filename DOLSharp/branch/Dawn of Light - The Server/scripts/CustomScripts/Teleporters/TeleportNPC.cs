@@ -136,6 +136,16 @@ namespace DOL.GS.GameEvents
 							SendReply(player, "You don't have the right client version. (" + locationex.Version.ToString() + ")");
 							good = false;
 						}
+						if (locationex.MinLevel > 0 && player.Level < locationex.MinLevel)
+						{
+							SendReply(player, "You don't have the minimum level. (" + locationex.MinLevel + ")");
+							good = false;
+						}
+						if (locationex.MaxLevel > 0 && player.Level > locationex.MaxLevel)
+						{
+							SendReply(player, "You exceed the level requirement. (" + locationex.MaxLevel + ")");
+							good = false;
+						}
 						if (!good)
 							continue;
 					}

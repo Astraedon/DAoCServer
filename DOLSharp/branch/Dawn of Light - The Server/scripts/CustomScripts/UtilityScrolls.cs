@@ -1,10 +1,13 @@
 using System;
 using System.Reflection;
+
 using DOL.Database;
 using DOL.Events;
 using DOL.GS;
 using DOL.GS.Effects;
 using DOL.GS.GameEvents;
+using DOL.GS.PacketHandler;
+
 using log4net;
 
 /*
@@ -39,6 +42,62 @@ namespace DOL.GS.GameEvents
 		}
 
 		#region Spells
+		#region FontOfPower
+		protected static Spell m_FontofpowerSpell;
+		public static Spell FontofpowerSpell
+		{
+			get
+			{
+				if (m_FontofpowerSpell == null)
+				{
+					DBSpell spell = new DBSpell();
+					spell.AutoSave = false;
+					spell.CastTime = 0;
+					spell.ClientEffect = 0;
+					spell.Icon = 7211;
+					spell.Duration = 300;
+					spell.Description = "Summons a Font of Power, which restores health when not in combat every tick, at your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
+					spell.Name = "Font of Power Spell";
+					spell.Range = 0;
+					spell.SpellID = 64010;
+					spell.Target = "Self";
+					spell.Type = "Font";
+					spell.Value = 1;
+					m_FontofpowerSpell = new Spell(spell, 1);
+					SkillBase.GetSpellList(GlobalSpellsLines.Item_Effects).Add(m_FontofpowerSpell);
+				}
+				return m_FontofpowerSpell;
+			}
+		}
+		#endregion
+		#region FontOfHealing
+		protected static Spell m_FontofhealingSpell;
+		public static Spell FontofhealingSpell
+		{
+			get
+			{
+				if (m_FontofhealingSpell == null)
+				{
+					DBSpell spell = new DBSpell();
+					spell.AutoSave = false;
+					spell.CastTime = 0;
+					spell.ClientEffect = 0;
+					spell.Icon = 7244;
+					spell.Duration = 300;
+					spell.Description = "Summons a Font of Healing, which restores health when not in combat every tick, at your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
+					spell.Name = "Font of Healing Spell";
+					spell.Range = 0;
+					spell.SpellID = 64011;
+					spell.Target = "Self";
+					spell.Type = "Font";
+					spell.Value = 2;
+					m_FontofhealingSpell = new Spell(spell, 1);
+					SkillBase.GetSpellList(GlobalSpellsLines.Item_Effects).Add(m_FontofhealingSpell);
+				}
+				return m_FontofhealingSpell;
+			}
+		}
+		#endregion 
 		#region Trainer
 		protected static Spell m_trainerSpell;
 		public static Spell TrainerSpell
@@ -52,7 +111,7 @@ namespace DOL.GS.GameEvents
 					spell.CastTime = 0;
 					spell.ClientEffect = 0;
 					spell.Duration = 60;
-					spell.Description = "Summons a Trainer at your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
+					spell.Description = "Summons a Trainer, that anyone can use, at your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
 					spell.Name = "Trainer Spell";
 					spell.Range = 0;
 					spell.SpellID = 64000;
@@ -79,7 +138,7 @@ namespace DOL.GS.GameEvents
 					spell.CastTime = 0;
 					spell.ClientEffect = 0;
 					spell.Duration = 60;
-					spell.Description = "Summons a Merchant at your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
+					spell.Description = "Summons a Merchant, for selling items to, at your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
 					spell.Name = "Merchant Spell";
 					spell.Range = 0;
 					spell.SpellID = 64001;
@@ -106,7 +165,7 @@ namespace DOL.GS.GameEvents
 					spell.CastTime = 0;
 					spell.ClientEffect = 0;
 					spell.Duration = 60;
-					spell.Description = "Summons a Trainer to your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
+					spell.Description = "Summons a Healer, which cures rez illness and restores con, to your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
 					spell.Name = "Healer Spell";
 					spell.Range = 0;
 					spell.SpellID = 64002;
@@ -123,6 +182,62 @@ namespace DOL.GS.GameEvents
 		#endregion
 
 		#region Items
+		#region FontOfPower
+		protected static ItemTemplate m_fontofpowerScroll;
+		public static ItemTemplate FontOfPowerScroll
+		{
+			get
+			{
+				if (m_fontofpowerScroll == null)
+				{
+					m_fontofpowerScroll = new ItemTemplate();
+					m_fontofpowerScroll.CanDropAsLoot = false;
+					m_fontofpowerScroll.Charges = 1;
+					m_fontofpowerScroll.Id_nb = "fontofpower_scroll";
+					m_fontofpowerScroll.IsDropable = true;
+					m_fontofpowerScroll.IsPickable = true;
+					m_fontofpowerScroll.IsTradable = false;
+					m_fontofpowerScroll.Item_Type = 41;
+					m_fontofpowerScroll.Level = 1;
+					m_fontofpowerScroll.MaxCharges = 1;
+					m_fontofpowerScroll.Model = 499;
+					m_fontofpowerScroll.Name = "Font Of Power Scroll";
+					m_fontofpowerScroll.Object_Type = (int)eObjectType.Magical;
+					m_fontofpowerScroll.Realm = 0;
+					m_fontofpowerScroll.SpellID = FontofpowerSpell.ID;
+				}
+				return m_fontofpowerScroll;
+			}
+		}
+		#endregion
+		#region FontOfHealing
+		protected static ItemTemplate m_fontofhealingScroll;
+		public static ItemTemplate FontOfHealingScroll
+		{
+			get
+			{
+				if (m_fontofhealingScroll == null)
+				{
+					m_fontofhealingScroll = new ItemTemplate();
+					m_fontofhealingScroll.CanDropAsLoot = false;
+					m_fontofhealingScroll.Charges = 1;
+					m_fontofhealingScroll.Id_nb = "fontofhealing_scroll";
+					m_fontofhealingScroll.IsDropable = true;
+					m_fontofhealingScroll.IsPickable = true;
+					m_fontofhealingScroll.IsTradable = false;
+					m_fontofhealingScroll.Item_Type = 41;
+					m_fontofhealingScroll.Level = 1;
+					m_fontofhealingScroll.MaxCharges = 1;
+					m_fontofhealingScroll.Model = 499;
+					m_fontofhealingScroll.Name = "Font Of Healing Scroll";
+					m_fontofhealingScroll.Object_Type = (int)eObjectType.Magical;
+					m_fontofhealingScroll.Realm = 0;
+					m_fontofhealingScroll.SpellID = FontofhealingSpell.ID;
+				}
+				return m_fontofhealingScroll;
+			}
+		}
+		#endregion 
 		#region Trainer
 		protected static ItemTemplate m_trainerScroll;
 		public static ItemTemplate TrainerScroll
@@ -286,7 +401,15 @@ namespace DOL.GS
 	{
 		public override LootList GenerateLoot(GameNPC mob, GameObject killer)
 		{
-			LootList list = base.GenerateLoot(mob, killer);
+			LootList list = base.GenerateLoot(mob, killer); 
+			#region FontOfPower
+            if (Util.Chance(5))
+                list.AddFixed(UtilityScrollsEvent.FontOfPowerScroll);
+            #endregion
+            #region FontOfHealing
+            if (Util.Chance(5))
+                list.AddFixed(UtilityScrollsEvent.FontOfHealingScroll);
+            #endregion 
 			#region Trainer
 			if (Util.Chance(Math.Max(1, (int)(100 / (GameServer.ServerRules.GetExperienceForLevel(killer.Level) / mob.ExperienceValue)) / 4)))
 				list.AddFixed(UtilityScrollsEvent.TrainerScroll);
@@ -379,6 +502,130 @@ namespace DOL.GS.Spells
 			return false;
 		}
 	}
+
+	[SpellHandlerAttribute("Font")]
+	public class FontofpowerSpellHandler : DoTSpellHandler
+	{
+		private GameObject m_font;
+		private int m_type;
+
+		public FontofpowerSpellHandler(GameLiving caster, Spell spell, SpellLine line)
+			: base(caster, spell, line)
+		{
+			m_type = (int)spell.Value;
+		}
+
+		public override void OnEffectPulse(GameSpellEffect effect)
+		{
+			if ((m_font == null) || ((m_type != 1) && (m_type != 2))) return;
+
+			foreach (GamePlayer player in m_font.GetPlayersInRadius(500))
+			{
+				if ((GameServer.ServerRules.IsSameRealm(Caster, player, true)) && (player.InCombat == false))
+				{
+					if (m_type == 1)
+					{
+						int mr = player.MaxMana / 20;
+
+						// Don't stack
+						int stack = 0;
+						foreach (GameObject obj in player.GetItemsInRadius(500))
+						{
+							if (obj.Model == 2583) stack++;
+						}
+						if (stack > 0) mr = mr / stack;
+
+						if (player.Mana + mr > player.MaxMana)
+						{
+							if (player.Mana < player.MaxMana)
+							{
+								player.Out.SendMessage("You gain " + (player.MaxMana - player.Mana).ToString() + " mana from the magical font!", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
+								player.Mana = player.MaxMana;
+							}
+						}
+						else
+						{
+							player.Mana += mr;
+							player.Out.SendMessage("You gain " + mr.ToString() + " mana from the magical font!", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
+						}
+					}
+					else
+					{
+						int hr = player.MaxHealth / 20;
+
+						// Don't stack
+						int stack = 0;
+						foreach (GameObject obj in player.GetItemsInRadius(500))
+						{
+							if (obj.Model == 2585) stack++;
+						}
+						if (stack > 0) hr = hr / stack;
+
+						if (player.Health + hr > player.MaxHealth)
+						{
+							if (player.Health < player.MaxHealth)
+							{
+								player.Out.SendMessage("You gain " + (player.MaxHealth - player.Health).ToString() + " hit points from the magical font!", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
+								player.Health = player.MaxHealth;
+							}
+						}
+						else
+						{
+							player.Health += hr;
+							player.Out.SendMessage("You gain " + hr.ToString() + " health from the magical font!", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
+						}
+					}
+				}
+			}
+		}
+
+		public override void OnEffectStart(GameSpellEffect effect)
+		{
+			if ((m_type != 1) && (m_type != 2)) return;
+
+			if (Caster.CurrentRegion.IsRvR == true)
+			{
+				if (Caster is GamePlayer)
+				{
+					GamePlayer player = Caster as GamePlayer;
+					player.Out.SendMessage("This spell does not work in RvR areas. Spell failed !", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
+				}
+				return;
+			}
+			m_font = new GameStaticItem();
+			m_font.X = Caster.X;
+			m_font.Y = Caster.Y;
+			m_font.Z = Caster.Z;
+			m_font.Heading = Caster.Heading;
+			m_font.CurrentRegionID = Caster.CurrentRegionID;
+			m_font.Realm = Caster.Realm;
+			if (m_type == 1)
+			{
+				m_font.Model = 2583;
+				m_font.Name = "Font of Power";
+			}
+			else if (m_type == 2)
+			{
+				m_font.Model = 2585;
+				m_font.Name = "Font of Healing";
+			}
+			m_font.AddToWorld();
+		}
+
+		public override bool IsOverwritable(GameSpellEffect compare)
+		{
+			return false;
+		}
+
+		public override int OnEffectExpires(GameSpellEffect effect, bool noMessages)
+		{
+			base.OnEffectExpires(effect, noMessages);
+			if (m_font == null) return 0;
+			m_font.Delete();
+			return 0;
+		}
+
+	}
 }
 
 namespace DOL.GS.Scripts
@@ -394,6 +641,8 @@ namespace DOL.GS.Scripts
 			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.TrainerScroll));
 			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.MerchantScroll));
 			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.HealerScroll));
+			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.FontOfPowerScroll));
+			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.FontOfHealingScroll));
 			return 1;
 		}
 	}

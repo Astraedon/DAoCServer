@@ -25,17 +25,34 @@ namespace DOL.GS
 
 		public static InventoryItem GenerateUniqueItem(GameNPC mob, GameObject killer)
 		{
+			if (killer is GamePlayer)
+			{
+				GamePlayer player = killer as GamePlayer;
+				if (player.PlayerGroup != null)
+				{
+					GamePlayer usePlayer = player;
+					foreach (GamePlayer member in player.PlayerGroup.GetPlayersInTheGroup())
+						if (member.Level > usePlayer.Level)
+							usePlayer = member;
+
+					killer = usePlayer;
+				}
+			}
+
+
 			InventoryItem item = new InventoryItem();
 			//item realm
 			item.Realm = killer.Realm;
 			//item level
-			if (mob.Level > 70)
+			if (mob.Level >= 71)
 				item.Level = 51;
+			else if (mob.Level >= 65)
+				item.Level = 50;
 			else
 			{
 				item.Level = mob.Level;
-				if (item.Level > 50)
-					item.Level = 50;
+				if (item.Level > 49)
+					item.Level = 49;
 				if (item.Level < 1)
 					item.Level = 1;
 			}
@@ -65,7 +82,7 @@ namespace DOL.GS
 			item.IsTradable = true;
 
 			//item quality / maxquality
-			item.Quality = GenerateItemQuality(mob.Level, item.Level);
+			item.Quality = GenerateItemQuality(killer.GetConLevel(mob));
 
 			//item bonus
 			int temp = item.Level - 15;
@@ -829,7 +846,21 @@ namespace DOL.GS
 			int min = 0;
 			if (item.Object_Type == (int)eObjectType.Magical)
 				min = 1;
-			int number = Util.Random(min, 4);
+			//int number = Util.Random(min, 4);
+
+			int number = min;
+
+			if (Util.Chance(40))
+				number++;
+			if (Util.Chance(30))
+				number++;
+			if (Util.Chance(20))
+				number++;
+
+			if ((number != 4) && Util.Chance(10))
+			{
+				number++;
+			}
 
 			for (int i = 0; i < number; i++)
 			{
@@ -840,17 +871,13 @@ namespace DOL.GS
 			}
 		}
 
-		private static int GenerateItemQuality(int moblevel, int itemlevel)
+		private static int GenerateItemQuality(double conlevel)
 		{
 			int minQuality = 89;
-			int difficulty = moblevel - itemlevel;
-			int difficultyModifier = (int)(difficulty / 5);
-			minQuality += difficultyModifier;
-			int chanceForMp = (difficultyModifier * 2) + 2;
-			int standardChance = 1 / (100 - minQuality);
-			int quality = Util.Random(minQuality, 99);
-			if (Util.Chance(chanceForMp))
-				return 100;
+			int maxQuality = (int)(1.310 * conlevel + 94.29);
+
+			int quality = Util.Random(minQuality, maxQuality);
+
 			return quality;
 		}
 
@@ -914,14 +941,24 @@ namespace DOL.GS
 							if (GlobalConstants.GetBonusRealm(property) == (eRealm)item.Realm && !BonusExists(item, property) && SkillIsValidForObjectType(item.Level, (eRealm)item.Realm, (eObjectType)item.Object_Type, property))
 								validSkills.Add(property);
 						}
-						validSkills.Add(eProperty.AllMagicSkills);
-						validSkills.Add(eProperty.AllMeleeWeaponSkills);
-						validSkills.Add(eProperty.AllSkills);
-						validSkills.Add(eProperty.AllDualWieldingSkills);
-						validSkills.Add(eProperty.AllArcherySkills);
+
+						if (!BonusExists(item, eProperty.AllMagicSkills) && SkillIsValidForObjectType(item.Level, (eRealm)item.Realm, (eObjectType)item.Object_Type, eProperty.AllMagicSkills))
+							validSkills.Add(eProperty.AllMagicSkills);
+
+						if (!BonusExists(item, eProperty.AllMeleeWeaponSkills) && SkillIsValidForObjectType(item.Level, (eRealm)item.Realm, (eObjectType)item.Object_Type, eProperty.AllMeleeWeaponSkills))
+							validSkills.Add(eProperty.AllMeleeWeaponSkills);
+
+						if (!BonusExists(item, eProperty.AllSkills) && SkillIsValidForObjectType(item.Level, (eRealm)item.Realm, (eObjectType)item.Object_Type, eProperty.AllSkills))
+							validSkills.Add(eProperty.AllSkills);
+
+						if (!BonusExists(item, eProperty.AllDualWieldingSkills) && SkillIsValidForObjectType(item.Level, (eRealm)item.Realm, (eObjectType)item.Object_Type, eProperty.AllDualWieldingSkills))
+							validSkills.Add(eProperty.AllDualWieldingSkills);
+
+						if (!BonusExists(item, eProperty.AllArcherySkills) && SkillIsValidForObjectType(item.Level, (eRealm)item.Realm, (eObjectType)item.Object_Type, eProperty.AllArcherySkills))
+							validSkills.Add(eProperty.AllArcherySkills);
 
 						int index = 0;
-							index = validSkills.Count - 1;
+						index = validSkills.Count - 1;
 
 						return (eProperty)validSkills[Util.Random(0, index)];
 					}
@@ -931,7 +968,7 @@ namespace DOL.GS
 						ArrayList validStats = new ArrayList();
 						foreach (eProperty property in StatBonus)
 						{
-							if (!BonusExists(item, property) && StatIsValidForObjectType((eRealm)item.Realm, (eObjectType)item.Object_Type, property))
+							if (!BonusExists(item, property) && StatIsValidForObjectType((eRealm)item.Realm, (eObjectType)item.Object_Type, property) && StatIsValidForRealm((eRealm)item.Realm, property))
 								validStats.Add(property);
 						}
 						return (eProperty)validStats[Util.Random(0, validStats.Count - 1)];
@@ -1634,6 +1671,53 @@ namespace DOL.GS
 							return true;
 						break;
 					}
+				case eProperty.AllArcherySkills:
+					{
+						//Archers are always above level 4 and can not wear chain or scale.
+						if (level < 5)
+							return false;
+						else if (type == eObjectType.Leather && level < 10)
+							return true;
+						else if (type == eObjectType.Reinforced || type == eObjectType.Studded)
+							return true;
+						break;
+					}
+				case eProperty.AllDualWieldingSkills:
+					{
+						//Dualwielders are always above level 4 and can wear better than cloth from the start.
+						if (level < 5)
+							return false;
+						else if (type == eObjectType.Cloth)
+							return false;
+						//mercs are the only dualwielder who can wear chain
+						else if (realm == eRealm.Albion && type == eObjectType.Chain)
+							return true;
+						//all assassins wear leather, blademasters and zerks wear studded.
+						else if (type == eObjectType.Leather || type == eObjectType.Reinforced || type == eObjectType.Studded)
+							return true;
+						break;
+					}
+				case eProperty.AllMagicSkills:
+					{
+						//There isn't a single armortype that doesn't use magical skills at all. Thus, we always allow it.
+						return true;
+						break;
+					}
+				case eProperty.AllMeleeWeaponSkills:
+					{
+						//Valewalkers wear cloth.
+						if (realm == eRealm.Hibernia && type == eObjectType.Cloth)
+							return true;
+						else
+							return true;
+						break;
+					}
+				case eProperty.AllSkills:
+					{
+						//everyone can use this
+						return true;
+						break;
+					}
 			}
 
 			return false;
@@ -1981,6 +2065,40 @@ namespace DOL.GS
 							return true;
 						break;
 					}
+				case eProperty.AllArcherySkills:
+					{
+						if (type == eObjectType.CompositeBow || type == eObjectType.Longbow || type == eObjectType.RecurvedBow)
+							return true;
+						break;
+					}
+				case eProperty.AllDualWieldingSkills:
+					{
+						if (type == eObjectType.Axe || type == eObjectType.Sword || type == eObjectType.Hammer || type == eObjectType.LeftAxe || type == eObjectType.SlashingWeapon || type == eObjectType.CrushingWeapon || type == eObjectType.ThrustWeapon || type == eObjectType.Piercing || type == eObjectType.Blades || type == eObjectType.Blunt)
+							return true;
+						break;
+					}
+				case eProperty.AllMagicSkills:
+					{
+						//scouts, armsmen, mercs, blademasters, heroes, zerks, warriors do not need this.
+						if (type == eObjectType.Longbow || type == eObjectType.CelticSpear || type == eObjectType.PolearmWeapon)
+							return false;
+						else
+							return true;
+						break;
+					}
+				case eProperty.AllMeleeWeaponSkills:
+					{
+
+						if (type == eObjectType.Staff && realm != eRealm.Albion)
+							return false;
+						else if (type == eObjectType.Staff && Util.Chance(80)) //80% chance to be a caster staff
+							return false;
+						else if (type == eObjectType.Longbow || type == eObjectType.CompositeBow || type == eObjectType.RecurvedBow || type == eObjectType.Crossbow || type == eObjectType.Fired)
+							return false;
+						else
+							return true;
+						break;
+					}
 			}
 			return false;
 		}
@@ -2025,7 +2143,7 @@ namespace DOL.GS
 					{
 						if (realm == eRealm.Albion)
 						{
-							if (type == eObjectType.Studded)
+							if (type == eObjectType.Studded || type == eObjectType.Leather)
 								return false;
 						}
 						else if (realm == eRealm.Midgard)
@@ -2069,26 +2187,50 @@ namespace DOL.GS
 							return false;
 						break;
 					}
-				case eObjectType.Axe:
+
+				case eObjectType.Shield:
+					{
+						if ((realm == eRealm.Albion || realm == eRealm.Midgard) && (property == eProperty.Intelligence || property == eProperty.Empathy))
+							return false;
+						else if (realm == eRealm.Hibernia && property == eProperty.Piety)
+							return false;
+						break;
+					}
+
 				case eObjectType.Blades:
 				case eObjectType.Blunt:
-				case eObjectType.CelticSpear:
-				case eObjectType.CrushingWeapon:
-				case eObjectType.Flexible:
-				case eObjectType.Hammer:
-				case eObjectType.HandToHand:
-				case eObjectType.LargeWeapons:
-				case eObjectType.LeftAxe:
-				case eObjectType.Piercing:
-				case eObjectType.PolearmWeapon:
-				case eObjectType.Shield:
-				case eObjectType.SlashingWeapon:
-				case eObjectType.Spear:
-				case eObjectType.Sword:
-				case eObjectType.ThrustWeapon:
-				case eObjectType.TwoHandedWeapon:
 					{
-						if (property == eProperty.Intelligence)
+						if (property == eProperty.Piety)
+							return false;
+						break;
+					}
+				case eObjectType.LargeWeapons:
+				case eObjectType.Piercing:
+					{
+						if (property == eProperty.Piety || property == eProperty.Empathy)
+							return false;
+						break;
+					}
+				case eObjectType.CrushingWeapon:
+				case eObjectType.SlashingWeapon:
+				case eObjectType.ThrustWeapon:
+				case eObjectType.Hammer:
+				case eObjectType.Sword:
+				case eObjectType.TwoHandedWeapon:
+				case eObjectType.Axe:
+				case eObjectType.Flexible:
+					{
+						if (property == eProperty.Intelligence || property == eProperty.Empathy)
+							return false;
+						break;
+					}
+				case eObjectType.CelticSpear:
+				case eObjectType.HandToHand:
+				case eObjectType.LeftAxe:
+				case eObjectType.PolearmWeapon:
+				case eObjectType.Spear:
+					{
+						if (property == eProperty.Intelligence || property == eProperty.Empathy || property == eProperty.Piety)
 							return false;
 						break;
 					}

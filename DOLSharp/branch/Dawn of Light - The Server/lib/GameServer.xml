@@ -9013,6 +9013,11 @@
             The Keep Level linked to the DBKeep
             </summary>
         </member>
+        <member name="P:DOL.GS.Keeps.AbstractGameKeep.BaseLevel">
+            <summary>
+            The Base Keep Level
+            </summary>
+        </member>
         <member name="P:DOL.GS.Keeps.AbstractGameKeep.Name">
             <summary>
             The Keep Name linked to the DBKeep

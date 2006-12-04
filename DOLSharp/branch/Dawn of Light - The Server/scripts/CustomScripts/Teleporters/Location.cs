@@ -41,6 +41,8 @@ namespace DOL.GS.GameEvents
 		public GameClient.eClientType Software;
 		public GameClient.eClientAddons Expansions;
 		public GameClient.eClientVersion Version;
+		public byte MinLevel = 0;
+		public byte MaxLevel = 0;
 
 		public LocationExpansion (	string name ,
 									ushort region ,
@@ -54,6 +56,23 @@ namespace DOL.GS.GameEvents
 			Software = software ;
 			Expansions = expansions ;
 			Version = version;
+		}
+
+		public LocationExpansion(string name,
+							ushort region,
+							int x, int y, int z,
+							ushort heading,
+							GameClient.eClientType software,
+							GameClient.eClientAddons expansions,
+							GameClient.eClientVersion version,
+							byte minLevel, byte maxLevel)
+			: base(name, region, x, y, z, heading)
+		{
+			Software = software;
+			Expansions = expansions;
+			Version = version;
+			MinLevel = minLevel;
+			MaxLevel = maxLevel;
 		}
 	}
 }

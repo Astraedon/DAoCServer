@@ -1815,6 +1815,11 @@ an attempt to attach to a different database).</para>
             Keep type
             </summary>
         </member>
+        <member name="P:DOL.Database.DBKeep.BaseLevel">
+            <summary>
+            The base keep level
+            </summary>
+        </member>
         <member name="T:DOL.Database.DBNews">
             <summary>
             Account table
@@ -6931,6 +6936,11 @@ public void ShowException()
             The ID of this style
             </summary>
         </member>
+        <member name="F:DOL.Database.DBStyle.m_classId">
+            <summary>
+            The class ID of the style
+            </summary>		
+        </member>
         <member name="F:DOL.Database.DBStyle.m_Name">
             <summary>
             The name of this style
@@ -7040,6 +7050,11 @@ public void ShowException()
         <member name="P:DOL.Database.DBStyle.ID">
             <summary>
             The Style ID
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBStyle.ClassId">
+            <summary>
+            The ClassID
             </summary>
         </member>
         <member name="P:DOL.Database.DBStyle.Name">
