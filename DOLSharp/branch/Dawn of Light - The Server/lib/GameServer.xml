@@ -11362,6 +11362,18 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:DOL.GS.PropertyCalc.WaterSpeedCalculator">
+            <summary>
+            The Character Stat calculator
+            
+            BuffBonusCategory1 is used for all single stat buffs
+            BuffBonusCategory2 is used for all dual stat buffs
+            BuffBonusCategory3 is used for all debuffs (positive values expected here)
+            BuffBonusCategory4 is used for all other uncapped modifications
+                               category 4 kicks in at last
+            BuffBonusMultCategory1 used after all buffs/debuffs
+            </summary>
+        </member>
         <member name="T:DOL.GS.PropertyCalc.ResistPierceCalculator">
              <summary>
              The resist pierce bonus calculator
@@ -20977,6 +20989,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="F:DOL.GS.Spells.WaterBreathingSpellHandler.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
         <member name="T:DOL.GS.Spells.SavageEvadeHandler">
             <summary>
             Summary description for SavageHasteHandler.
@@ -27049,6 +27066,31 @@
             The joined player
             </summary>
         </member>
+        <member name="T:DOL.Events.HealthChangedEventArgs">
+            <summary>
+            Holds the arguments for the Dying event of GameLivings
+            </summary>
+        </member>
+        <member name="F:DOL.Events.HealthChangedEventArgs.m_changesource">
+            <summary>
+            The source of changing
+            </summary>
+        </member>
+        <member name="F:DOL.Events.HealthChangedEventArgs.m_changetype">
+            <summary>
+            The type of changing
+            </summary>
+        </member>
+        <member name="F:DOL.Events.HealthChangedEventArgs.m_changeamount">
+            <summary>
+            The amount of changing
+            </summary>
+        </member>
+        <member name="M:DOL.Events.HealthChangedEventArgs.#ctor(DOL.GS.GameObject,DOL.GS.GameLiving.eHealthChangeType,System.Int32)">
+            <summary>
+            Constructs a new Dying event args
+            </summary>
+        </member>
         <member name="T:DOL.Events.GiveMoneyEventArgs">
             <summary>
             Holds the arguments for the GiveMoney event of GamePlayer
@@ -32892,31 +32934,6 @@
         <member name="F:DOL.AI.Brain.eAggressionState.Passive">
             <summary>
             Attack only on order
-            </summary>
-        </member>
-        <member name="T:DOL.Events.HealthChangedEventArgs">
-            <summary>
-            Holds the arguments for the Dying event of GameLivings
-            </summary>
-        </member>
-        <member name="F:DOL.Events.HealthChangedEventArgs.m_changesource">
-            <summary>
-            The source of changing
-            </summary>
-        </member>
-        <member name="F:DOL.Events.HealthChangedEventArgs.m_changetype">
-            <summary>
-            The type of changing
-            </summary>
-        </member>
-        <member name="F:DOL.Events.HealthChangedEventArgs.m_changeamount">
-            <summary>
-            The amount of changing
-            </summary>
-        </member>
-        <member name="M:DOL.Events.HealthChangedEventArgs.#ctor(DOL.GS.GameObject,DOL.GS.GameLiving.eHealthChangeType,System.Int32)">
-            <summary>
-            Constructs a new Dying event args
             </summary>
         </member>
     </members>

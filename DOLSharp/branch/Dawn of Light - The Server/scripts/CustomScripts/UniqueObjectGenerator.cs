@@ -875,6 +875,7 @@ namespace DOL.GS
 		{
 			int minQuality = 89;
 			int maxQuality = (int)(1.310 * conlevel + 94.29);
+			maxQuality = Math.Min(maxQuality, 100);
 
 			int quality = Util.Random(minQuality, maxQuality);
 
