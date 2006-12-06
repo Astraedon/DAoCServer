@@ -42,59 +42,31 @@ namespace DOL.GS.GameEvents
 		}
 
 		#region Spells
-		#region FontOfPower
-		protected static Spell m_FontofpowerSpell;
-		public static Spell FontofpowerSpell
+		#region Campfire
+		protected static Spell m_CampfireSpell;
+		public static Spell CampfireSpell
 		{
 			get
 			{
-				if (m_FontofpowerSpell == null)
+				if (m_CampfireSpell == null)
 				{
 					DBSpell spell = new DBSpell();
 					spell.AutoSave = false;
 					spell.CastTime = 0;
 					spell.ClientEffect = 0;
-					spell.Icon = 7211;
+					spell.Icon = 14804;
 					spell.Duration = 300;
-					spell.Description = "Summons a Font of Power, which restores health when not in combat every tick, at your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
-					spell.Name = "Font of Power Spell";
+					spell.Description = "The flames of this campfire will heal your mind, body and spirit while out of combat. This spell is cast when the item is used. Cannot be used in RvR.";
+					spell.Name = "Comforting Flames";
 					spell.Range = 0;
-					spell.SpellID = 64010;
+					spell.SpellID = 14804;
 					spell.Target = "Self";
-					spell.Type = "Font";
-					spell.Value = 1;
-					m_FontofpowerSpell = new Spell(spell, 1);
-					SkillBase.GetSpellList(GlobalSpellsLines.Item_Effects).Add(m_FontofpowerSpell);
+					spell.Type = "ComfortingFlames";
+					spell.Value = 0;
+					m_CampfireSpell = new Spell(spell, 1);
+					SkillBase.GetSpellList(GlobalSpellsLines.Item_Effects).Add(m_CampfireSpell);
 				}
-				return m_FontofpowerSpell;
-			}
-		}
-		#endregion
-		#region FontOfHealing
-		protected static Spell m_FontofhealingSpell;
-		public static Spell FontofhealingSpell
-		{
-			get
-			{
-				if (m_FontofhealingSpell == null)
-				{
-					DBSpell spell = new DBSpell();
-					spell.AutoSave = false;
-					spell.CastTime = 0;
-					spell.ClientEffect = 0;
-					spell.Icon = 7244;
-					spell.Duration = 300;
-					spell.Description = "Summons a Font of Healing, which restores health when not in combat every tick, at your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
-					spell.Name = "Font of Healing Spell";
-					spell.Range = 0;
-					spell.SpellID = 64011;
-					spell.Target = "Self";
-					spell.Type = "Font";
-					spell.Value = 2;
-					m_FontofhealingSpell = new Spell(spell, 1);
-					SkillBase.GetSpellList(GlobalSpellsLines.Item_Effects).Add(m_FontofhealingSpell);
-				}
-				return m_FontofhealingSpell;
+				return m_CampfireSpell;
 			}
 		}
 		#endregion 
@@ -182,59 +154,32 @@ namespace DOL.GS.GameEvents
 		#endregion
 
 		#region Items
-		#region FontOfPower
-		protected static ItemTemplate m_fontofpowerScroll;
-		public static ItemTemplate FontOfPowerScroll
+		#region Campfire
+		protected static ItemTemplate m_tinderbox;
+		public static ItemTemplate Tinderbox
 		{
 			get
 			{
-				if (m_fontofpowerScroll == null)
+				if (m_tinderbox == null)
 				{
-					m_fontofpowerScroll = new ItemTemplate();
-					m_fontofpowerScroll.CanDropAsLoot = false;
-					m_fontofpowerScroll.Charges = 1;
-					m_fontofpowerScroll.Id_nb = "fontofpower_scroll";
-					m_fontofpowerScroll.IsDropable = true;
-					m_fontofpowerScroll.IsPickable = true;
-					m_fontofpowerScroll.IsTradable = false;
-					m_fontofpowerScroll.Item_Type = 41;
-					m_fontofpowerScroll.Level = 1;
-					m_fontofpowerScroll.MaxCharges = 1;
-					m_fontofpowerScroll.Model = 499;
-					m_fontofpowerScroll.Name = "Font Of Power Scroll";
-					m_fontofpowerScroll.Object_Type = (int)eObjectType.Magical;
-					m_fontofpowerScroll.Realm = 0;
-					m_fontofpowerScroll.SpellID = FontofpowerSpell.ID;
+					m_tinderbox = new ItemTemplate();
+					m_tinderbox.CanDropAsLoot = false;
+					m_tinderbox.Charges = 1;
+					m_tinderbox.Id_nb = "enchanted_thunderbox";
+					m_tinderbox.IsDropable = true;
+					m_tinderbox.IsPickable = true;
+					m_tinderbox.IsTradable = true;
+					m_tinderbox.Item_Type = 41;
+					m_tinderbox.Level = 1;
+					m_tinderbox.MaxCharges = 1;
+					m_tinderbox.Model = 1347;
+					m_tinderbox.Name = "Enchanted Thunderbox";
+					m_tinderbox.Object_Type = (int)eObjectType.Magical;
+					m_tinderbox.Realm = 0;
+					m_tinderbox.SpellID = CampfireSpell.ID;
+					m_tinderbox.Quality = 99;
 				}
-				return m_fontofpowerScroll;
-			}
-		}
-		#endregion
-		#region FontOfHealing
-		protected static ItemTemplate m_fontofhealingScroll;
-		public static ItemTemplate FontOfHealingScroll
-		{
-			get
-			{
-				if (m_fontofhealingScroll == null)
-				{
-					m_fontofhealingScroll = new ItemTemplate();
-					m_fontofhealingScroll.CanDropAsLoot = false;
-					m_fontofhealingScroll.Charges = 1;
-					m_fontofhealingScroll.Id_nb = "fontofhealing_scroll";
-					m_fontofhealingScroll.IsDropable = true;
-					m_fontofhealingScroll.IsPickable = true;
-					m_fontofhealingScroll.IsTradable = false;
-					m_fontofhealingScroll.Item_Type = 41;
-					m_fontofhealingScroll.Level = 1;
-					m_fontofhealingScroll.MaxCharges = 1;
-					m_fontofhealingScroll.Model = 499;
-					m_fontofhealingScroll.Name = "Font Of Healing Scroll";
-					m_fontofhealingScroll.Object_Type = (int)eObjectType.Magical;
-					m_fontofhealingScroll.Realm = 0;
-					m_fontofhealingScroll.SpellID = FontofhealingSpell.ID;
-				}
-				return m_fontofhealingScroll;
+				return m_tinderbox;
 			}
 		}
 		#endregion 
@@ -402,14 +347,10 @@ namespace DOL.GS
 		public override LootList GenerateLoot(GameNPC mob, GameObject killer)
 		{
 			LootList list = base.GenerateLoot(mob, killer); 
-			#region FontOfPower
-            if (Util.Chance(5))
-                list.AddFixed(UtilityScrollsEvent.FontOfPowerScroll);
+			#region Campfire
+            if (Util.Chance(2))
+                list.AddFixed(UtilityScrollsEvent.Tinderbox);
             #endregion
-            #region FontOfHealing
-            if (Util.Chance(5))
-                list.AddFixed(UtilityScrollsEvent.FontOfHealingScroll);
-            #endregion 
 			#region Trainer
 			if (Util.Chance(Math.Max(1, (int)(100 / (GameServer.ServerRules.GetExperienceForLevel(killer.Level) / mob.ExperienceValue)) / 4)))
 				list.AddFixed(UtilityScrollsEvent.TrainerScroll);
@@ -503,77 +444,60 @@ namespace DOL.GS.Spells
 		}
 	}
 
-	[SpellHandlerAttribute("Font")]
-	public class FontofpowerSpellHandler : DoTSpellHandler
+	[SpellHandlerAttribute("ComfortingFlames")]
+	public class CampfireSpellHandler : DoTSpellHandler
 	{
-		private GameObject m_font;
-		private int m_type;
+		private GameObject m_campfire;
 
-		public FontofpowerSpellHandler(GameLiving caster, Spell spell, SpellLine line)
+		public CampfireSpellHandler(GameLiving caster, Spell spell, SpellLine line)
 			: base(caster, spell, line)
-		{
-			m_type = (int)spell.Value;
-		}
+		{ }
 
 		public override void OnEffectPulse(GameSpellEffect effect)
 		{
-			if ((m_font == null) || ((m_type != 1) && (m_type != 2))) return;
+			if (m_campfire == null) return;
 
-			foreach (GamePlayer player in m_font.GetPlayersInRadius(500))
+			foreach (GamePlayer player in m_campfire.GetPlayersInRadius(500))
 			{
 				if ((GameServer.ServerRules.IsSameRealm(Caster, player, true)) && (player.InCombat == false))
 				{
-					if (m_type == 1)
+					int mr = player.MaxMana / 20;
+					int hr = player.MaxHealth / 20;
+					int er = player.MaxEndurance / 20;
+
+					// Don't stack
+					int stack = 0;
+					foreach (GameObject obj in player.GetItemsInRadius(500))
 					{
-						int mr = player.MaxMana / 20;
-
-						// Don't stack
-						int stack = 0;
-						foreach (GameObject obj in player.GetItemsInRadius(500))
-						{
-							if (obj.Model == 2583) stack++;
-						}
-						if (stack > 0) mr = mr / stack;
-
-						if (player.Mana + mr > player.MaxMana)
-						{
-							if (player.Mana < player.MaxMana)
-							{
-								player.Out.SendMessage("You gain " + (player.MaxMana - player.Mana).ToString() + " mana from the magical font!", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
-								player.Mana = player.MaxMana;
-							}
-						}
-						else
-						{
-							player.Mana += mr;
-							player.Out.SendMessage("You gain " + mr.ToString() + " mana from the magical font!", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
-						}
+						if (obj.Model == 3460) stack++;
 					}
-					else
+
+					if (stack > 1)
 					{
-						int hr = player.MaxHealth / 20;
+						// Divide the regs by the number of campfires so that they heal with double frequency and half amount
+						mr = mr / stack;
+						hr = hr / stack;
+						er = er / stack;
+					}
 
-						// Don't stack
-						int stack = 0;
-						foreach (GameObject obj in player.GetItemsInRadius(500))
-						{
-							if (obj.Model == 2585) stack++;
-						}
-						if (stack > 0) hr = hr / stack;
+					if (mr > (player.MaxMana - player.Mana)) mr = player.MaxMana - player.Mana;
+					if (hr > (player.MaxHealth - player.Health)) hr = player.MaxHealth - player.Health;
+					if (er > (player.MaxEndurance - player.Endurance)) er = player.MaxEndurance - player.Endurance;
 
-						if (player.Health + hr > player.MaxHealth)
-						{
-							if (player.Health < player.MaxHealth)
-							{
-								player.Out.SendMessage("You gain " + (player.MaxHealth - player.Health).ToString() + " hit points from the magical font!", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
-								player.Health = player.MaxHealth;
-							}
-						}
-						else
-						{
-							player.Health += hr;
-							player.Out.SendMessage("You gain " + hr.ToString() + " health from the magical font!", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
-						}
+					if (hr > 0)
+					{
+						player.Health += hr;
+						player.Out.SendMessage("You regain " + hr.ToString() + " hit points from the campfire!", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
+					}
+					if (mr > 0)
+					{
+						player.Mana += mr;
+						player.Out.SendMessage("You regain " + mr.ToString() + " power from the campfire!", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
+					}
+					if (er > 0)
+					{
+						player.Endurance += mr;
+						player.Out.SendMessage("You regain " + er.ToString() + " endurance from the campfire!", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
 					}
 				}
 			}
@@ -581,35 +505,25 @@ namespace DOL.GS.Spells
 
 		public override void OnEffectStart(GameSpellEffect effect)
 		{
-			if ((m_type != 1) && (m_type != 2)) return;
-
 			if (Caster.CurrentRegion.IsRvR == true)
 			{
 				if (Caster is GamePlayer)
 				{
 					GamePlayer player = Caster as GamePlayer;
-					player.Out.SendMessage("This spell does not work in RvR areas. Spell failed !", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
+					player.Out.SendMessage("After a short blaze up the flames expire. This spell does not work in RvR areas.", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
 				}
 				return;
 			}
-			m_font = new GameStaticItem();
-			m_font.X = Caster.X;
-			m_font.Y = Caster.Y;
-			m_font.Z = Caster.Z;
-			m_font.Heading = Caster.Heading;
-			m_font.CurrentRegionID = Caster.CurrentRegionID;
-			m_font.Realm = Caster.Realm;
-			if (m_type == 1)
-			{
-				m_font.Model = 2583;
-				m_font.Name = "Font of Power";
-			}
-			else if (m_type == 2)
-			{
-				m_font.Model = 2585;
-				m_font.Name = "Font of Healing";
-			}
-			m_font.AddToWorld();
+			m_campfire = new GameStaticItem();
+			m_campfire.X = Caster.X;
+			m_campfire.Y = Caster.Y;
+			m_campfire.Z = Caster.Z;
+			m_campfire.Heading = Caster.Heading;
+			m_campfire.CurrentRegionID = Caster.CurrentRegionID;
+			m_campfire.Realm = Caster.Realm;
+			m_campfire.Model = 3460;
+			m_campfire.Name = "Campfire";
+			m_campfire.AddToWorld();
 		}
 
 		public override bool IsOverwritable(GameSpellEffect compare)
@@ -620,11 +534,10 @@ namespace DOL.GS.Spells
 		public override int OnEffectExpires(GameSpellEffect effect, bool noMessages)
 		{
 			base.OnEffectExpires(effect, noMessages);
-			if (m_font == null) return 0;
-			m_font.Delete();
+			if (m_campfire == null) return 0;
+			m_campfire.Delete();
 			return 0;
 		}
-
 	}
 }
 
@@ -641,8 +554,7 @@ namespace DOL.GS.Scripts
 			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.TrainerScroll));
 			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.MerchantScroll));
 			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.HealerScroll));
-			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.FontOfPowerScroll));
-			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.FontOfHealingScroll));
+			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.Tinderbox));
 			return 1;
 		}
 	}

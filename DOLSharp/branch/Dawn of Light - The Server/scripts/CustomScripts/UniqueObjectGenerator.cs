@@ -1,12 +1,29 @@
 using System;
 using System.Collections;
+using System.Reflection;
+
+using DOL.Events;
 using DOL.Database;
 using DOL.GS.PacketHandler;
+
+using log4net;
 
 namespace DOL.GS
 {
 	public class LootGeneratorUniqueObject : LootGeneratorBase
 	{
+		/// <summary>
+		/// Defines a logger for this class.
+		/// </summary>
+		public static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+		[ScriptLoadedEvent]
+		public static void OnScriptLoaded(DOLEvent e, object sender, EventArgs args)
+		{
+			LootMgr.RegisterLootGenerator(new LootGeneratorUniqueObject(), "", "", "", 0);
+			log.Info("ROG System Loaded!");
+		}
+
 		/// <summary>
 		/// Generate loot for given mob
 		/// </summary>

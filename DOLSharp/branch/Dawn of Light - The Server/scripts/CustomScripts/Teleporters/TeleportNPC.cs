@@ -191,7 +191,8 @@ namespace DOL.GS.GameEvents
 			GamePlayer animPlayer = (GamePlayer)m_animPlayerQueue.Dequeue();
 			foreach (GamePlayer player in animPlayer.GetPlayersInRadius(WorldMgr.VISIBILITY_DISTANCE))
 			{
-				player.Out.SendEmoteAnimation(animPlayer, eEmote.Bind);
+				player.Out.SendSpellEffectAnimation(this, animPlayer, 4310, 0, false, 0x1);
+				//player.Out.SendEmoteAnimation(animPlayer, eEmote.Bind);
 			}
 			return 0;
 		}
