@@ -77,13 +77,11 @@ namespace DOL.GS.GameEvents
 
 			string message = player.Name + " the " + player.CharacterClass.Name + ", " + m_message;
 
-			for (int i = 0; i != m_locs.Count; i++)
+			foreach (Location location in m_locs)
 			{
-				if ((m_locs[i] != null) && (m_index != i))
-				{
-					Location location = (Location)m_locs[i];
-					message += "[" + location.Name + "]\n";
-				}
+				if (m_locs.IndexOf(location) == m_index)
+					continue;
+				message += "[" + location.Name + "]\n";
 			}
 
 			SayTo(player, message);
@@ -112,50 +110,45 @@ namespace DOL.GS.GameEvents
 			bool isPorting = false;
 			Location location = null;
 
-			for (int i = 0; i != m_locs.Count; i++)
+			foreach (Location l in m_locs)
 			{
-				if (m_locs[i] != null)
+				if (l == null || l.Name != str)
+					continue;
+				location = l;
+				if (l is LocationExpansion)
 				{
-					Location l = (Location)m_locs[i];
-					if (l is LocationExpansion)
+					LocationExpansion locationex = l as LocationExpansion;
+					bool good = true;
+					if (player.Client.ClientType < (int)locationex.Software)
 					{
-						LocationExpansion locationex = l as LocationExpansion;
-						bool good = true;
-						if (player.Client.ClientType < (int)locationex.Software)
-						{
-							SendReply(player, "You don't have the right client type. (" + locationex.Software.ToString() + ")");
-							good = false;
-						}
-						if ((int)player.Client.ClientAddons < (int)locationex.Expansions)
-						{
-							SendReply(player, "You don't have the right expansion. (" + locationex.Expansions.ToString() + ")");
-							good = false;
-						}
-						if ((int)player.Client.Version < (int)locationex.Version)
-						{
-							SendReply(player, "You don't have the right client version. (" + locationex.Version.ToString() + ")");
-							good = false;
-						}
-						if (locationex.MinLevel > 0 && player.Level < locationex.MinLevel)
-						{
-							SendReply(player, "You don't have the minimum level. (" + locationex.MinLevel + ")");
-							good = false;
-						}
-						if (locationex.MaxLevel > 0 && player.Level > locationex.MaxLevel)
-						{
-							SendReply(player, "You exceed the level requirement. (" + locationex.MaxLevel + ")");
-							good = false;
-						}
-						if (!good)
-							continue;
+						SendReply(player, "You don't have the right client type. (" + locationex.Software.ToString() + ")");
+						good = false;
 					}
-					if (str == l.Name)
+					if ((int)player.Client.ClientAddons < (int)locationex.Expansions)
 					{
-						location = (Location)m_locs[i];
-						isPorting = true;
-						break;
+						SendReply(player, "You don't have the right expansion. (" + locationex.Expansions.ToString() + ")");
+						good = false;
 					}
+					if ((int)player.Client.Version < (int)locationex.Version)
+					{
+						SendReply(player, "You don't have the right client version. (" + locationex.Version.ToString() + ")");
+						good = false;
+					}
+					if (locationex.MinLevel > 0 && player.Level < locationex.MinLevel)
+					{
+						SendReply(player, "You don't have the minimum level. (" + locationex.MinLevel + ")");
+						good = false;
+					}
+					if (locationex.MaxLevel > 0 && player.Level > locationex.MaxLevel)
+					{
+						SendReply(player, "You exceed the level requirement. (" + locationex.MaxLevel + ")");
+						good = false;
+					}
+					isPorting = good;
 				}
+				else isPorting = true;
+				if (isPorting)
+					break;
 			}
 
 			if (!isPorting)

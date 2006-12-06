@@ -165,7 +165,7 @@ namespace DOL.GS.GameEvents
 					m_tinderbox = new ItemTemplate();
 					m_tinderbox.CanDropAsLoot = false;
 					m_tinderbox.Charges = 1;
-					m_tinderbox.Id_nb = "enchanted_thunderbox";
+					m_tinderbox.Id_nb = "enchanted_tinderbox";
 					m_tinderbox.IsDropable = true;
 					m_tinderbox.IsPickable = true;
 					m_tinderbox.IsTradable = true;
@@ -173,7 +173,7 @@ namespace DOL.GS.GameEvents
 					m_tinderbox.Level = 1;
 					m_tinderbox.MaxCharges = 1;
 					m_tinderbox.Model = 1347;
-					m_tinderbox.Name = "Enchanted Thunderbox";
+					m_tinderbox.Name = "Enchanted Tinderbox";
 					m_tinderbox.Object_Type = (int)eObjectType.Magical;
 					m_tinderbox.Realm = 0;
 					m_tinderbox.SpellID = CampfireSpell.ID;
