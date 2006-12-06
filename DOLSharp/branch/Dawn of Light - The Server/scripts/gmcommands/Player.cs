@@ -57,7 +57,7 @@ namespace DOL.GS.Scripts
 	 "/player update",
 	 "/player info",
 	 "/player showgroup",
-	 "/player listeffects")]
+	 "/player showeffects")]
 
 	public class PlayerCommandHandler : AbstractCommandHandler, ICommandHandler
 	{
@@ -1373,7 +1373,7 @@ namespace DOL.GS.Scripts
 						player.Out.SendCustomTextWindow("Group Members", text);
 						break;
 					}
-				case "listeffects":
+				case "showeffects":
 					{
 						GamePlayer player = client.Player.TargetObject as GamePlayer;
 
