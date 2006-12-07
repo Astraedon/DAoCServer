@@ -493,6 +493,11 @@
             Checks if object is underwater
             </summary>
         </member>
+        <member name="P:DOL.GS.GameObject.CurrentAreas">
+            <summary>
+            Holds all areas this player is currently within
+            </summary>
+        </member>
         <member name="P:DOL.GS.GameObject.Level">
             <summary>
             Gets or Sets the current level of the Object
@@ -1328,11 +1333,6 @@
             Holds when the movement started
             </summary>
         </member>
-        <member name="F:DOL.GS.GameLiving.m_currentAreas">
-            <summary>
-            Holds all areas this player is currently within
-            </summary>
-        </member>
         <member name="F:DOL.GS.GameLiving.m_xAddition">
             <summary>
             The X addition per coordinate of forward movement
@@ -1936,11 +1936,6 @@
         <member name="P:DOL.GS.GameLiving.Z">
             <summary>
             Gets the current position of this living.
-            </summary>
-        </member>
-        <member name="P:DOL.GS.GameLiving.CurrentAreas">
-            <summary>
-            Holds all areas this player is currently within
             </summary>
         </member>
         <member name="P:DOL.GS.GameLiving.IsStealthed">
@@ -30052,6 +30047,11 @@
             <param name="friendName">the friend name</param>
             <param name="remove">true to remove this friend, false to add it</param>
         </member>
+        <member name="F:DOL.GS.GamePlayer.m_currentAreas">
+            <summary>
+            Holds all areas this player is currently within
+            </summary>
+        </member>
         <member name="F:DOL.GS.GamePlayer.m_lastPositionUpdateZone">
             <summary>
             Holds the zone player was in after last position update
@@ -31017,6 +31017,11 @@
         <member name="P:DOL.GS.GamePlayer.Friends">
             <summary>
             Gets or sets the friends of this player
+            </summary>
+        </member>
+        <member name="P:DOL.GS.GamePlayer.CurrentAreas">
+            <summary>
+            Holds all areas this player is currently within
             </summary>
         </member>
         <member name="P:DOL.GS.GamePlayer.AreaUpdateTick">
@@ -32963,46 +32968,6 @@
         <member name="F:DOL.AI.Brain.eAggressionState.Passive">
             <summary>
             Attack only on order
-            </summary>
-        </member>
-        <member name="T:DOL.GS.Keeps.OldKeep">
-            <summary>
-            OldKeep is an Old Frontiers Keep
-            </summary>
-        </member>
-        <member name="F:DOL.GS.Keeps.OldKeep.UpgradeTime">
-            <summary>
-            time to upgrade from one level to another
-            </summary>
-        </member>
-        <member name="M:DOL.GS.Keeps.OldKeep.CalculateTimeToUpgrade">
-            <summary>
-            The time to upgrade a keep
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:DOL.GS.Keeps.OldKeep.CheckForClaim(DOL.GS.GamePlayer)">
-            <summary>
-            The checks we need to run before allowing claim
-            </summary>
-            <param name="player"></param>
-            <returns></returns>
-        </member>
-        <member name="M:DOL.GS.Keeps.OldKeep.CalculRP">
-            <summary>
-            The RP reward for claiming based on difficulty level
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:DOL.GS.Keeps.OldKeep.AddTower(DOL.GS.Keeps.GameKeepTower)">
-            <summary>
-            Add a tower to the keep
-            </summary>
-            <param name="tower"></param>
-        </member>
-        <member name="P:DOL.GS.Keeps.OldKeep.Towers">
-            <summary>
-            The Keep Towers
             </summary>
         </member>
     </members>
