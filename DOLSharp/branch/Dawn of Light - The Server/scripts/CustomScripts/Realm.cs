@@ -17,10 +17,9 @@ namespace DOL.GS.Scripts
 
 			ArrayList list = new ArrayList();
 			list.Add(thidranki.Name + ": " + GlobalConstants.RealmToName((eRealm)thidranki.Realm));
-			list.Add("");
 			list.Add(orseo.Name + ": " + GlobalConstants.RealmToName((eRealm)orseo.Realm));
 			list.Add("");
-			list.Add("Darkness Falls: " + GlobalConstants.RealmToName((eRealm)thidranki.Realm));
+			list.Add("Darkness Falls: " + GlobalConstants.RealmToName((eRealm)orseo.Realm));
 
 			client.Out.SendCustomTextWindow("Realm Status", list);
 			return 1;
