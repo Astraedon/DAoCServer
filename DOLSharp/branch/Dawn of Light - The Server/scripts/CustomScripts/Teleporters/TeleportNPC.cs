@@ -9,6 +9,8 @@
  */
 
 using System.Collections;
+
+using DOL.Database;
 using DOL.GS;
 using DOL.GS.PacketHandler;
 using DOL.GS.ServerRules;
@@ -224,6 +226,15 @@ namespace DOL.GS.GameEvents
 			mob.Heading = this.Heading;
 			if (mob.AddToWorld())
 				sfx = mob;
+
+			BindPoint bp = new BindPoint();
+			bp.Realm = Realm;
+			bp.Region = this.CurrentRegionID;
+			bp.Radius = 1000;
+			bp.X = this.X;
+			bp.Y = this.Y;
+			bp.Z = this.Z;
+			this.CurrentRegion.AddArea(new Area.BindArea("bind point", bp));
 			return true;
 		}
 		public override bool RemoveFromWorld()

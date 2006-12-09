@@ -119,6 +119,7 @@ namespace DOL.GS
 			item.Weight = GenerateItemWeight((eObjectType)item.Object_Type, (eInventorySlot)item.Item_Type);
 
 			item.CrafterName = "Unique Object";
+			/*
 			item.Gold = (short)(item.Level / 8);
 			if (item.Gold == 0)
 				item.Silver = (byte)(item.Level * 10 / 8);
@@ -126,6 +127,7 @@ namespace DOL.GS
 				item.Copper = (byte)(item.Level * 100 / 8);
 			if (item.Copper < 1)
 				item.Copper = 1;
+			 */
 			item.Id_nb = "Unique";
 
 			return item;

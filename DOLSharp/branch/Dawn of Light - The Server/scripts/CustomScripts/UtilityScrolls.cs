@@ -459,6 +459,8 @@ namespace DOL.GS.Spells
 
 			foreach (GamePlayer player in m_campfire.GetPlayersInRadius(500))
 			{
+				if (player.IsAlive == false) continue;
+
 				if ((GameServer.ServerRules.IsSameRealm(Caster, player, true)) && (player.InCombat == false))
 				{
 					int mr = player.MaxMana / 20;
