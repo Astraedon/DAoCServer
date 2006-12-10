@@ -5176,12 +5176,6 @@
             Constructs a new GameStaticItem
             </summary>
         </member>
-        <member name="M:DOL.GS.GameStaticItem.#ctor(DOL.Database.WorldObject)">
-            <summary>
-            Constructs a new GameStaticItem from a WorldObject
-            </summary>
-            <param name="obj">WorldObject to take as template</param>
-        </member>
         <member name="M:DOL.GS.GameStaticItem.GetName(System.Int32,System.Boolean)">
             <summary>
             Returns name with article for nouns
@@ -5196,12 +5190,6 @@
             </summary>
             <param name="player">GamePlayer that is examining this object</param>
             <returns>list with string messages</returns>
-        </member>
-        <member name="M:DOL.GS.GameStaticItem.CopyFrom(DOL.Database.WorldObject)">
-            <summary>
-            Copies a world object into this object
-            </summary>
-            <param name="obj">World object to be copied</param>
         </member>
         <member name="M:DOL.GS.GameStaticItem.SaveIntoDatabase">
             <summary>
@@ -14548,11 +14536,6 @@
         <member name="F:DOL.GS.Keeps.GameKeepBanner.HiberniaGuildModel">
             <summary>
             Hibernia claimed banner model
-            </summary>
-        </member>
-        <member name="M:DOL.GS.Keeps.GameKeepBanner.SaveIntoDatabase">
-            <summary>
-            save the banner to DB
             </summary>
         </member>
         <member name="M:DOL.GS.Keeps.GameKeepBanner.ChangeGuild">
@@ -32123,14 +32106,6 @@
             <param name="player">The player to start the effect for</param>
             <param name="duration">The effectduration in secounds</param>
             <param name="value">The percentage additional value for melee absorb</param>
-        </member>
-        <member name="M:DOL.GS.Effects.SpeedOfSoundEffect.PlayerLeftWorld(DOL.Events.DOLEvent,System.Object,System.EventArgs)">
-            <summary>
-            Called when a player leaves the game
-            </summary>
-            <param name="e">The event which was raised</param>
-            <param name="sender">Sender of the event</param>
-            <param name="args">EventArgs associated with the event</param>
         </member>
         <member name="M:DOL.GS.Effects.SpeedOfSoundEffect.AttackFinished(DOL.Events.DOLEvent,System.Object,System.EventArgs)">
             <summary>

@@ -110,7 +110,7 @@ namespace DOL.GS
 
 			//constants
 			item.MaxQuality = 100;
-			int condition = item.Level * 20000;
+			int condition = item.Level * 2000;
 			item.Condition = condition;
 			item.MaxCondition = condition;
 			item.Durability = condition;

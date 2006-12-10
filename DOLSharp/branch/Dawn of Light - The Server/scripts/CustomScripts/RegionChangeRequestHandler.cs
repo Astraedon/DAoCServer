@@ -63,8 +63,7 @@ namespace DOL.GS.PacketHandler.Client.v168
 			}
 
 			//going into DF
-			//TODO : GM can go anywhere
-			if (zonePoint.Region == 249 && client.Player.CurrentRegionID != 249)
+			if (client.Account.PrivLevel == 1 && zonePoint.Region == 249 && client.Player.CurrentRegionID != 249)
 			{
 				Keeps.AbstractGameKeep keep = Keeps.KeepMgr.getKeepByID(5);
 				if (keep.Realm != client.Player.Realm)
@@ -75,7 +74,7 @@ namespace DOL.GS.PacketHandler.Client.v168
 			}
 
 			//going out of DF
-			if (zonePoint.Region != 249 && client.Player.CurrentRegionID == 249)
+			if (client.Account.PrivLevel == 1 && zonePoint.Region != 249 && client.Player.CurrentRegionID == 249)
 			{
 				zonePoint.Realm = client.Player.Realm;
 				switch (client.Player.Realm)
