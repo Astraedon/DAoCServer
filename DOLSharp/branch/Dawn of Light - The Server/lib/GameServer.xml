@@ -9419,6 +9419,11 @@
             The Realm Points Rate
             </summary>
         </member>
+        <member name="F:DOL.GS.ServerProperties.Properties.BP_RATE">
+            <summary>
+            The Bounty Points Rate
+            </summary>
+        </member>
         <member name="F:DOL.GS.ServerProperties.Properties.MOTD">
             <summary>
             The Server Message of the Day

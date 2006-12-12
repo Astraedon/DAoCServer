@@ -7660,6 +7660,16 @@ public void ShowException()
             /rp to toggle
             </summary>
         </member>
+        <member name="P:DOL.Database.Character.LastLeveled">
+            <summary>
+            Last time this character leveled
+            </summary>
+        </member>
+        <member name="P:DOL.Database.Character.LastFreeLevel">
+            <summary>
+            Last level this character received free
+            </summary>
+        </member>
         <member name="T:DOL.Database.BindPoint">
             <summary>
             Table of BindPoint where player pop when they die and released
