@@ -895,6 +895,7 @@ namespace DOL.GS
 			int minQuality = 89;
 			int maxQuality = (int)(1.310 * conlevel + 94.29);
 			maxQuality = Math.Min(maxQuality, 100);
+			maxQuality = Math.Max(maxQuality, minQuality);
 
 			int quality = Util.Random(minQuality, maxQuality);
 
@@ -979,7 +980,8 @@ namespace DOL.GS
 
 						int index = 0;
 						index = validSkills.Count - 1;
-
+						if (validSkills.Count > 1)
+							return eProperty.MaxHealth;
 						return (eProperty)validSkills[Util.Random(0, index)];
 					}
 				case eBonusType.Stat:
