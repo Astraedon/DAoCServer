@@ -6635,6 +6635,126 @@
             <param name="sender"></param>
             <param name="arguments"></param>
         </member>
+        <member name="F:DOL.GS.PacketHandler.PacketLib178.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="M:DOL.GS.PacketHandler.PacketLib178.#ctor(DOL.GS.GameClient)">
+            <summary>
+            Constructs a new PacketLib for Version 1.78 clients
+            </summary>
+            <param name="client">the gameclient this lib is associated with</param>
+        </member>
+        <member name="F:DOL.GS.PacketHandler.PacketLib179.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="M:DOL.GS.PacketHandler.PacketLib179.#ctor(DOL.GS.GameClient)">
+            <summary>
+            Constructs a new PacketLib for Version 1.79 clients
+            </summary>
+            <param name="client">the gameclient this lib is associated with</param>
+        </member>
+        <member name="F:DOL.GS.PacketHandler.PacketLib180.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="M:DOL.GS.PacketHandler.PacketLib180.#ctor(DOL.GS.GameClient)">
+            <summary>
+            Constructs a new PacketLib for Version 1.80 clients
+            </summary>
+            <param name="client">the gameclient this lib is associated with</param>
+        </member>
+        <member name="F:DOL.GS.PacketHandler.PacketLib181.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="M:DOL.GS.PacketHandler.PacketLib181.#ctor(DOL.GS.GameClient)">
+            <summary>
+            Constructs a new PacketLib for Version 1.81 clients
+            </summary>
+            <param name="client">the gameclient this lib is associated with</param>
+        </member>
+        <member name="F:DOL.GS.PacketHandler.PacketLib182.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="M:DOL.GS.PacketHandler.PacketLib182.#ctor(DOL.GS.GameClient)">
+            <summary>
+            Constructs a new PacketLib for Version 1.82 clients
+            </summary>
+            <param name="client">the gameclient this lib is associated with</param>
+        </member>
+        <member name="F:DOL.GS.PacketHandler.PacketLib183.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="M:DOL.GS.PacketHandler.PacketLib183.#ctor(DOL.GS.GameClient)">
+            <summary>
+            Constructs a new PacketLib for Version 1.83 clients
+            </summary>
+            <param name="client">the gameclient this lib is associated with</param>
+        </member>
+        <member name="F:DOL.GS.PacketHandler.PacketLib184.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="M:DOL.GS.PacketHandler.PacketLib184.#ctor(DOL.GS.GameClient)">
+            <summary>
+            Constructs a new PacketLib for Version 1.83 clients
+            </summary>
+            <param name="client">the gameclient this lib is associated with</param>
+        </member>
+        <member name="F:DOL.GS.PacketHandler.PacketLib185.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="M:DOL.GS.PacketHandler.PacketLib185.#ctor(DOL.GS.GameClient)">
+            <summary>
+            Constructs a new PacketLib for Version 1.85 clients
+            </summary>
+            <param name="client">the gameclient this lib is associated with</param>
+        </member>
+        <member name="F:DOL.GS.PacketHandler.PacketLib186.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="M:DOL.GS.PacketHandler.PacketLib186.#ctor(DOL.GS.GameClient)">
+            <summary>
+            Constructs a new PacketLib for Version 1.86 clients
+            </summary>
+            <param name="client">the gameclient this lib is associated with</param>
+        </member>
+        <member name="P:DOL.GS.PacketHandler.PacketLib186.BowPrepare">
+            <summary>
+            The bow prepare animation
+            </summary>
+        </member>
+        <member name="P:DOL.GS.PacketHandler.PacketLib186.BowShoot">
+            <summary>
+            The bow shoot animation
+            </summary>
+        </member>
+        <member name="F:DOL.GS.PacketHandler.PacketLib187.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="M:DOL.GS.PacketHandler.PacketLib187.#ctor(DOL.GS.GameClient)">
+            <summary>
+            Constructs a new PacketLib for Version 1.87 clients
+            </summary>
+            <param name="client">the gameclient this lib is associated with</param>
+        </member>
         <member name="F:DOL.GS.PacketHandler.Client.v168.UseSkillHandler.log">
             <summary>
             Defines a logger for this class.
@@ -8860,6 +8980,11 @@
             </summary>
             <param name="keep"></param>
         </member>
+        <member name="M:DOL.GS.Keeps.AbstractGameKeep.RemoveFromDatabase">
+            <summary>
+            remove keep from DB
+            </summary>
+        </member>
         <member name="M:DOL.GS.Keeps.AbstractGameKeep.SaveIntoDatabase">
             <summary>
             save keep in DB
@@ -9686,115 +9811,6 @@
             BuffBonusCategory3 unused
             BuffBonusCategory4 for uncapped realm ability bonus
             BuffBonusMultCategory1 unused
-            </summary>
-        </member>
-        <member name="F:DOL.GS.PacketHandler.PacketLib178.log">
-            <summary>
-            Defines a logger for this class.
-            </summary>
-        </member>
-        <member name="M:DOL.GS.PacketHandler.PacketLib178.#ctor(DOL.GS.GameClient)">
-            <summary>
-            Constructs a new PacketLib for Version 1.78 clients
-            </summary>
-            <param name="client">the gameclient this lib is associated with</param>
-        </member>
-        <member name="F:DOL.GS.PacketHandler.PacketLib179.log">
-            <summary>
-            Defines a logger for this class.
-            </summary>
-        </member>
-        <member name="M:DOL.GS.PacketHandler.PacketLib179.#ctor(DOL.GS.GameClient)">
-            <summary>
-            Constructs a new PacketLib for Version 1.79 clients
-            </summary>
-            <param name="client">the gameclient this lib is associated with</param>
-        </member>
-        <member name="F:DOL.GS.PacketHandler.PacketLib180.log">
-            <summary>
-            Defines a logger for this class.
-            </summary>
-        </member>
-        <member name="M:DOL.GS.PacketHandler.PacketLib180.#ctor(DOL.GS.GameClient)">
-            <summary>
-            Constructs a new PacketLib for Version 1.80 clients
-            </summary>
-            <param name="client">the gameclient this lib is associated with</param>
-        </member>
-        <member name="F:DOL.GS.PacketHandler.PacketLib181.log">
-            <summary>
-            Defines a logger for this class.
-            </summary>
-        </member>
-        <member name="M:DOL.GS.PacketHandler.PacketLib181.#ctor(DOL.GS.GameClient)">
-            <summary>
-            Constructs a new PacketLib for Version 1.81 clients
-            </summary>
-            <param name="client">the gameclient this lib is associated with</param>
-        </member>
-        <member name="F:DOL.GS.PacketHandler.PacketLib182.log">
-            <summary>
-            Defines a logger for this class.
-            </summary>
-        </member>
-        <member name="M:DOL.GS.PacketHandler.PacketLib182.#ctor(DOL.GS.GameClient)">
-            <summary>
-            Constructs a new PacketLib for Version 1.82 clients
-            </summary>
-            <param name="client">the gameclient this lib is associated with</param>
-        </member>
-        <member name="F:DOL.GS.PacketHandler.PacketLib183.log">
-            <summary>
-            Defines a logger for this class.
-            </summary>
-        </member>
-        <member name="M:DOL.GS.PacketHandler.PacketLib183.#ctor(DOL.GS.GameClient)">
-            <summary>
-            Constructs a new PacketLib for Version 1.83 clients
-            </summary>
-            <param name="client">the gameclient this lib is associated with</param>
-        </member>
-        <member name="F:DOL.GS.PacketHandler.PacketLib184.log">
-            <summary>
-            Defines a logger for this class.
-            </summary>
-        </member>
-        <member name="M:DOL.GS.PacketHandler.PacketLib184.#ctor(DOL.GS.GameClient)">
-            <summary>
-            Constructs a new PacketLib for Version 1.83 clients
-            </summary>
-            <param name="client">the gameclient this lib is associated with</param>
-        </member>
-        <member name="F:DOL.GS.PacketHandler.PacketLib185.log">
-            <summary>
-            Defines a logger for this class.
-            </summary>
-        </member>
-        <member name="M:DOL.GS.PacketHandler.PacketLib185.#ctor(DOL.GS.GameClient)">
-            <summary>
-            Constructs a new PacketLib for Version 1.85 clients
-            </summary>
-            <param name="client">the gameclient this lib is associated with</param>
-        </member>
-        <member name="F:DOL.GS.PacketHandler.PacketLib186.log">
-            <summary>
-            Defines a logger for this class.
-            </summary>
-        </member>
-        <member name="M:DOL.GS.PacketHandler.PacketLib186.#ctor(DOL.GS.GameClient)">
-            <summary>
-            Constructs a new PacketLib for Version 1.86 clients
-            </summary>
-            <param name="client">the gameclient this lib is associated with</param>
-        </member>
-        <member name="P:DOL.GS.PacketHandler.PacketLib186.BowPrepare">
-            <summary>
-            The bow prepare animation
-            </summary>
-        </member>
-        <member name="P:DOL.GS.PacketHandler.PacketLib186.BowShoot">
-            <summary>
-            The bow shoot animation
             </summary>
         </member>
         <member name="F:DOL.GS.PacketHandler.Client.v168.LoginRequestHandler.log">
@@ -20611,9 +20627,14 @@
             ArrayList of all guilds in the game
             </summary>
         </member>
+        <member name="F:DOL.GS.GuildMgr.m_guildids">
+            <summary>
+            ArrayList of all GuildIDs to GuildNames
+            </summary>
+        </member>
         <member name="F:DOL.GS.GuildMgr.m_lastID">
             <summary>
-            Unique ID of last added guild
+            ArrayList of all guilds in the game
             </summary>
         </member>
         <member name="M:DOL.GS.GuildMgr.AddGuild(DOL.GS.Guild)">
@@ -20652,6 +20673,18 @@
         <member name="M:DOL.GS.GuildMgr.GetGuildByName(System.String)">
             <summary>
             Returns a guild according to the matching name
+            </summary>
+            <returns>Guild</returns>
+        </member>
+        <member name="M:DOL.GS.GuildMgr.GetGuildByGuildID(System.String)">
+            <summary>
+            Returns a guild according to the matching database ID.
+            </summary>
+            <returns>Guild</returns>
+        </member>
+        <member name="M:DOL.GS.GuildMgr.GuildNameToGuildID(System.String)">
+            <summary>
+            Returns a database ID for a matching guild name.
             </summary>
             <returns>Guild</returns>
         </member>
@@ -21581,9 +21614,19 @@
             This holds the DB instance of the guild
             </summary>
         </member>
+        <member name="F:DOL.GS.Guild.m_guildid">
+            <summary>
+            unique id of the guild
+            </summary>
+        </member>
         <member name="F:DOL.GS.Guild.m_name">
             <summary>
             the name of the guild
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Guild.m_id">
+            <summary>
+            the runtime ID of the guild
             </summary>
         </member>
         <member name="F:DOL.GS.Guild.m_realmPoints">
@@ -21599,11 +21642,6 @@
         <member name="F:DOL.GS.Guild.m_claimedKeep">
             <summary>
             Stores claimed keep (unique)
-            </summary>
-        </member>
-        <member name="F:DOL.GS.Guild.m_id">
-            <summary>
-            Stores guild unique run-time ID
             </summary>
         </member>
         <member name="M:DOL.GS.Guild.#ctor">
@@ -21722,12 +21760,22 @@
         </member>
         <member name="P:DOL.GS.Guild.alliance">
             <summary>
-            Gets or sets the guild db
+            Gets or sets the guild alliance
+            </summary>
+        </member>
+        <member name="P:DOL.GS.Guild.GuildID">
+            <summary>
+            Gets or sets the constant guild id
+            </summary>
+        </member>
+        <member name="P:DOL.GS.Guild.ID">
+            <summary>
+            Gets or sets the runtime guild id
             </summary>
         </member>
         <member name="P:DOL.GS.Guild.Name">
             <summary>
-            Gets or sets the guild db
+            Gets or sets the guild name
             </summary>
         </member>
         <member name="P:DOL.GS.Guild.RealmPoints">
@@ -21748,11 +21796,6 @@
         <member name="P:DOL.GS.Guild.MemberOnlineCount">
             <summary>
             Returns the number of players online inside this guild
-            </summary>
-        </member>
-        <member name="P:DOL.GS.Guild.ID">
-            <summary>
-            Gets/Sets unique run-time guild ID
             </summary>
         </member>
         <member name="T:DOL.GS.Faction">
@@ -23944,6 +23987,26 @@
         <member name="P:DOL.GS.Spells.CharmSpellHandler.DelveInfo">
             <summary>
             Delve Info
+            </summary>
+        </member>
+        <member name="T:DOL.GS.SkillHandler.TripleWieldAbilityHandler">
+            <summary>
+            Handler for Triple Wield clicks
+            </summary>
+        </member>
+        <member name="F:DOL.GS.SkillHandler.TripleWieldAbilityHandler.REUSE_TIMER">
+            <summary>
+            The ability reuse time in seconds
+            </summary>
+        </member>
+        <member name="F:DOL.GS.SkillHandler.TripleWieldAbilityHandler.DURATION">
+            <summary>
+            The ability effect duration in seconds
+            </summary>
+        </member>
+        <member name="F:DOL.GS.SkillHandler.TripleWieldAbilityHandler.log">
+            <summary>
+            Defines a logger for this class.
             </summary>
         </member>
         <member name="T:DOL.GS.SkillHandler.SureShotAbilityHandler">
@@ -28841,6 +28904,11 @@
             based on!
             </summary>
         </member>
+        <member name="F:DOL.GS.GamePlayer.m_guildid">
+            <summary>
+            The database id this character belong to
+            </summary>
+        </member>
         <member name="F:DOL.GS.GamePlayer.m_enteredGame">
             <summary>
             Has this player entered the game, will be
@@ -29000,6 +29068,11 @@
         <member name="M:DOL.GS.GamePlayer.OnRevive(DOL.Events.DOLEvent,System.Object,System.EventArgs)">
             <summary>
             Called when player revive
+            </summary>
+        </member>
+        <member name="M:DOL.GS.GamePlayer.FreeLevelState">
+            <summary>
+            Holds if the player can gain a FreeLevel
             </summary>
         </member>
         <member name="F:DOL.GS.GamePlayer.m_totalConLostAtDeath">
@@ -30975,6 +31048,11 @@
         <member name="P:DOL.GS.GamePlayer.GuildRank">
             <summary>
             Gets or sets the player's guild rank
+            </summary>
+        </member>
+        <member name="P:DOL.GS.GamePlayer.GuildID">
+            <summary>
+            Gets or sets the database guildid of this player
             </summary>
         </member>
         <member name="P:DOL.GS.GamePlayer.GuildNameFlag">

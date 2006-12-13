@@ -69,6 +69,8 @@ namespace DOL.GS.GameEvents
             if ((template.GetItem(eInventorySlot.TwoHandWeapon) != null) && (template.GetItem(eInventorySlot.RightHandWeapon) == null))
                 SwitchWeapon(eActiveWeaponSlot.TwoHanded);
 
+			Flags += (uint)GameNPC.eFlags.PEACE;
+
         }
 		//callbacks
 		public override bool Interact(GamePlayer player)
