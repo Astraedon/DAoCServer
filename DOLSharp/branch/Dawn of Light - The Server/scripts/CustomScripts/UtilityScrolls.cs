@@ -37,6 +37,8 @@ namespace DOL.GS.GameEvents
 		[ScriptLoadedEvent]
 		public static void OnScriptLoaded(DOLEvent e, object sender, EventArgs args)
 		{
+			Spell load;
+			load = TrainerSpell; load = MerchantSpell; load = HealerSpell; load = CampfireSpell;
 			LootMgr.RegisterLootGenerator(new LootGeneratorUtilityScrolls(), "", "", "", 0);
 			log.Info("Utility Scroll System Loaded!");
 		}

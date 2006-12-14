@@ -31,7 +31,6 @@ namespace DOL.GS.GameEvents
 			m_locs.Add(new Location("Murdagh", 200, 353051, 517098, 5077, 640));
 			m_locs.Add(new Location("Tir na mBeo", 200, 345038, 528249, 5448, 923));
 			m_locs.Add(new Location("Tir na Nog", 201, 33672, 32305, 7999, 1497));
-			//m_locs.Add(new Location("Hibernia Housing", 202, 555538, 526481, 3008, 736));
 
 			TeleportNPCUtility.CreateTeleporters(3, m_locs, "HiberniaTeleportNPCEvent", m_npcs);
 		}

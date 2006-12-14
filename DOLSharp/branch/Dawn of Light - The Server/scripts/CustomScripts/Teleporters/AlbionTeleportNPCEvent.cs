@@ -38,7 +38,6 @@ namespace DOL.GS.GameEvents
 			m_locs.Add(new Location("Swanton Keep", 1, 511616, 382418, 7992, 6517));
 			m_locs.Add(new Location("West Downs", 1, 577661, 557185, 2188, 5364));
 			m_locs.Add(new Location("Yarley's Farm", 1, 370129, 678916, 5593, 8086));
-			//m_locs.Add(new Location("Albion Housing", 2, 572048, 569356, 3520, 736));
 
 			TeleportNPCUtility.CreateTeleporters(1, m_locs, "AlbionTeleportNPCEvent", m_npcs);
 		}

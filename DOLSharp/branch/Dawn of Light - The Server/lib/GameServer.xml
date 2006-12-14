@@ -993,7 +993,7 @@
             Called when this living dies
             </summary>
         </member>
-        <member name="M:DOL.GS.GameLiving.GainExperience(System.Int64,System.Int64,System.Int64,System.Boolean)">
+        <member name="M:DOL.GS.GameLiving.GainExperience(System.Int64,System.Int64,System.Int64,System.Boolean,System.Boolean)">
             <summary>
             Called when the living is gaining experience
             </summary>
@@ -1001,6 +1001,7 @@
             <param name="expCampBonus">camp bonus to display</param>
             <param name="expGroupBonus">group bonus to display</param>
             <param name="sendMessage">should exp gain message be sent</param>
+            <param name="allowMultiply">should the xp amount be multiplied</param>
         </member>
         <member name="M:DOL.GS.GameLiving.GainRealmPoints(System.Int64)">
             <summary>
@@ -3626,6 +3627,11 @@
         <member name="P:DOL.GS.GameNPC.Styles">
             <summary>
             The Styles for this NPC
+            </summary>
+        </member>
+        <member name="P:DOL.GS.GameNPC.Abilities">
+            <summary>
+            The Abilities for this NPC
             </summary>
         </member>
         <member name="T:DOL.GS.GameNPC.eFlags">
@@ -9697,6 +9703,11 @@
         <member name="F:DOL.GS.ServerProperties.Properties.DISABLE_CATACOMBS_CLASSES">
             <summary>
             Should users be allowed to create catacombs classes
+            </summary>
+        </member>
+        <member name="F:DOL.GS.ServerProperties.Properties.FREELEVEL_DAYS">
+            <summary>
+            Days before your elligable for a free level
             </summary>
         </member>
         <member name="M:DOL.GS.ServerProperties.Properties.Load(DOL.GS.ServerProperties.ServerPropertyAttribute)">
@@ -29070,11 +29081,6 @@
             Called when player revive
             </summary>
         </member>
-        <member name="M:DOL.GS.GamePlayer.FreeLevelState">
-            <summary>
-            Holds if the player can gain a FreeLevel
-            </summary>
-        </member>
         <member name="F:DOL.GS.GamePlayer.m_totalConLostAtDeath">
             <summary>
             Holds the total amount of constitution lost at deaths
@@ -29538,6 +29544,16 @@
             <param name="expCampBonus">camp bonus to included in total exp</param>
             <param name="expGroupBonus">group bonus included in total exp</param>
             <param name="sendMessage">should exp gain message be sent</param>
+        </member>
+        <member name="M:DOL.GS.GamePlayer.GainExperience(System.Int64,System.Int64,System.Int64,System.Boolean,System.Boolean)">
+            <summary>
+            Called whenever this player gains experience
+            </summary>
+            <param name="expTotal">amount of xp to gain</param>
+            <param name="expCampBonus">camp bonus to included in total exp</param>
+            <param name="expGroupBonus">group bonus included in total exp</param>
+            <param name="sendMessage">should exp gain message be sent</param>
+            <param name="allowMultiply">should the xp amount be multiplied</param>
         </member>
         <member name="F:DOL.GS.GamePlayer.m_isLevelSecondStage">
             <summary>
@@ -30720,6 +30736,11 @@
             <summary>
             Sets or gets the model of the player. If the player is
             active in the world, the modelchange will be visible
+            </summary>
+        </member>
+        <member name="P:DOL.GS.GamePlayer.FreeLevelState">
+            <summary>
+            Holds if the player can gain a FreeLevel
             </summary>
         </member>
         <member name="P:DOL.GS.GamePlayer.TotalConstitutionLostAtDeath">

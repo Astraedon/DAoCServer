@@ -36,7 +36,6 @@ namespace DOL.GS.GameEvents
 			m_locs.Add(new Location("Vasudheim", 100, 774936, 755183, 4600, 4493));
 			m_locs.Add(new Location("West Skona", 100, 711965, 924393, 5063, 1824));
 			m_locs.Add(new Location("Raumarik", 100, 660811, 764919, 4614, 816));
-			//m_locs.Add(new Location("Midgard Housing", 102, 526733, 561643, 3632, 736));
 
 			TeleportNPCUtility.CreateTeleporters(2, m_locs, "MidgardTeleportNPCEvent", m_npcs);
 		}
