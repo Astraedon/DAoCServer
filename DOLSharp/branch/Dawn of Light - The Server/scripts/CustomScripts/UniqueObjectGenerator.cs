@@ -980,7 +980,7 @@ namespace DOL.GS
 
 						int index = 0;
 						index = validSkills.Count - 1;
-						if (validSkills.Count > 1)
+						if (validSkills.Count < 1)
 							return eProperty.MaxHealth;
 						return (eProperty)validSkills[Util.Random(0, index)];
 					}
