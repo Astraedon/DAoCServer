@@ -81,7 +81,7 @@ namespace DOL.GS.GameEvents
 
 			string message = player.Name + " the " + player.CharacterClass.Name + ", " + m_message;
 
-			foreach (Location location in m_locs)
+			foreach (ITeleportLocation location in m_locs)
 			{
 				if (m_locs.IndexOf(location) == m_index)
 					continue;
@@ -112,12 +112,28 @@ namespace DOL.GS.GameEvents
 			}
 
 			bool isPorting = false;
-			Location location = null;
+			ITeleportLocation location = null;
 
-			foreach (Location l in m_locs)
+			foreach (ITeleportLocation l in m_locs)
 			{
 				if (l == null || l.Name != str)
 					continue;
+				if (l is SpecialLocation)
+				{
+					SpecialLocation sloc = (l as SpecialLocation);
+					switch (sloc.Location)
+					{
+						case SpecialLocation.eSpecialLocation.PersonalHouse:
+							{
+								if (Housing.HouseMgr.GetHouseNumberByPlayer(player) == 0)
+								{
+									SendReply(player, "You don't have a house!");
+									continue;
+								}
+								break;
+							}
+					}
+				}
 				location = l;
 				if (l is LocationExpansion)
 				{
@@ -200,11 +216,27 @@ namespace DOL.GS.GameEvents
 		{
 			m_portTeleportTimerQueue.Dequeue();
 			GamePlayer player = (GamePlayer)m_portPlayerQueue.Dequeue();
-			Location location = (Location)m_portDestinationQueue.Dequeue();
-			int x, y;
-			location.getDestinationSpot(out x, out y);
+			ITeleportLocation location = (ITeleportLocation)m_portDestinationQueue.Dequeue();
+			if (location is Location)
+			{
+				Location loc = location as Location;
+				int x, y;
+				loc.getDestinationSpot(out x, out y);
 
-			player.MoveTo(location.CurrentRegionID, x, y, location.Z, location.Heading);
+				player.MoveTo(loc.CurrentRegionID, x, y, loc.Z, loc.Heading);
+			}
+			if (location is SpecialLocation)
+			{
+				SpecialLocation sloc = location as SpecialLocation;
+				switch (sloc.Location)
+				{
+					case SpecialLocation.eSpecialLocation.PersonalHouse:
+						{
+							Housing.HouseMgr.GetHouse(Housing.HouseMgr.GetHouseNumberByPlayer(player)).Exit(player, true);
+							break;
+						}
+				}
+			}
 			return 0;
 		}
 		//utility

@@ -37,18 +37,18 @@ namespace DOL.GS.GameEvents
 		public static bool Stop(ArrayList npcs, ArrayList locs)
 		{
 			//remove npcs
-			for (int i = 0; i != npcs.Count; i++)
+			foreach (TeleportNPC npc in npcs)
 			{
-				TeleportNPC npc = (TeleportNPC)npcs[i];
 				npc.m_locs.Clear();
 				npc.Delete();
 			}
 			npcs.Clear();
 			//remove locs
-			for (int i = 0; i != locs.Count; i++)
+			foreach (ITeleportLocation location in locs)
 			{
-				Location location = (Location)locs[i];
-				location.Delete();
+				if (location is GameLocation == false)
+					continue;
+				(location as Location).Delete();
 			}
 			locs.Clear();
 			return true;
@@ -89,12 +89,14 @@ namespace DOL.GS.GameEvents
 					}
 			}
 
-			for (int i = 0; i != locs.Count; i++)
+			foreach (ITeleportLocation location in locs)
 			{
+				if (location is Location == false)
+					continue;
 				//add npcs to the npc collection
-				Location loc = (Location)locs[i];
+				Location loc = (Location)location;
 				m_npcs.Add(new TeleportNPC(loc.CurrentRegionID, loc.X, loc.Y, loc.Z, loc.Heading,
-					model, realm, name, guild, locs, i, message));
+					model, realm, name, guild, locs, locs.IndexOf(location), message));
 			}
 			Start(m_npcs, locs, eventName);
 		}

@@ -31544,6 +31544,11 @@
             Gets the InventoryItem contained within this class
             </summary>
         </member>
+        <member name="T:DOL.GS.GameHouseNPC">
+            <summary>
+            GameHouseNPC for npcs inside houses
+            </summary>		
+        </member>
         <member name="T:DOL.Events.KeepEventArgs">
             <summary>
             Holds the arguments for the Keep event
