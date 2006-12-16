@@ -235,6 +235,11 @@ namespace DOL.GS.GameEvents
 							Housing.HouseMgr.GetHouse(Housing.HouseMgr.GetHouseNumberByPlayer(player)).Exit(player, true);
 							break;
 						}
+					case SpecialLocation.eSpecialLocation.BindPoint:
+						{
+							player.MoveTo((ushort)player.PlayerCharacter.BindRegion, player.PlayerCharacter.BindXpos, player.PlayerCharacter.BindYpos, player.PlayerCharacter.BindZpos, (ushort)player.PlayerCharacter.BindHeading);
+							break;
+						}
 				}
 			}
 			return 0;

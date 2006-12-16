@@ -6,7 +6,7 @@ namespace DOL.GS.Scripts
 {
 	[CmdAttribute(
 	  "&boot",
-	  (int)ePrivLevel.GM,
+	  (int)ePrivLevel.Player,
 	   "Kicks a player out of your house",
 		 "Useage: /boot [playername]")]
 	public class BootCommandHandler : AbstractCommandHandler, ICommandHandler
