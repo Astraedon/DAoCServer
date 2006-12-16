@@ -57,7 +57,7 @@ namespace DOL.GS.GameEvents
 
 			//m_midLocs.Add(new Location("Jordheim", 101, 31750, 28519, 8985, 2050));
 			//m_midLocs.Add(new LocationExpansion("Thidranki (20-24)", 238, 570038, 540351, 5408, 4076, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 20, 24));
-			//m_midLocs.Add(new LocationExpansion("Cathal Valley (45+)", 165, 575858, 537997, 4832, 1043, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 45, 50));
+			m_midLocs.Add(new LocationExpansion("Cathal Valley (45+)", 165, 575858, 537997, 4832, 1043, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 45, 50));
 			//m_midLocs.Add(new Location("Carlingford (Housing)", 102, 623984, 557289, 3722, 1359));
 			//m_midLocs.Add(new Location("Arothi (Housing)", 102, 556954, 484844, 3514, 1250));
 			//m_midLocs.Add(new Location("Kaupang (Housing)", 102, 626252, 482408, 3618, 1539));
