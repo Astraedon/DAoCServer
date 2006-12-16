@@ -15784,6 +15784,14 @@
             <param name="regionID">The ID of the Region</param>
             <returns>Number of playing Clients in that Region</returns>
         </member>
+        <member name="M:DOL.GS.WorldMgr.GetClientsOfRegionCount(System.UInt16,System.Byte)">
+            <summary>
+            Returns the number of playing Clients in a certain Region
+            </summary>
+            <param name="regionID">The ID of the Region</param>
+            <param name="realm">The realm of clients to check</param>
+            <returns>Number of playing Clients in that Region</returns>
+        </member>
         <member name="M:DOL.GS.WorldMgr.GetClientsOfRegion(System.UInt16)">
             <summary>
             Returns a list of playing clients inside a region

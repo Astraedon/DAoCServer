@@ -16,17 +16,23 @@ namespace DOL.GS.Scripts
 			AbstractGameKeep orseo = KeepMgr.getKeepByID(5);
 
 			ArrayList list = new ArrayList();
-			int count = 0;
+			int alb = 0, mid = 0, hib = 0;
 			list.Add(thidranki.Name + ": " + GlobalConstants.RealmToName((eRealm)thidranki.Realm));
-			count = WorldMgr.GetClientsOfRegionCount(thidranki.CurrentRegion.ID);
-			list.Add(count + " players.");
+			alb = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 1);
+			mid = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 2);
+			hib = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 3);
+			list.Add("Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")");
 			list.Add(orseo.Name + ": " + GlobalConstants.RealmToName((eRealm)orseo.Realm));
-			count = WorldMgr.GetClientsOfRegionCount(orseo.CurrentRegion.ID);
-			list.Add(count + " players.");
+			alb = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 1);
+			mid = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 2);
+			hib = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 3);
+			list.Add("Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")");
 			list.Add("");
 			list.Add("Darkness Falls: " + GlobalConstants.RealmToName((eRealm)orseo.Realm));
-			count = WorldMgr.GetClientsOfRegionCount(249);
-			list.Add(count + " players.");
+			alb = WorldMgr.GetClientsOfRegionCount(249, 1);
+			mid = WorldMgr.GetClientsOfRegionCount(249, 2);
+			hib = WorldMgr.GetClientsOfRegionCount(249, 3);
+			list.Add("Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")");
 
 			client.Out.SendCustomTextWindow("Realm Status", list);
 			return 1;
