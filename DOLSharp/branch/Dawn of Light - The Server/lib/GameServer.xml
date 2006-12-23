@@ -1696,6 +1696,11 @@
             Bounty point value of this living
             </summary>
         </member>
+        <member name="P:DOL.GS.GameLiving.MoneyValue">
+            <summary>
+            Money value of this living
+            </summary>
+        </member>
         <member name="P:DOL.GS.GameLiving.TargetInView">
             <summary>
             Gets/sets the targetObject's visibility
@@ -12410,7 +12415,7 @@
         </member>
         <member name="T:DOL.GS.RealmAbilities.MasteryOfMageryAbility">
             <summary>
-            Mastery of Magery ability, adds to effectivenes of damage spells (SpellHandler checks for it)
+            Mastery of Magery ability, adds to effectivenes of damage spells
             </summary>
         </member>
         <member name="T:DOL.GS.RealmAbilities.WildHealingAbility">
@@ -21600,6 +21605,11 @@
             Returns a ArrayList with all players in the house
             </summary>
         </member>
+        <member name="M:DOL.GS.Housing.House.FillHookpoint(DOL.Database.ItemTemplate,System.UInt32,System.String)">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:DOL.GS.Money">
             <summary>
             capsulate money operations
@@ -23865,11 +23875,6 @@
         <member name="T:DOL.GS.Spells.ResurrectSpellHandler">
             <summary>
             
-            </summary>
-        </member>
-        <member name="M:DOL.GS.Spells.ResurrectSpellHandler.FinishSpellCast(DOL.GS.GameLiving)">
-            <summary>
-            Execute resurrect spell
             </summary>
         </member>
         <member name="M:DOL.GS.Spells.ResurrectSpellHandler.OnDirectEffect(DOL.GS.GameLiving,System.Double)">
@@ -29485,6 +29490,13 @@
             sirru mod 20.11.06
             </summary>
         </member>
+        <member name="M:DOL.GS.GamePlayer.GainRealmPoints(System.Int64,System.Boolean)">
+            <summary>
+            Called when this living gains realm points
+            </summary>
+            <param name="amount">The amount of realm points gained</param>
+            <param name="modify">Should we apply the rp modifer</param>
+        </member>
         <member name="M:DOL.GS.GamePlayer.GainRealmPoints(System.Int64)">
             <summary>
             Called when this living gains realm points
@@ -30921,6 +30933,11 @@
         <member name="P:DOL.GS.GamePlayer.BountyPointsValue">
             <summary>
             Bounty point value of this player
+            </summary>
+        </member>
+        <member name="P:DOL.GS.GamePlayer.MoneyValue">
+            <summary>
+            Money value of this player
             </summary>
         </member>
         <member name="P:DOL.GS.GamePlayer.Experience">

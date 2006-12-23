@@ -55,9 +55,9 @@ namespace DOL.GS.GameEvents
 					DBSpell spell = new DBSpell();
 					spell.AutoSave = false;
 					spell.CastTime = 0;
-					spell.ClientEffect = 0;
+					spell.ClientEffect = 14804;
 					spell.Icon = 14804;
-					spell.Duration = 300;
+					spell.Duration = 600;
 					spell.Description = "The flames of this campfire will heal your mind, body and spirit while out of combat. This spell is cast when the item is used. Cannot be used in RvR.";
 					spell.Name = "Comforting Flames";
 					spell.Range = 0;
@@ -354,8 +354,7 @@ namespace DOL.GS
                 list.AddFixed(UtilityScrollsEvent.Tinderbox);
             #endregion
 			#region Trainer
-			//if (Util.Chance(Math.Max(1, (int)(100 / Math.Max(1, (GameServer.ServerRules.GetExperienceForLevel(killer.Level) / mob.ExperienceValue)) / 4))))
-			if (Util.Chance(1))
+			if (Util.Chance(Math.Max(1, (int)(100 / Math.Max(1, (GameServer.ServerRules.GetExperienceForLevel(killer.Level) / mob.ExperienceValue)) / 4))))
 				list.AddFixed(UtilityScrollsEvent.TrainerScroll);
 			#endregion
 			#region Merchant
