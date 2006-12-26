@@ -638,7 +638,7 @@ namespace DOL.GS
 							case eDamageType.Crush:
 								{
 									name = "Mattock";
-									model = 16;
+									model = 70;
 									break;
 								}
 						}

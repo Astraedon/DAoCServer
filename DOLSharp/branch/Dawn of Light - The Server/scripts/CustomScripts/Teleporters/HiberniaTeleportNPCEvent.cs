@@ -26,6 +26,7 @@ namespace DOL.GS.GameEvents
 			m_locs.Add(new Location("Brynach", 200, 409831, 527727, 2112, 132));
 			m_locs.Add(new Location("Connla", 200, 295723, 642545, 4848, 2026));
 			m_locs.Add(new Location("Culraid", 200, 298606, 688040, 4949, 3916));
+			m_locs.Add(new Location("Cursed Forest", 200, 447147, 525480, 6448, 2908));
 			m_locs.Add(new Location("Howth", 200, 342582, 592316, 5456, 4946));
 			m_locs.Add(new Location("Innis Carthaig", 200, 333848, 719126, 4296, 515));
 			m_locs.Add(new Location("Mag Mel", 200, 345736, 490868, 5200, 4262));

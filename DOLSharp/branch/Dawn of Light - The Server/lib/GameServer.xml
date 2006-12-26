@@ -6378,6 +6378,13 @@
             <param name="form">0=Subjective, 1=Possessive, 2=Objective</param>
             <returns>pronoun of this object</returns>
         </member>
+        <member name="M:DOL.GS.Housing.HouseMgr.GetHouseByPlayer(DOL.GS.GamePlayer)">
+            <summary>
+            Get the house object from the owner player
+            </summary>
+            <param name="p">The player owner</param>
+            <returns>The house object</returns>
+        </member>
         <member name="T:DOL.GS.PlayerGroup">
             <summary>
             Summary description for PlayerGroup.

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Reflection;
 
 using DOL.Database;
@@ -7,6 +8,7 @@ using DOL.GS;
 using DOL.GS.Effects;
 using DOL.GS.GameEvents;
 using DOL.GS.PacketHandler;
+using DOL.GS.Scripts;
 
 using log4net;
 
@@ -38,7 +40,7 @@ namespace DOL.GS.GameEvents
 		public static void OnScriptLoaded(DOLEvent e, object sender, EventArgs args)
 		{
 			Spell load;
-			load = TrainerSpell; load = MerchantSpell; load = HealerSpell; load = CampfireSpell;
+			load = TrainerSpell; load = MerchantSpell; load = HealerSpell; load = CampfireSpell; load = TeleporterSpell;
 			LootMgr.RegisterLootGenerator(new LootGeneratorUtilityScrolls(), "", "", "", 0);
 			log.Info("Utility Scroll System Loaded!");
 		}
@@ -150,6 +152,33 @@ namespace DOL.GS.GameEvents
 					SkillBase.GetSpellList(GlobalSpellsLines.Item_Effects).Add(m_healerSpell);
 				}
 				return m_healerSpell;
+			}
+		}
+		#endregion
+		#region Teleporter
+		protected static Spell m_teleporterSpell;
+		public static Spell TeleporterSpell
+		{
+			get
+			{
+				if (m_teleporterSpell == null)
+				{
+					DBSpell spell = new DBSpell();
+					spell.AutoSave = false;
+					spell.CastTime = 0;
+					spell.ClientEffect = 0;
+					spell.Duration = 60;
+					spell.Description = "Summons a Realm Translocator, which can teleport to the main realm locations, to your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
+					spell.Name = "Teleporter Spell";
+					spell.Range = 0;
+					spell.SpellID = 64003;
+					spell.Target = "Self";
+					spell.Type = "UtilityNPC";
+					spell.Value = TeleporterTemplate.TemplateId;
+					m_teleporterSpell = new Spell(spell, 1);
+					SkillBase.GetSpellList(GlobalSpellsLines.Item_Effects).Add(m_teleporterSpell);
+				}
+				return m_teleporterSpell;
 			}
 		}
 		#endregion
@@ -269,6 +298,34 @@ namespace DOL.GS.GameEvents
 			}
 		}
 		#endregion
+		#region Teleporter
+		protected static ItemTemplate m_teleporterScroll;
+		public static ItemTemplate TeleporterScroll
+		{
+			get
+			{
+				if (m_teleporterScroll == null)
+				{
+					m_teleporterScroll = new ItemTemplate();
+					m_teleporterScroll.CanDropAsLoot = false;
+					m_teleporterScroll.Charges = 1;
+					m_teleporterScroll.Id_nb = "teleporter_scroll";
+					m_teleporterScroll.IsDropable = true;
+					m_teleporterScroll.IsPickable = true;
+					m_teleporterScroll.IsTradable = false;
+					m_teleporterScroll.Item_Type = 41;
+					m_teleporterScroll.Level = 1;
+					m_teleporterScroll.MaxCharges = 1;
+					m_teleporterScroll.Model = 499;
+					m_teleporterScroll.Name = "Translocator Scroll";
+					m_teleporterScroll.Object_Type = (int)eObjectType.Magical;
+					m_teleporterScroll.Realm = 0;
+					m_teleporterScroll.SpellID = TeleporterSpell.ID;
+				}
+				return m_teleporterScroll;
+			}
+		}
+		#endregion
 		#endregion
 
 		#region NPC Template
@@ -338,6 +395,28 @@ namespace DOL.GS.GameEvents
 			}
 		}
 		#endregion
+		#region Teleporter
+		protected static NpcTemplate m_teleporterTemplate;
+		public static NpcTemplate TeleporterTemplate
+		{
+			get
+			{
+				if (m_teleporterTemplate == null)
+				{
+					m_teleporterTemplate = new NpcTemplate();
+					m_teleporterTemplate.Flags += (byte)GameNPC.eFlags.PEACE;
+					m_teleporterTemplate.Flags += (byte)GameNPC.eFlags.TRANSPARENT;
+					m_teleporterTemplate.GuildName = "Realm Translocator";
+					m_teleporterTemplate.Name = "Scroll Translocator";
+					m_teleporterTemplate.ClassType = "DOL.GS.GameEvents.TeleportNPC";
+					m_teleporterTemplate.Model = "50";
+					m_teleporterTemplate.TemplateId = 603;
+					NpcTemplateMgr.AddTemplate(m_teleporterTemplate);
+				}
+				return m_teleporterTemplate;
+			}
+		}
+		#endregion
 		#endregion
 	}
 }
@@ -354,7 +433,8 @@ namespace DOL.GS
                 list.AddFixed(UtilityScrollsEvent.Tinderbox);
             #endregion
 			#region Trainer
-			if (Util.Chance(Math.Max(1, (int)(100 / Math.Max(1, (GameServer.ServerRules.GetExperienceForLevel(killer.Level) / mob.ExperienceValue)) / 4))))
+			int chance = (int)(100 / Math.Max(1, (GameServer.ServerRules.GetExperienceForLevel(killer.Level) / mob.ExperienceValue)));
+			if (Util.Chance(chance))
 				list.AddFixed(UtilityScrollsEvent.TrainerScroll);
 			#endregion
 			#region Merchant
@@ -364,6 +444,10 @@ namespace DOL.GS
 			#region Healer
 			if (Util.Chance((int)Math.Max(1, killer.GetConLevel(mob) + 1 / 2)))
 				list.AddFixed(UtilityScrollsEvent.HealerScroll);
+			#endregion
+			#region Teleporter
+			if (Util.Chance(1))
+				list.AddFixed(UtilityScrollsEvent.TeleporterScroll);
 			#endregion
 			return list;
 		}
@@ -393,7 +477,33 @@ namespace DOL.GS.Spells
 			{
 				try
 				{
-					npc = (GameNPC)Assembly.GetAssembly(typeof(GameServer)).CreateInstance(template.ClassType, false);
+					if (template.ClassType == UtilityScrollsEvent.TeleporterTemplate.ClassType)
+					{
+						switch (Caster.Realm)
+						{
+							case 1:
+								{
+									npc = new TeleportNPC(Caster.CurrentRegionID, Caster.X, Caster.Y, Caster.Z, Caster.Heading, Convert.ToUInt16(template.Model), Caster.Realm, "name", "guild", RvRTeleportNPCEvent.AlbLocs, 1, "I can teleport you to various major towns around your realm. Which town would you like me to teleport you to?\n\n");
+									break;
+								}
+							case 2:
+								{
+									npc = new TeleportNPC(Caster.CurrentRegionID, Caster.X, Caster.Y, Caster.Z, Caster.Heading, Convert.ToUInt16(template.Model), Caster.Realm, "name", "guild", RvRTeleportNPCEvent.MidLocs, 1, "I can teleport you to various major towns around your realm. Which town would you like me to teleport you to?\n\n");
+									break;
+								}
+							case 3:
+								{
+									npc = new TeleportNPC(Caster.CurrentRegionID, Caster.X, Caster.Y, Caster.Z, Caster.Heading, Convert.ToUInt16(template.Model), Caster.Realm, "name", "guild", RvRTeleportNPCEvent.HibLocs, 1, "I can teleport you to various major towns around your realm. Which town would you like me to teleport you to?\n\n");
+									break;
+								}
+						}
+					}
+					else if (template.ClassType == UtilityScrollsEvent.MerchantTemplate.ClassType)
+					{
+						npc = new GameMerchant();
+						(npc as GameMerchant).TradeItems = new MerchantTradeItems("5ffa4f08-e989-45b2-9585-ac6f5cda6b54");
+					}
+					else npc = (GameNPC)Assembly.GetAssembly(typeof(GameServer)).CreateInstance(template.ClassType, false);
 				}
 				catch (Exception e)
 				{
@@ -559,6 +669,7 @@ namespace DOL.GS.Scripts
 			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.MerchantScroll));
 			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.HealerScroll));
 			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.Tinderbox));
+			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.TeleporterScroll));
 			return 1;
 		}
 	}
