@@ -69,8 +69,6 @@ namespace DOL.GS.GameEvents
             if ((template.GetItem(eInventorySlot.TwoHandWeapon) != null) && (template.GetItem(eInventorySlot.RightHandWeapon) == null))
                 SwitchWeapon(eActiveWeaponSlot.TwoHanded);
 
-			Flags += (uint)GameNPC.eFlags.PEACE;
-
         }
 		//callbacks
 		public override bool Interact(GamePlayer player)
@@ -96,6 +94,9 @@ namespace DOL.GS.GameEvents
 		public override bool WhisperReceive(GameLiving source, string str)
 		{
 			if (!base.WhisperReceive(source, str)) return false;
+
+			if (!GameServer.ServerRules.IsSameRealm(this, source , true))
+				return false;
 
 			if (!(source is GamePlayer)) return false;
 			GamePlayer player = (GamePlayer)source;
