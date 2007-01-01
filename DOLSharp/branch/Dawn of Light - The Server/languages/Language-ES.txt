@@ -1,0 +1,60 @@
+# Language file for DOL
+# Language used : Spanish / Español
+#
+# #-Beginning and Empty lines are ignored
+# TABS are ignored at the left of ':' too.
+# {0} etc. are for args, don't remove them !
+
+# LANGUAGEMGR
+System.LanguagesName.English:				Inglés
+System.LanguagesName.French:				Francés
+System.LanguagesName.German:				Alemán
+System.languagesname.Spanish:				Español
+
+# SYSTEM
+System.NoSense:						Eso no tiene sentido!
+
+# GAMEPLAYER
+GamePlayer.SendReceive.sends:				 envía, 
+GamePlayer.Quit.CantQuitDead:				No puedes salir ahora debido a que estás muerto. Escribe '/release' para revivir tu cuerpo.
+GamePlayer.Quit.CantQuitMount:				Has de desmontar antes de poder salir.
+GamePlayer.Quit.CantQuitStanding:			Has de estar parado para salir.
+GamePlayer.Quit.CantQuitCrafting:			No puedes salir mientras estás crafteando.
+GamePlayer.Quit.RecentlyInCombat:			Has estado en combate recientemente, debes esperar para poder salir.
+GamePlayer.Quit.YouWillQuit:				Saldrás una vez sentado en {0} segundos. Escribe '/stand' o muévete si no quieres salir.
+GamePlayer.Release.NotDead:					No estás muerto!
+GamePlayer.Release.CantReleaseDuel:			Tu cuerpo se recuperará automáticamente en una muerte de duelo.
+GamePlayer.Release.NoLongerReleaseAuto:		Te recuperarás automáticamente en ({0} segundos más).
+GamePlayer.Release.WillReleaseAuto:			Te recuperarás automáticamente en {0} segundos más!
+GamePlayer.Release.WillReleaseAutoCity:		Revivirás automaticamente en un tu ciudad en {o} segundos más!
+GamePlayer.Release.YouRelease:				Recuperas tu cuerpo desde la muerte.
+GamePlayer.Release.GraveErected:			Una tumba fue levantada donde has sido abatido.
+GamePlayer.Release.ReturnToPray:			Vuelve para rezar usando el comando /pray y recuperar la experiencia perdida.
+GamePlayer.Release.LostConstitution:		Has perdido puntos de constitución, ve al curandero para recuperarlos!
+GamePlayer.Release.SurroundingChange:		Tu entorno de repente se cambia!
+GamePlayer.Release.NoValidBindpoint:		No tienes un lugar de recuperacion válido!
+
+# HOUSING
+HouseEnterLeave.TooFarAway:					Estás demasiado lejos para entrar a esa casa {0}
+HouseEnterLeave.CantEnter:					No puedes entrar a esta casa {0}
+HousingDecorationRotate.Rotated:			Interior decoration rotated from {0} degrees to {1} degrees.Decoracion interior cambiada desde {0} grados a {1} grado.
+HousingPickupItemHandler.GardenRemoved:		Objeto del jardín eliminado.
+HousingPickupItemHandler.PickUp:			Has conseguido {0} y lo has colocado en tu inventario. 
+HousingPlaceItemHandler.30objects:			Ya has puesto 30 objetos. No puedes poner más.
+HousingPlaceItemHandler.40objects:			Ya has puesto 40 objetos. No puedes poner más.
+HousingPlaceItemHandler.CantFloor:			No puedes soltarlo en el suelo!
+HousingPlaceItemHandler.CantWall:			No puedes colocarlo en una pared!
+HousingPlaceItemHandler.DropOnFloor:		Has colocado el {0} en el suelo de tu casa!
+HousingPlaceItemHandler.DropOnGarden:		Has colocado el {0} en tu jardín.
+HousingPlaceItemHandler.DropOnWall:			Has puesto el {0} en la pared de tu casa!
+HousingPlaceItemHandler.GardenObjectPlaced:	Objeto de jardín colocado. Quedan {0} espacios.
+HousingPlaceItemHandler.HasPorch:			Esta casa ya tiene un portico!
+HousingPlaceItemHandler.HasNoPorch:			Esta casa no tiene portico!
+HousingPlaceItemHandler.IndoorObjectPlaced:	Objeto de interior colocado. Quedan {0} espacios.  
+HousingPlaceItemHandler.NoHookpoint:		No hay ningun anclaje colocado!
+HousingPlaceItemHandler.PutMoney:			Dejas el dinero en tu casa.
+
+# SCRIPTS
+# /Language
+Scripts.Players.Language.Set:				Cambias el idioma de las notificaciones a {0}.
+Scripts.Players.Language.Current:			Tu idioma es actualmente: {0}.

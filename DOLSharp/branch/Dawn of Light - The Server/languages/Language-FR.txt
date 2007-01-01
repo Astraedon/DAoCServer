@@ -1,0 +1,60 @@
+# Language file for DOL
+# Language used : FRENCH / FRANCAIS
+#
+# #-Beginning and Empty lines are ignored
+# TABS are ignored at the left of ':' too.
+# {0} etc. are for args, don't remove them !
+
+# LANGUAGEMGR
+System.LanguagesName.English:				Anglais
+System.LanguagesName.French:				Français
+System.LanguagesName.German:				Allemand
+System.LanguagesName.Spanish:				Spanish
+
+# SYSTEM
+System.NoSense:								Cela n'a aucun sens !
+
+# GAMEPLAYER
+GamePlayer.SendReceive.sends:				 envoie, 
+GamePlayer.Quit.CantQuitDead:				Vous ne pouvez pas quitter maintenant, vous êtes mort !  Tapez '/release' pour réssusciter.
+GamePlayer.Quit.CantQuitMount:				Vous devez descendre de votre monture avant de quitter.
+GamePlayer.Quit.CantQuitStanding:			Vous devez êtes immobile pour quitter.
+GamePlayer.Quit.CantQuitCrafting:			Vous ne pouvez pas quitter pendant une fabrication.
+GamePlayer.Quit.RecentlyInCombat:			Vous étiez récemment en combat, vous devez attendre plus longtemps pour quitter.
+GamePlayer.Quit.YouWillQuit:				Vous quitterez en restant assis après {0} secondes.  Tapez '/stand' ou bougez pour ne pas quitter.
+GamePlayer.Release.NotDead:					Vous n'êtes pas mort !
+GamePlayer.Release.CantReleaseDuel:			You can't alter your release on a duel death!
+GamePlayer.Release.NoLongerReleaseAuto:		Vous ne réssusciterez plus automatiquement ({0} secondes restantes)
+GamePlayer.Release.WillReleaseAuto:			Vous réssusciterez automatiquement dans {0} secondes!
+GamePlayer.Release.WillReleaseAutoCity:		Vous réssusciterez automatiquement a la ville dans {0} secondes!
+GamePlayer.Release.YouRelease:				Vous ramenez votre corps à la vie !
+GamePlayer.Release.GraveErected:			Une pierre tombale a été érigée a l'endroit de votre mort.
+GamePlayer.Release.ReturnToPray:			Retournez prier sur votre tombe (/pray) pour regagner de l'explérience.
+GamePlayer.Release.LostConstitution:		Vous avez perdu un peu de constitution, allez voir un guérisseur pour la restaurer.
+GamePlayer.Release.SurroundingChange:		Votre environnement change subitement.
+GamePlayer.Release.NoValidBindpoint:		You have no valid bindpoint! Releasing here instead!
+
+# HOUSING
+HouseEnterLeave.TooFarAway:					Vous êtes trop loin pour entrer dans la maison {0}.
+HouseEnterLeave.CantEnter:					Vous ne pouvez pas entrer dans la maison {0}.
+HousingDecorationRotate.Rotated:			Objet d'interieur pivoté de {0} degrés à {1} degrés.
+HousingPickupItemHandler.GardenRemoved:		Objet de jardin retiré.
+HousingPickupItemHandler.PickUp:			Vous mettez {0} dans votre inventaire.
+HousingPlaceItemHandler.30objects:			Vous avez déjà placé 30 objets. Vous ne pouvez pas en placer plus.
+HousingPlaceItemHandler.40objects:			Vous avez déjà placé 40 objets. Vous ne pouvez pas en placer plus.
+HousingPlaceItemHandler.CantFloor:			Cet objet ne peut pas être placé sur le sol !
+HousingPlaceItemHandler.CantWall:			Cet objet ne peut pas être placé sur un mur !
+HousingPlaceItemHandler.DropOnFloor:		Vous déposez l'objet {0} sur le sol de votre maison.
+HousingPlaceItemHandler.DropOnGarden:		Vous déposez l'objet {0} dans votre jardin.
+HousingPlaceItemHandler.DropOnWall:			Vous déposez l'objet {0} sur le mur de votre maison.
+HousingPlaceItemHandler.GardenObjectPlaced:	Objet de jardin placé. {0} places restantes.
+HousingPlaceItemHandler.HasPorch:			Cette maison a déjà un porche !
+HousingPlaceItemHandler.HasNoPorch:			Cette maison n'a pas de porche !
+HousingPlaceItemHandler.IndoorObjectPlaced:	Objet interieur placé. {0} places restantes.
+HousingPlaceItemHandler.NoHookpoint:		Plus de point d'ancrage maintenant !
+HousingPlaceItemHandler.PutMoney:			Vous déposez de l'argent sur le compte de votre maison.
+
+# SCRIPTS
+# /Language
+Scripts.Players.Language.Set:				Vous changez la langue d'affichage du serveur en {0}.
+Scripts.Players.Language.Current:			La langue d'affichage est actuellement: {0}.

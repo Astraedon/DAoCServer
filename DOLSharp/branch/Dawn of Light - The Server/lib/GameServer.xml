@@ -5783,6 +5783,13 @@
             <param name="packet">The received packet data</param>
             <returns></returns>
         </member>
+        <member name="M:DOL.GS.PacketHandler.Client.v168.HousingPlaceItemHandler.LogLocation(DOL.GS.GamePlayer,System.Byte)">
+            <summary>
+            Does the player want to log the offset location of the missing housepoint
+            </summary>
+            <param name="player">The player</param>
+            <param name="response">1 = yes 0 = no</param>
+        </member>
         <member name="T:DOL.GS.GameSiegeBallista">
             <summary>
             GameMovingObject is a base class for boats and siege weapons.
@@ -6992,7 +6999,7 @@
             </summary>
             <param name="guard">The guard object</param>
         </member>
-        <member name="M:DOL.GS.Keeps.GameKeepGuard.GetEnemyCountInArea(DOL.GS.Keeps.GameKeepGuard)">
+        <member name="M:DOL.GS.Keeps.GameKeepGuard.GetEnemyCountInArea">
             <summary>
             Gets the count of enemies in the Area
             </summary>
@@ -9722,6 +9729,16 @@
             Days before your elligable for a free level
             </summary>
         </member>
+        <member name="F:DOL.GS.ServerProperties.Properties.SERV_LANGUAGE">
+            <summary>
+            Server Language
+            </summary>
+        </member>
+        <member name="F:DOL.GS.ServerProperties.Properties.ALLOW_CHANGE_LANGUAGE">
+            <summary>
+            allow_change_language
+            </summary>
+        </member>
         <member name="M:DOL.GS.ServerProperties.Properties.Load(DOL.GS.ServerProperties.ServerPropertyAttribute)">
             <summary>
             This method loads the property from the database and returns
@@ -10646,6 +10663,13 @@
             <param name="player">The player to read statistics from.</param>
             <returns>List of strings.</returns>
         </member>
+        <member name="M:DOL.GS.ServerRules.IServerRules.ResetKeep(DOL.GS.Keeps.GuardLord,DOL.GS.GameObject)">
+            <summary>
+            Reset the keep with special server rules handling
+            </summary>
+            <param name="lord">The lord that was killed</param>
+            <param name="killer">The lord's killer</param>
+        </member>
         <member name="F:DOL.GS.ServerRules.AbstractServerRules.log">
             <summary>
             Defines a logger for this class.
@@ -10812,6 +10836,13 @@
             <param name="player">The player to read statistics from.</param>
             <returns>List of strings.</returns>
         </member>
+        <member name="M:DOL.GS.ServerRules.AbstractServerRules.ResetKeep(DOL.GS.Keeps.GuardLord,DOL.GS.GameObject)">
+            <summary>
+            Reset the keep with special server rules handling
+            </summary>
+            <param name="lord">The lord that was killed</param>
+            <param name="killer">The lord's killer</param>
+        </member>
         <member name="M:DOL.GS.ServerRules.AbstractServerRules.MessageToLiving(DOL.GS.GameLiving,System.String)">
             <summary>
             Send system text message to system window
@@ -10934,6 +10965,13 @@
             </summary>
             <param name="client">The client asking for color handling</param>
             <returns>The color handling</returns>
+        </member>
+        <member name="M:DOL.GS.ServerRules.PvPServerRules.ResetKeep(DOL.GS.Keeps.GuardLord,DOL.GS.GameObject)">
+            <summary>
+            Reset the keep with special server rules handling
+            </summary>
+            <param name="lord">The lord that was killed</param>
+            <param name="killer">The lord's killer</param>
         </member>
         <member name="T:DOL.GS.Quests.CraftTask">
             <summary>
@@ -20604,39 +20642,6 @@
             Gets the random number generator
             </summary>
         </member>
-        <member name="T:DOL.GS.LanguageMgr">
-            <summary>
-            LanguageMgr take care about all support of multi language on server
-            </summary>
-        </member>
-        <member name="F:DOL.GS.LanguageMgr.log">
-            <summary>
-            Defines a logger for this class.
-            </summary>
-        </member>
-        <member name="M:DOL.GS.LanguageMgr.Initialize">
-            <summary>
-            This function load all language file into an hashtable
-            </summary>
-        </member>
-        <member name="M:DOL.GS.LanguageMgr.GetString(System.String,System.String)">
-            <summary>
-            This function get translated string in language file from key
-            </summary>
-            <returns>return the string get from language file</returns>
-        </member>
-        <member name="M:DOL.GS.LanguageMgr.ParseDirectory(System.String,System.String)">
-            <summary>
-            Parses a directory for all source files
-            </summary>
-            <param name="path">The root directory to start the search in</param>
-            <param name="filter">A filter representing the types of files to search for</param>
-        </member>
-        <member name="M:DOL.GS.LanguageMgr.ParseLanguageFile(System.String)">
-            <summary>
-            This function parse the language file to add the translated sentence in hashtable
-            </summary>
-        </member>
         <member name="T:DOL.GS.GuildMgr">
             <summary>
             The GuildMgr holds pointers to all guilds, and pointers
@@ -21614,7 +21619,20 @@
         </member>
         <member name="M:DOL.GS.Housing.House.FillHookpoint(DOL.Database.ItemTemplate,System.UInt32,System.String)">
             <summary>
-            
+            Fill a hookpoint with an object, create it in the database.
+            </summary>
+            <param name="item">The itemtemplate of the item used to fill the hookpoint (can be null if templateid is filled)</param>
+            <param name="position">The position of the hookpoint</param>
+            <param name="templateID">The template id of the item (can be blank if item is filled)</param>
+        </member>
+        <member name="F:DOL.GS.Housing.House.RELATIVE_HOOKPOINTS_COORDS">
+            <summary>
+            Housing hookpoint coordinates offset relative to a house
+            </summary>
+        </member>
+        <member name="M:DOL.GS.Housing.House.LoadFromDatabase">
+            <summary>
+            Load a house from the database
             </summary>
         </member>
         <member name="T:DOL.GS.Money">
@@ -25750,6 +25768,11 @@
             </summary>
             <returns>Short info about the timer</returns>
         </member>
+        <member name="P:DOL.GS.RegionTimer.Owner">
+            <summary>
+            The timer owner
+            </summary>
+        </member>
         <member name="P:DOL.GS.RegionTimer.Callback">
             <summary>
             Gets or sets the timer callback
@@ -26594,6 +26617,13 @@
             <param name="source">The "looking" player</param>
             <param name="target">The considered player</param>
             <returns>The guild name of the target</returns>
+        </member>
+        <member name="M:DOL.GS.ServerRules.NormalServerRules.ResetKeep(DOL.GS.Keeps.GuardLord,DOL.GS.GameObject)">
+            <summary>
+            Reset the keep with special server rules handling
+            </summary>
+            <param name="lord">The lord that was killed</param>
+            <param name="killer">The lord's killer</param>
         </member>
         <member name="T:DOL.GS.RealmAbilities.MasteryOfPain">
             <summary>

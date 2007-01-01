@@ -24,6 +24,7 @@ namespace DOL.GS.GameEvents
 			m_locs.Add(new Location("Adribard's Retreat", 1, 470325, 630354, 1712, 795));
 			m_locs.Add(new Location("Caer Ulfwych", 1, 520423, 617027, 1807, 4906));
 			m_locs.Add(new Location("Caer Witrin", 1, 436302, 651214, 2448, 389));
+			//m_locs.Add(new Location("Castle Sauvage", 
 			m_locs.Add(new Location("Camelot", 10, 35504, 24790, 8751, 1529));
 			m_locs.Add(new Location("Church of Albion", 1, 505162, 494342, 2495, 2865));
 			m_locs.Add(new Location("Cotswold", 1, 560427, 511757, 2280, 2213));
