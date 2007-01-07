@@ -27972,7 +27972,7 @@
         </member>
         <member name="F:DOL.GS.Quests.BaseQuest.SAVE_INTO_DATABASE">
             <summary>
-            Global Constant for all quests to define wether npcs should be saved in db or not.
+            Global Constant for all quests to define wether npcs and items should be saved in db or not.
             </summary>
         </member>
         <member name="F:DOL.GS.Quests.BaseQuest.questParts">

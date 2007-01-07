@@ -10,9 +10,10 @@ System.LanguagesName.English:				Englisch
 System.LanguagesName.French:				Französisch
 System.LanguagesName.German:				Deutsch
 System.LanguagesName.Spanish:				Spanish
+System.LanguagesName.Czech:					Czech
 
 # SYSTEM
-System.NoSense:						Das würde keinen Sinn machen!
+System.NoSense:								Das würde keinen Sinn machen!
 
 # GAMEPLAYER
 GamePlayer.SendReceive.sends:				 sendet, 
