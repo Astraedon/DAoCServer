@@ -2749,11 +2749,6 @@
             Holds the size of the NPC
             </summary>
         </member>
-        <member name="F:DOL.GS.GameNPC.m_faction">
-            <summary>
-            Holds the Faction of the NPC
-            </summary>
-        </member>
         <member name="F:DOL.GS.GameNPC.m_flags">
             <summary>
             Holds various flags of this npc
@@ -3410,6 +3405,11 @@
             The linked factions for this NPC
             </summary>
         </member>
+        <member name="P:DOL.GS.GameNPC.IsConfused">
+            <summary>
+            Is this NPC currently confused
+            </summary>
+        </member>
         <member name="P:DOL.GS.GameNPC.Flags">
             <summary>
             Gets or Sets the flags of this npc
@@ -3511,6 +3511,11 @@
         <member name="P:DOL.GS.GameNPC.CurrentFollowTarget">
             <summary>
             Gets the NPC current follow target
+            </summary>
+        </member>
+        <member name="P:DOL.GS.GameNPC.NPCTemplate">
+            <summary>
+            The NPC's template
             </summary>
         </member>
         <member name="P:DOL.GS.GameNPC.EquipmentTemplateID">
@@ -3838,6 +3843,11 @@
             Warden Trainer
             </summary>	
         </member>
+        <member name="F:DOL.GS.Trainer.WardenTrainer.ARMOR_ID1">
+            <summary>
+            The free starter armor from trainer
+            </summary>
+        </member>
         <member name="M:DOL.GS.Trainer.WardenTrainer.Interact(DOL.GS.GamePlayer)">
             <summary>
             Interact with trainer
@@ -3864,6 +3874,11 @@
             <summary>
             Friar Trainer
             </summary>	
+        </member>
+        <member name="F:DOL.GS.Trainer.FriarTrainer.ARMOR_ID1">
+            <summary>
+            The free starter armor from trainer
+            </summary>
         </member>
         <member name="M:DOL.GS.Trainer.FriarTrainer.Interact(DOL.GS.GamePlayer)">
             <summary>
@@ -4043,6 +4058,31 @@
         <member name="F:DOL.GS.Spells.SpellHandler.log">
             <summary>
             Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Spells.SpellHandler.m_spell">
+            <summary>
+            The spell that we want to handle
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Spells.SpellHandler.m_spellLine">
+            <summary>
+            The spell line the spell belongs to
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Spells.SpellHandler.m_caster">
+            <summary>
+            The caster of the spell
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Spells.SpellHandler.m_interrupted">
+            <summary>
+            Has the spell been interrupted
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Spells.SpellHandler.m_startReuseTimer">
+            <summary>
+            Shall we start the reuse timer
             </summary>
         </member>
         <member name="M:DOL.GS.Spells.SpellHandler.#ctor(DOL.GS.GameLiving,DOL.GS.Spell,DOL.GS.SpellLine)">
@@ -4505,6 +4545,28 @@
             <param name="effectiveness"></param>
             <returns></returns>
         </member>
+        <member name="M:DOL.GS.Spells.ImmunityEffectSpellHandler.#ctor(DOL.GS.GameLiving,DOL.GS.Spell,DOL.GS.SpellLine)">
+            <summary>
+            constructor
+            </summary>
+            <param name="caster">The spell caster</param>
+            <param name="spell">The spell being cast</param>
+            <param name="spellLine">The spell's spellline</param>
+        </member>
+        <member name="M:DOL.GS.Spells.AbstractCCSpellHandler.ApplyEffectOnTarget(DOL.GS.GameLiving,System.Double)">
+            <summary>
+            Apply effect on target or do spell action if non duration spell
+            </summary>
+            <param name="target">target that gets the effect</param>
+            <param name="effectiveness">factor from 0..1 (0%-100%)</param>
+        </member>
+        <member name="M:DOL.GS.Spells.AbstractCCSpellHandler.OnEffectStart(DOL.GS.Effects.GameSpellEffect)">
+            <summary>
+            When an applied effect starts
+            duration spells only
+            </summary>
+            <param name="effect"></param>
+        </member>
         <member name="M:DOL.GS.Spells.AbstractCCSpellHandler.OnEffectExpires(DOL.GS.Effects.GameSpellEffect,System.Boolean)">
             <summary>
             When an applied effect expires.
@@ -4513,6 +4575,14 @@
             <param name="effect">The expired effect</param>
             <param name="noMessages">true, when no messages should be sent to player and surrounding</param>
             <returns>immunity duration in milliseconds</returns>
+        </member>
+        <member name="M:DOL.GS.Spells.AbstractCCSpellHandler.#ctor(DOL.GS.GameLiving,DOL.GS.Spell,DOL.GS.SpellLine)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="caster"></param>
+            <param name="spell"></param>
+            <param name="line"></param>
         </member>
         <member name="M:DOL.GS.Spells.StunSpellHandler.OnEffectExpires(DOL.GS.Effects.GameSpellEffect,System.Boolean)">
             <summary>
@@ -4710,9 +4780,10 @@
             Base class for all spells that remove effects
             </summary>
         </member>
-        <member name="F:DOL.GS.Spells.RemoveSpellEffectHandler.m_spellTypeToRemove">
+        <member name="F:DOL.GS.Spells.RemoveSpellEffectHandler.m_spellTypesToRemove">
             <summary>
             Stores spell effect type that will be removed
+            RR4: now its a list of effects to remove
             </summary>
         </member>
         <member name="M:DOL.GS.Spells.RemoveSpellEffectHandler.FinishSpellCast(DOL.GS.GameLiving)">
@@ -4728,9 +4799,10 @@
             <param name="target"></param>
             <param name="effectiveness"></param>
         </member>
-        <member name="P:DOL.GS.Spells.RemoveSpellEffectHandler.SpellTypeToRemove">
+        <member name="P:DOL.GS.Spells.RemoveSpellEffectHandler.SpellTypesToRemove">
             <summary>
             Spell effect type that will be removed
+            RR4: now its a list of effects to remove
             </summary>
         </member>
         <member name="T:DOL.GS.Spells.SavageSlashResistHandler">
@@ -5462,7 +5534,7 @@
             Unit for values like %
             </summary>
         </member>
-        <member name="M:DOL.GS.RealmAbilities.TimedRealmAbility.SendCasterSpellEffectAndCastMessage(DOL.GS.GameLiving,System.Int32,System.Boolean)">
+        <member name="M:DOL.GS.RealmAbilities.TimedRealmAbility.SendCasterSpellEffectAndCastMessage(DOL.GS.GameLiving,System.UInt16,System.Boolean)">
             <summary>
             Send spell effect animation on caster and send messages
             </summary>
@@ -9739,6 +9811,11 @@
             allow_change_language
             </summary>
         </member>
+        <member name="F:DOL.GS.ServerProperties.Properties.STATSAVE_INTERVAL">
+            <summary>
+            StatSave Interval
+            </summary>
+        </member>
         <member name="M:DOL.GS.ServerProperties.Properties.Load(DOL.GS.ServerProperties.ServerPropertyAttribute)">
             <summary>
             This method loads the property from the database and returns
@@ -9906,6 +9983,18 @@
             <summary>
             Gets the command usage
             </summary>
+        </member>
+        <member name="T:DOL.GS.GameHouseVault">
+            <summary>
+            Represents a housing Vault
+            </summary>
+        </member>
+        <member name="M:DOL.GS.GameHouseVault.Interact(DOL.GS.GamePlayer)">
+            <summary>
+            Called when a player right clicks on the vaultkeeper
+            </summary>
+            <param name="player">Player that interacted with the vaultkeeper</param>
+            <returns>True if succeeded</returns>
         </member>
         <member name="T:DOL.GS.GameGravestone">
             <summary>
@@ -12656,9 +12745,774 @@
             strong name constants for built in abilities
             </summary>
         </member>
+        <member name="F:DOL.GS.Abilities.Sprint">
+            <summary>
+            Player Sprint Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Quickcast">
+            <summary>
+            Player Quickcast Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.AlbArmor">
+            <summary>
+            All Albion Armors
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.HibArmor">
+            <summary>
+            All Hibernian Armors
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.MidArmor">
+            <summary>
+            All Midgard Armors
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Shield">
+            <summary>
+            All Shields
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Staves">
+            <summary>
+            Staves / Staff weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Slashing">
+            <summary>
+            Slashing Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Crushing">
+            <summary>
+            Crushing Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Thrusting">
+            <summary>
+            Thrusting Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Polearms">
+            <summary>
+            Polearm Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_TwoHanded">
+            <summary>
+            Two Handed Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Flexible">
+            <summary>
+            Flexible Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Crossbow">
+            <summary>
+            Crossbow Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_CompositeBows">
+            <summary>
+            Composite Bow Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_RecurvedBows">
+            <summary>
+            Recurved Bow Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Shortbows">
+            <summary>
+            Shortbow Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Longbows">
+            <summary>
+            Longbow Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Axes">
+            <summary>
+            Axe Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_LeftAxes">
+            <summary>
+            Left Axe Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Hammers">
+            <summary>
+            Hammer Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Swords">
+            <summary>
+            Sword Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_HandToHand">
+            <summary>
+            Hand to Hand Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Spears">
+            <summary>
+            Spear Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Thrown">
+            <summary>
+            Thrown Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Blades">
+            <summary>
+            Blade Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Blunt">
+            <summary>
+            Blunt Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Piercing">
+            <summary>
+            Pierce Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_LargeWeapons">
+            <summary>
+            Large Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_CelticSpear">
+            <summary>
+            Celtic Spear Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Scythe">
+            <summary>
+            Scythe Weapons
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Weapon_Instruments">
+            <summary>
+            Instruments (doesn't exist on live but better this than hardcoded classes that can use instruments)
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Advanced_Evade">
+            <summary>
+            Advanced Evade Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Evade">
+            <summary>
+            Evade Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Berserk">
+            <summary>
+            Berserk Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Intercept">
+            <summary>
+            Intercept Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Flurry">
+            <summary>
+            Flurry Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Protect">
+            <summary>
+            Protect Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Critical_Shot">
+            <summary>
+            Critical Shot Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Camouflage">
+            <summary>
+            Camouflage Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.DirtyTricks">
+            <summary>
+            Dirty Tricks Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Triple_Wield">
+            <summary>
+            Triple Wield Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Distraction">
+            <summary>
+            Distraction Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.DetectHidden">
+            <summary>
+            Detect Hidden Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.SafeFall">
+            <summary>
+            Safe Fall Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.ClimbWalls">
+            <summary>
+            Climb Walls Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.DangerSense">
+            <summary>
+            Danger Sense Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Engage">
+            <summary>
+            Engage Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Envenom">
+            <summary>
+            Envonom Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Guard">
+            <summary>
+            Guard Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.PenetratingArrow">
+            <summary>
+            Penetrating Arrow Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.PreventFlight">
+            <summary>
+            Prevent Flight Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.RapidFire">
+            <summary>
+            Rapid Fire Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Stag">
+            <summary>
+            Stag Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Stoicism">
+            <summary>
+            Stoicism Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.SureShot">
+            <summary>
+            Sure Shot Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Tireless">
+            <summary>
+            Tireless Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.VampiirConstitution">
+            <summary>
+            Vampiir Constitution Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.VampiirDexterity">
+            <summary>
+            Vampiir Dexterity Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.VampiirQuickness">
+            <summary>
+            Vampiir Quickness Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.VampiirStrength">
+            <summary>
+            Vampiir Strength Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Volley">
+            <summary>
+            Volley Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.ScarsOfBattle">
+            <summary>
+            Scars of Battle Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.MemoriesOfWar">
+            <summary>
+            Memories of War Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.Snapshot">
+            <summary>
+            Snapshot Ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Abilities.CCImmunity">
+            <summary>
+            Crowd Control Immunity - NPC Only ability
+            </summary>
+        </member>
         <member name="T:DOL.GS.Specs">
             <summary>
             strong name constants for built in specs
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Slash">
+            <summary>
+            Slash Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Crush">
+            <summary>
+            Crush Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Thrust">
+            <summary>
+            Thrust Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Piercing">
+            <summary>
+            Pierce Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Staff">
+            <summary>
+            Staff Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Flexible">
+            <summary>
+            Flexible Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.ShortBow">
+            <summary>
+            Shortbow Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Longbow">
+            <summary>
+            Longbow Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Crossbow">
+            <summary>
+            Crossbow Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.CompositeBow">
+            <summary>
+            Composite Bow Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.RecurveBow">
+            <summary>
+            Recurve Bow Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Sword">
+            <summary>
+            Sword Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Axe">
+            <summary>
+            Axe Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Hammer">
+            <summary>
+            Hammer Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Shields">
+            <summary>
+            Shields Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Left_Axe">
+            <summary>
+            Left Axe Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Two_Handed">
+            <summary>
+            Two Handed Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Thrown_Weapons">
+            <summary>
+            Thrown Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Polearms">
+            <summary>
+            Polearm Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Blades">
+            <summary>
+            Blade Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Blunt">
+            <summary>
+            Blunt Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Critical_Strike">
+            <summary>
+            Critical Strike Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Dual_Wield">
+            <summary>
+            Dual Wield Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Spear">
+            <summary>
+            Spear Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Large_Weapons">
+            <summary>
+            Large Weapons Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.HandToHand">
+            <summary>
+            Hand to Hand Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Scythe">
+            <summary>
+            Scythe Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Celtic_Dual">
+            <summary>
+            Celtic Dual Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Celtic_Spear">
+            <summary>
+            Celtic Spear Weapon Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Stealth">
+            <summary>
+            Stealth Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Parry">
+            <summary>
+            Parry Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Envenom">
+            <summary>
+            Envenom Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Savagery">
+            <summary>
+            Savagery Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Pathfinding">
+            <summary>
+            Pathfinding Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Nightshade_Magic">
+            <summary>
+            Nightshade Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Augmentation">
+            <summary>
+            Augmentation Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Battlesongs">
+            <summary>
+            Battlesongs Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Beastcraft">
+            <summary>
+            Beastcraft Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Body_Magic">
+            <summary>
+            Body Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Chants">
+            <summary>
+            Chants Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Cold_Magic">
+            <summary>
+            Cold Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Darkness">
+            <summary>
+            Darkness Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Earth_Magic">
+            <summary>
+            Earth Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Enchantments">
+            <summary>
+            Enchantments Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Enhancement">
+            <summary>
+            Enhancement Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Fire_Magic">
+            <summary>
+            FireMagic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Instruments">
+            <summary>
+            Instruments Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Light">
+            <summary>
+            Light Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Mana">
+            <summary>
+            Mana Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Matter_Magic">
+            <summary>
+            Matter Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Mending">
+            <summary>
+            Mending Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Mentalism">
+            <summary>
+            Mentalism Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Mind_Magic">
+            <summary>
+            Mind Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Music">
+            <summary>
+            Music Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Nature">
+            <summary>
+            Nature Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Nurture">
+            <summary>
+            Nurture Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Pacification">
+            <summary>
+            Pacification Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Regrowth">
+            <summary>
+            Regrowth Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Rejuvenation">
+            <summary>
+            Rejuvenation Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Runecarving">
+            <summary>
+            Runecarving Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Smite">
+            <summary>
+            Smite Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Spirit_Magic">
+            <summary>
+            Spirit Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Stormcalling">
+            <summary>
+            Stormcalling Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Subterranean">
+            <summary>
+            Subterranean Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Summoning">
+            <summary>
+            Summoning Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Suppression">
+            <summary>
+            Supression Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Valor">
+            <summary>
+            Valor Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Void">
+            <summary>
+            Void Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Wind_Magic">
+            <summary>
+            Wind Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Arboreal_Path">
+            <summary>
+            Arboreal Path Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Bonedancing">
+            <summary>
+            Bonedancing Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Creeping_Path">
+            <summary>
+            Creeping Path Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Cursing">
+            <summary>
+            Cursing Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Death_Servant">
+            <summary>
+            Death Servant Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Deathsight">
+            <summary>
+            Deathsight Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Dementia">
+            <summary>
+            Dementia Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.EtherealShriek">
+            <summary>
+            Ethereal Shriek Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Hexing">
+            <summary>
+            Hexing Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.OdinsWill">
+            <summary>
+            Odins Will Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Painworking">
+            <summary>
+            Painworking Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.PhantasmalWail">
+            <summary>
+            Phantasmal Wail Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.ShadowMastery">
+            <summary>
+            Shadow Mastery Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Soulrending">
+            <summary>
+            Soulrending Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.SpectralGuard">
+            <summary>
+            Spectral Guard Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.VampiiricEmbrace">
+            <summary>
+            Vampiiric Embrace Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Verdant_Path">
+            <summary>
+             Verdant Path Magic Spec
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Specs.Witchcraft">
+            <summary>
+            Witchcraft Magic Spec
             </summary>
         </member>
         <member name="T:DOL.GS.NpcTemplateMgr">
@@ -20123,6 +20977,11 @@
             <param name="min">store min variance here</param>
             <param name="max">store max variance here</param>
         </member>
+        <member name="T:DOL.GS.Spells.CureAllSpellHandler">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="T:DOL.GS.Spells.CombatHealSpellHandler">
             <summary>
             Palading heal chant works only in combat
@@ -26167,6 +27026,14 @@
             <param name="player"></param>
             <returns></returns>
         </member>
+        <member name="M:DOL.GS.Salvage.BeginWork(DOL.GS.GamePlayer,DOL.GS.GameSiegeWeapon)">
+            <summary>
+            Called when player try to use a secondary crafting skill
+            </summary>
+            <param name="item"></param>
+            <param name="player"></param>
+            <returns></returns>
+        </member>
         <member name="M:DOL.GS.Salvage.Proceed(DOL.GS.RegionTimer)">
             <summary>
             Called when craft time is finished 
@@ -29142,13 +30009,6 @@
             </summary>
             <param name="stat">The stat to change</param>
             <param name="val">The new value</param>
-        </member>
-        <member name="M:DOL.GS.GamePlayer.OnStatChanged(DOL.GS.eStat,System.Int32)">
-            <summary>
-            Is called whenever a stat changed in value
-            </summary>
-            <param name="stat">The stat that changed</param>
-            <param name="change">The change value</param>
         </member>
         <member name="M:DOL.GS.GamePlayer.StartHealthRegeneration">
             <summary>

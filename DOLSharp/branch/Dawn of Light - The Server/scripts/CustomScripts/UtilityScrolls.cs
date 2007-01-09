@@ -209,6 +209,7 @@ namespace DOL.GS.GameEvents
 					m_tinderbox.Realm = 0;
 					m_tinderbox.SpellID = CampfireSpell.ID;
 					m_tinderbox.Quality = 99;
+					m_tinderbox.Copper = 5;
 				}
 				return m_tinderbox;
 			}
@@ -237,6 +238,7 @@ namespace DOL.GS.GameEvents
 					m_trainerScroll.Object_Type = (int)eObjectType.Magical;
 					m_trainerScroll.Realm = 0;
 					m_trainerScroll.SpellID = TrainerSpell.ID;
+					m_trainerScroll.Copper = 10;
 				}
 				return m_trainerScroll;
 			}
@@ -265,6 +267,7 @@ namespace DOL.GS.GameEvents
 					m_merchantScroll.Object_Type = (int)eObjectType.Magical;
 					m_merchantScroll.Realm = 0;
 					m_merchantScroll.SpellID = MerchantSpell.ID;
+					m_merchantScroll.Copper = 5;
 				}
 				return m_merchantScroll;
 			}
@@ -293,6 +296,7 @@ namespace DOL.GS.GameEvents
 					m_healerScroll.Object_Type = (int)eObjectType.Magical;
 					m_healerScroll.Realm = 0;
 					m_healerScroll.SpellID = HealerSpell.ID;
+					m_healerScroll.Copper = 5;
 				}
 				return m_healerScroll;
 			}
@@ -321,6 +325,7 @@ namespace DOL.GS.GameEvents
 					m_teleporterScroll.Object_Type = (int)eObjectType.Magical;
 					m_teleporterScroll.Realm = 0;
 					m_teleporterScroll.SpellID = TeleporterSpell.ID;
+					m_teleporterScroll.Copper = 20;
 				}
 				return m_teleporterScroll;
 			}
