@@ -50,7 +50,9 @@ namespace DOL.GS.Scripts
 		{
 			LootList loot = base.GenerateLoot(mob, killer);
 
-			if (Util.Chance(1))
+			int chance = mob.Level;
+
+			if (Util.Chance(chance))
 				loot.AddFixed(Parchment);
 
 			/*if (mob.Inventory != null) //if the mob has items he is humanoid in most cases

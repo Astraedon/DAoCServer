@@ -79,7 +79,7 @@ namespace DOL.GS.GameEvents
 					case 2:
 						pmerchant.Name = "Parchment Master";
 						pmerchant.Model = 300;
-						pmerchant.Size = 50;
+						pmerchant.Size = 212;
 						pmerchant.Realm = 2;
 						break;
 					case 3:
