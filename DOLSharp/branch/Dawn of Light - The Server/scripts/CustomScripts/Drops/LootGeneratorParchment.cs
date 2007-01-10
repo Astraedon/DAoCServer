@@ -11,10 +11,16 @@ namespace DOL.GS.Scripts
 {
 	public class LootGeneratorParchment : LootGeneratorBase
 	{
+		/// <summary>
+		/// Defines a logger for this class.
+		/// </summary>
+		private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
 		[ScriptLoadedEvent]
 		public static void OnScriptLoaded(DOLEvent e, object sender, EventArgs args)
 		{
 			LootMgr.RegisterLootGenerator(new LootGeneratorParchment(), "", "", "", 249);
+			log.Info("Parchment Generator Loaded!");
 		}
 
 		private static ItemTemplate m_parchment = null;

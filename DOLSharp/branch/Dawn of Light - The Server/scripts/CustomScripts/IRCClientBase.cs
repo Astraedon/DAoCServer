@@ -449,7 +449,8 @@ namespace IRC
 
 						Clients.Remove(clt.Nick);
 						clt.Nick = nick;
-						Clients.Add(nick, clt);
+						if (!Clients.ContainsKey(nick))
+							Clients.Add(nick, clt);
 
 						foreach (Channel chan in Channels.Values)
 						{

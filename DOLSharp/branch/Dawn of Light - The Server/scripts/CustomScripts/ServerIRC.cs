@@ -93,6 +93,7 @@ namespace DOL.GS.Scripts
 							mid = WorldMgr.GetClientsOfRegionCount(249, 2);
 							hib = WorldMgr.GetClientsOfRegionCount(249, 3);
 							msg += " Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
+							IRCBot.SendMessage(CHANNEL, msg);
 						}
 
 						break;
