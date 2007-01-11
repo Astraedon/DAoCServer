@@ -24927,6 +24927,16 @@
             Handler for Sprint Ability clicks
             </summary>
         </member>
+        <member name="F:DOL.GS.SkillHandler.DirtyTricksAbilityHandler.REUSE_TIMER">
+            <summary>
+            The ability reuse time in seconds
+            </summary>
+        </member>
+        <member name="F:DOL.GS.SkillHandler.DirtyTricksAbilityHandler.DURATION">
+            <summary>
+            The ability effect duration in seconds
+            </summary>
+        </member>
         <member name="F:DOL.GS.SkillHandler.DirtyTricksAbilityHandler.log">
             <summary>
             Defines a logger for this class.
@@ -24938,6 +24948,103 @@
             </summary>
             <param name="ab">The used ability</param>
             <param name="player">The player that used the ability</param>
+        </member>
+        <member name="T:DOL.GS.Effects.DirtyTricksEffect">
+            <summary>
+            TripleWield
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Effects.DirtyTricksEffect.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="T:DOL.GS.Effects.DTdetrimentalEffect">
+            <summary>
+            The helper class for the berserk ability
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Effects.DTdetrimentalEffect.delveString">
+            <summary>
+            The ability description
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Effects.DTdetrimentalEffect.log">
+            <summary>
+            Defines a logger for this class.
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Effects.DTdetrimentalEffect.m_player">
+            <summary>
+            The owner of the effect
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Effects.DTdetrimentalEffect.m_expireTimer">
+            <summary>
+            The timer that will cancel the effect
+            </summary>
+        </member>
+        <member name="M:DOL.GS.Effects.DTdetrimentalEffect.#ctor">
+            <summary>
+            Creates a new berserk effect
+            </summary>
+        </member>
+        <member name="M:DOL.GS.Effects.DTdetrimentalEffect.Start(DOL.GS.GameLiving)">
+            <summary>
+            Start the berserk on a player
+            </summary>
+        </member>
+        <member name="M:DOL.GS.Effects.DTdetrimentalEffect.Cancel(System.Boolean)">
+            <summary>
+            Called when effect must be canceled
+            </summary>
+        </member>
+        <member name="M:DOL.GS.Effects.DTdetrimentalEffect.StartTimers">
+            <summary>
+            Starts the timers for this effect
+            </summary>
+        </member>
+        <member name="M:DOL.GS.Effects.DTdetrimentalEffect.StopTimers">
+            <summary>
+            Stops the timers for this effect
+            </summary>
+        </member>
+        <member name="M:DOL.GS.Effects.DTdetrimentalEffect.ExpiredCallback(DOL.GS.RegionTimer)">
+            <summary>
+            The callback method when the effect expires
+            </summary>
+            <param name="callingTimer">the regiontimer of the effect</param>
+            <returns>the new intervall (0) </returns>
+        </member>
+        <member name="F:DOL.GS.Effects.DTdetrimentalEffect.m_id">
+            <summary>
+            Stores the internal effect ID
+            </summary>
+        </member>
+        <member name="P:DOL.GS.Effects.DTdetrimentalEffect.Name">
+            <summary>
+            Name of the effect
+            </summary>
+        </member>
+        <member name="P:DOL.GS.Effects.DTdetrimentalEffect.RemainingTime">
+            <summary>
+            Remaining Time of the effect in milliseconds
+            </summary>
+        </member>
+        <member name="P:DOL.GS.Effects.DTdetrimentalEffect.Icon">
+            <summary>
+            Icon to show on players, can be id
+            </summary>
+        </member>
+        <member name="P:DOL.GS.Effects.DTdetrimentalEffect.InternalID">
+            <summary>
+            unique id for identification in effect list
+            </summary>
+        </member>
+        <member name="P:DOL.GS.Effects.DTdetrimentalEffect.DelveInfo">
+            <summary>
+            Delve Info
+            </summary>
         </member>
         <member name="T:DOL.GS.PropertyCalc.ToHitBonusCalculator">
             <summary>

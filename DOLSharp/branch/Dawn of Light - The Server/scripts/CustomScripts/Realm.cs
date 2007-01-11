@@ -14,6 +14,7 @@ namespace DOL.GS.Scripts
 		{
 			AbstractGameKeep thidranki = KeepMgr.getKeepByID(129);
 			AbstractGameKeep orseo = KeepMgr.getKeepByID(5);
+			AbstractGameKeep molvik = KeepMgr.getKeepByID(132);
 
 			ArrayList list = new ArrayList();
 			int alb = 0, mid = 0, hib = 0;
@@ -22,11 +23,19 @@ namespace DOL.GS.Scripts
 			mid = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 2);
 			hib = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 3);
 			list.Add("Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")");
+
+			list.Add(molvik.Name + ": " + GlobalConstants.RealmToName((eRealm)molvik.Realm));
+			alb = WorldMgr.GetClientsOfRegionCount((ushort)molvik.Region, 1);
+			mid = WorldMgr.GetClientsOfRegionCount((ushort)molvik.Region, 2);
+			hib = WorldMgr.GetClientsOfRegionCount((ushort)molvik.Region, 3);
+			list.Add("Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")");
+
 			list.Add(orseo.Name + ": " + GlobalConstants.RealmToName((eRealm)orseo.Realm));
 			alb = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 1);
 			mid = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 2);
 			hib = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 3);
 			list.Add("Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")");
+
 			list.Add("");
 			list.Add("Darkness Falls: " + GlobalConstants.RealmToName((eRealm)orseo.Realm));
 			alb = WorldMgr.GetClientsOfRegionCount(249, 1);

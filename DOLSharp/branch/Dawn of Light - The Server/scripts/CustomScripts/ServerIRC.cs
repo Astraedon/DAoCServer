@@ -63,6 +63,7 @@ namespace DOL.GS.Scripts
 						string msg = "Realm Status: ";
 
 						AbstractGameKeep thidranki = KeepMgr.getKeepByID(129);
+						AbstractGameKeep molvik = KeepMgr.getKeepByID(132);
 						AbstractGameKeep orseo = KeepMgr.getKeepByID(5);
 
 						int alb = 0, mid = 0, hib = 0;
@@ -72,6 +73,16 @@ namespace DOL.GS.Scripts
 							alb = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 1);
 							mid = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 2);
 							hib = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 3);
+							msg += " Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
+							IRCBot.SendMessage(CHANNEL, msg);
+						}
+
+						if (molvik != null)
+						{
+							msg += molvik.Name + ": " + GlobalConstants.RealmToName((eRealm)molvik.Realm);
+							alb = WorldMgr.GetClientsOfRegionCount((ushort)molvik.Region, 1);
+							mid = WorldMgr.GetClientsOfRegionCount((ushort)molvik.Region, 2);
+							hib = WorldMgr.GetClientsOfRegionCount((ushort)molvik.Region, 3);
 							msg += " Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
 							IRCBot.SendMessage(CHANNEL, msg);
 						}
