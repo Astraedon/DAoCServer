@@ -11918,14 +11918,6 @@
             <param name="craftItemData"></param>
             <returns></returns>
         </member>
-        <member name="M:DOL.GS.AbstractCraftingSkill.CheckSecondCraftingSkillRequirement(DOL.GS.GamePlayer,DOL.Database.DBCraftedItem)">
-            <summary>
-            Check if the player have enough secondary crafting skill to build the item
-            </summary>
-            <param name="player"></param>
-            <param name="craftItemData"></param>
-            <returns></returns>
-        </member>
         <member name="M:DOL.GS.AbstractCraftingSkill.CheckRawMaterial(DOL.GS.GamePlayer,DOL.Database.DBCraftedItem)">
             <summary>
             check if player have raw mateiral to make item
@@ -19614,6 +19606,19 @@
             BuffBonusMultCategory1 unused
             AbilityBonus used
             </summary>
+        </member>
+        <member name="T:DOL.GS.PacketHandler.Client.v168.HousingPickupItemHandler">
+            <summary>
+            Handle housing pickup item requests from the client.
+            </summary>
+        </member>
+        <member name="M:DOL.GS.PacketHandler.Client.v168.HousingPickupItemHandler.HandlePacket(DOL.GS.GameClient,DOL.GS.GSPacketIn)">
+            <summary>
+            Handle the packet
+            </summary>
+            <param name="client"></param>
+            <param name="packet"></param>
+            <returns></returns>
         </member>
         <member name="F:DOL.GS.PacketHandler.Client.v168.CharacterDeleteRequestHandler.log">
             <summary>
@@ -30241,11 +30246,7 @@
             Holds the Spell lines the player can use
             </summary>
         </member>
-        <member name="F:DOL.GS.GamePlayer.m_styles">
-            <summary>
-            Holds all styles of the player
-            </summary>
-        </member>
+        <!-- Badly formed XML comment ignored for member "F:DOL.GS.GamePlayer.m_styles" -->
         <member name="F:DOL.GS.GamePlayer.m_skillList">
             <summary>
             Holds all non trainable skills in determined order without styles

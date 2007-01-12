@@ -438,7 +438,7 @@ namespace DOL.GS
                 list.AddFixed(UtilityScrollsEvent.Tinderbox);
             #endregion
 			#region Trainer
-			int chance = (int)(100 / Math.Max(1, (GameServer.ServerRules.GetExperienceForLevel(killer.Level) / mob.ExperienceValue)));
+			int chance = (int)Math.Max(1, 100 / (GameServer.ServerRules.GetExperienceForLevel(killer.Level + 1) / mob.ExperienceValue));
 			if (Util.Chance(chance))
 				list.AddFixed(UtilityScrollsEvent.TrainerScroll);
 			#endregion
@@ -502,6 +502,7 @@ namespace DOL.GS.Spells
 									break;
 								}
 						}
+						(npc as TeleportNPC).IsSummoned = true;
 					}
 					else if (template.ClassType == UtilityScrollsEvent.MerchantTemplate.ClassType)
 					{

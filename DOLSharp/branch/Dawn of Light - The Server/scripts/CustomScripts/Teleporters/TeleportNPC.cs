@@ -34,6 +34,7 @@ namespace DOL.GS.GameEvents
 		public Queue m_animPlayerQueue = new Queue();
 		public Queue m_portPlayerQueue = new Queue();
 		public Queue m_portDestinationQueue = new Queue();
+		public bool IsSummoned = false;
 		protected GameNPC sfx;
 		//constructor
         public TeleportNPC(ushort region, int x, int y, int z, ushort heading,
@@ -267,14 +268,18 @@ namespace DOL.GS.GameEvents
 			if (mob.AddToWorld())
 				sfx = mob;
 
-			BindPoint bp = new BindPoint();
-			bp.Realm = Realm;
-			bp.Region = this.CurrentRegionID;
-			bp.Radius = 1000;
-			bp.X = this.X;
-			bp.Y = this.Y;
-			bp.Z = this.Z;
-			this.CurrentRegion.AddArea(new Area.BindArea("bind point", bp));
+			if (!IsSummoned)
+			{
+
+				BindPoint bp = new BindPoint();
+				bp.Realm = Realm;
+				bp.Region = this.CurrentRegionID;
+				bp.Radius = 1000;
+				bp.X = this.X;
+				bp.Y = this.Y;
+				bp.Z = this.Z;
+				this.CurrentRegion.AddArea(new Area.BindArea("bind point", bp));
+			}
 			return true;
 		}
 		public override bool RemoveFromWorld()

@@ -41,7 +41,7 @@ namespace DOL.GS.GameEvents
 			m_albLocs.Add(new Location("Camelot", 10, 35253, 25005, 8751, 1549));
 			m_albLocs.Add(new LocationExpansion("Thidranki (20-24)", 238, 563466, 574358, 5408, 2121, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 20, 24));
 			AbstractGameKeep albMolvikPK = KeepMgr.getKeepByID(388);
-			m_albLocs.Add(new LocationExpansion("Molvik [35-39]", (ushort)albMolvikPK.Region, albMolvikPK.X, albMolvikPK.Y, albMolvikPK.Z, (ushort)albMolvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 20, 24));
+			m_albLocs.Add(new LocationExpansion("Molvik (35-39)", (ushort)albMolvikPK.Region, albMolvikPK.X, albMolvikPK.Y, albMolvikPK.Z, (ushort)albMolvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 35, 39));
 			//m_albLocs.Add(new LocationExpansion("Leirvik [40-44]", 165, 583159, 585478, 4896, 2417, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 40, 44));
 			m_albLocs.Add(new LocationExpansion("Cathal Valley (45+)", 165, 583159, 585478, 4896, 2417, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 45, 50));
 			m_albLocs.Add(new Location("Caerwent (Housing)", 2, 556483, 559261, 3646, 2940));
@@ -60,7 +60,7 @@ namespace DOL.GS.GameEvents
 			m_midLocs.Add(new Location("Jordheim", 101, 31750, 28519, 8985, 2050));
 			m_midLocs.Add(new LocationExpansion("Thidranki (20-24)", 238, 570038, 540351, 5408, 4076, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 20, 24));
 			AbstractGameKeep midMolvikPK = KeepMgr.getKeepByID(644);
-			m_midLocs.Add(new LocationExpansion("Molvik [35-39]", (ushort)midMolvikPK.Region, midMolvikPK.X, midMolvikPK.Y, midMolvikPK.Z, (ushort)midMolvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 20, 24));
+			m_midLocs.Add(new LocationExpansion("Molvik (35-39)", (ushort)midMolvikPK.Region, midMolvikPK.X, midMolvikPK.Y, midMolvikPK.Z, (ushort)midMolvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 35, 39));
 			m_midLocs.Add(new LocationExpansion("Cathal Valley (45+)", 165, 575858, 537997, 4832, 1043, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 45, 50));
 			//m_midLocs.Add(new Location("Carlingford (Housing)", 102, 623984, 557289, 3722, 1359));
 			//m_midLocs.Add(new Location("Arothi (Housing)", 102, 556954, 484844, 3514, 1250));
@@ -78,7 +78,7 @@ namespace DOL.GS.GameEvents
 			m_hibLocs.Add(new Location("Tir na Nog", 201, 33680, 31800, 7999, 4684));
 			m_hibLocs.Add(new LocationExpansion("Thidranki (20-24)", 238, 533649, 533990, 5408, 3503, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 20, 24));
 			AbstractGameKeep hibMolvikPK = KeepMgr.getKeepByID(900);
-			m_albLocs.Add(new LocationExpansion("Molvik [35-39]", (ushort)hibMolvikPK.Region, hibMolvikPK.X, hibMolvikPK.Y, hibMolvikPK.Z, (ushort)hibMolvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 20, 24));
+			m_hibLocs.Add(new LocationExpansion("Molvik (35-39)", (ushort)hibMolvikPK.Region, hibMolvikPK.X, hibMolvikPK.Y, hibMolvikPK.Z, (ushort)hibMolvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 35, 39));
 			m_hibLocs.Add(new LocationExpansion("Cathal Valley (45+)", 165, 536144, 585708, 5800, 2158, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 45, 50));
 			//m_hibLocs.Add(new Location("Torrylin (Housing)", 202, 565479, 618767, 3185, 3515));
 			//m_hibLocs.Add(new Location("Aberillan (Housing)", 202, 616881, 619453, 3185, 987));

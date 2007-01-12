@@ -48,7 +48,7 @@ namespace DOL.GS.Scripts
 		{
 			if (clt.Nick == IRCBot.Nick)
 				IRCBot.SendMessage(CHANNEL, GameServer.Instance.Configuration.ServerName + " started!");
-			else IRCBot.SendNotice(clt.Nick, "Welcome to " + GameServer.Instance.Configuration.ServerName + " IRC you can look at my command list with !list");
+			else IRCBot.SendNotice(clt.Nick, "Welcome to " + GameServer.Instance.Configuration.ServerName + " IRC you can look at my command list with !list Server Message: " + ServerProperties.Properties.MOTD);
 		}
 
 		static void IRCBot_OnMessage(IRCClient sender, Client source, object target, string message)
@@ -60,49 +60,61 @@ namespace DOL.GS.Scripts
 				case "!realmwar":
 				case "!realm":
 					{
-						string msg = "Realm Status: ";
-
 						AbstractGameKeep thidranki = KeepMgr.getKeepByID(129);
 						AbstractGameKeep molvik = KeepMgr.getKeepByID(132);
 						AbstractGameKeep orseo = KeepMgr.getKeepByID(5);
 
-						int alb = 0, mid = 0, hib = 0;
-						if (thidranki != null)
+						ArrayList list = new ArrayList();
+						if (data.Length > 2)
 						{
-							msg += thidranki.Name + ": " + GlobalConstants.RealmToName((eRealm)thidranki.Realm);
-							alb = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 1);
-							mid = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 2);
-							hib = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 3);
-							msg += " Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
-							IRCBot.SendMessage(CHANNEL, msg);
+							switch (data[1])
+							{
+								case "thid":
+								case "thidranki": list.Add(thidranki); break;
+								case "molvik": list.Add(molvik); break;
+								case "orseo": list.Add(orseo); break;
+								case "df":
+									{
+										if (orseo != null)
+										{
+											string msg = ("Darkness Falls: " + GlobalConstants.RealmToName((eRealm)orseo.Realm));
+											int alb = WorldMgr.GetClientsOfRegionCount(249, 1);
+											int mid = WorldMgr.GetClientsOfRegionCount(249, 2);
+											int hib = WorldMgr.GetClientsOfRegionCount(249, 3);
+											msg += " Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
+											IRCBot.SendMessage(CHANNEL, msg);
+										}
+										break;
+									}
+							}
+						}
+						else
+						{
+							list.Add(thidranki);
+							list.Add(molvik);
+							list.Add(orseo);
+
+
+							if (orseo != null)
+							{
+								string msg = ("Darkness Falls: " + GlobalConstants.RealmToName((eRealm)orseo.Realm));
+								int alb = WorldMgr.GetClientsOfRegionCount(249, 1);
+								int mid = WorldMgr.GetClientsOfRegionCount(249, 2);
+								int hib = WorldMgr.GetClientsOfRegionCount(249, 3);
+								msg += " Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
+								IRCBot.SendMessage(CHANNEL, msg);
+							}
 						}
 
-						if (molvik != null)
+						foreach (AbstractGameKeep keep in list)
 						{
-							msg += molvik.Name + ": " + GlobalConstants.RealmToName((eRealm)molvik.Realm);
-							alb = WorldMgr.GetClientsOfRegionCount((ushort)molvik.Region, 1);
-							mid = WorldMgr.GetClientsOfRegionCount((ushort)molvik.Region, 2);
-							hib = WorldMgr.GetClientsOfRegionCount((ushort)molvik.Region, 3);
-							msg += " Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
-							IRCBot.SendMessage(CHANNEL, msg);
-						}
+							if (keep == null)
+								continue;
 
-						if (orseo != null)
-						{
-							msg = orseo.Name + ": " + GlobalConstants.RealmToName((eRealm)orseo.Realm);
-							alb = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 1);
-							mid = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 2);
-							hib = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 3);
-							msg += " Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
-							IRCBot.SendMessage(CHANNEL, msg);
-						}
-
-						if (orseo != null)
-						{
-							msg = ("Darkness Falls: " + GlobalConstants.RealmToName((eRealm)orseo.Realm));
-							alb = WorldMgr.GetClientsOfRegionCount(249, 1);
-							mid = WorldMgr.GetClientsOfRegionCount(249, 2);
-							hib = WorldMgr.GetClientsOfRegionCount(249, 3);
+							string msg = keep.Name + ": " + GlobalConstants.RealmToName((eRealm)keep.Realm);
+							int alb = WorldMgr.GetClientsOfRegionCount((ushort)keep.Region, 1);
+							int mid = WorldMgr.GetClientsOfRegionCount((ushort)keep.Region, 2);
+							int hib = WorldMgr.GetClientsOfRegionCount((ushort)keep.Region, 3);
 							msg += " Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
 							IRCBot.SendMessage(CHANNEL, msg);
 						}
@@ -222,7 +234,7 @@ namespace DOL.GS.Scripts
 					}
 				case "!list":
 					{
-						IRCBot.SendNotice(source.Nick, "!realm, !stats, !ip, !lookup, !list");
+						IRCBot.SendNotice(source.Nick, "!realm <keepname>, !stats, !ip, !lookup, !list");
 						break;
 					}
 				case "!auth":
