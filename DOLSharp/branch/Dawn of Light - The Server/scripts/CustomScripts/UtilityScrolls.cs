@@ -594,9 +594,9 @@ namespace DOL.GS.Spells
 				if ((GameServer.ServerRules.IsSameRealm(Caster, player, true)) && (player.InCombat == false))
 				{
 					bool good = true;
-					foreach (GameSpellEffect eff in player.EffectList.GetAllOfType(GameSpellEffect) as GameSpellEffect)
+					foreach (GameSpellEffect eff in player.EffectList.GetAllOfType(typeof(GameSpellEffect)))
 					{
-						if (eff.SpellHandler.GetType == this.GetType())
+						if (eff.SpellHandler.GetType() == this.GetType())
 						{
 							good = false;
 							break;
