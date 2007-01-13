@@ -33,7 +33,15 @@ namespace DOL.GS
 		{
 			LootList loot = base.GenerateLoot(mob, killer);
 
-			int chance = 30 + (int)killer.GetConLevel(mob) * 10;
+			int baseChance = 30;
+			if (killer.Level < 10)
+				baseChance = 100;
+			else if (killer.Level < 20)
+				baseChance = 50;
+			else if (killer.Level < 30)
+				baseChance = 40;
+
+			int chance = baseChance + (int)killer.GetConLevel(mob) * 10;
 			if (killer.Realm != 0 && Util.Chance(chance))
 				loot.AddFixed(GenerateUniqueItem(mob, killer));
 

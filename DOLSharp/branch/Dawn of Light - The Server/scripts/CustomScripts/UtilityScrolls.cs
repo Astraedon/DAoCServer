@@ -434,24 +434,24 @@ namespace DOL.GS
 		{
 			LootList list = base.GenerateLoot(mob, killer); 
 			#region Campfire
-            if (Util.Chance(2))
+            if (Util.Chance(5))
                 list.AddFixed(UtilityScrollsEvent.Tinderbox);
             #endregion
 			#region Trainer
-			int chance = (int)Math.Max(1, 100 / (GameServer.ServerRules.GetExperienceForLevel(killer.Level + 1) / mob.ExperienceValue));
+			int chance = Math.Max(1, 100 / (int)(GameServer.ServerRules.GetExperienceForLevel(killer.Level + 1) / mob.ExperienceValue));
 			if (Util.Chance(chance))
 				list.AddFixed(UtilityScrollsEvent.TrainerScroll);
 			#endregion
 			#region Merchant
-			if (Util.Chance(2))
+			if (Util.Chance(5))
 				list.AddFixed(UtilityScrollsEvent.MerchantScroll);
 			#endregion
 			#region Healer
-			if (Util.Chance((int)Math.Max(1, killer.GetConLevel(mob) + 1 / 2)))
+			if (Util.Chance(Math.Max(1, (int)(killer.GetConLevel(mob) + 1 / 2))))
 				list.AddFixed(UtilityScrollsEvent.HealerScroll);
 			#endregion
 			#region Teleporter
-			if (Util.Chance(1))
+			if (Util.Chance(2))
 				list.AddFixed(UtilityScrollsEvent.TeleporterScroll);
 			#endregion
 			return list;
@@ -571,9 +571,21 @@ namespace DOL.GS.Spells
 			: base(caster, spell, line)
 		{ }
 
+		protected override GameSpellEffect CreateSpellEffect(GameLiving target, double effectiveness)
+		{
+			// damage is not reduced with distance
+			return new GameSpellEffect(this, m_spell.Frequency, m_spellLine.IsBaseLine ? 5000 : 4000, 1);
+		}
+
+		public override bool IsNewEffectBetter(GameSpellEffect oldeffect, GameSpellEffect neweffect)
+		{
+			return false;
+		}
+
 		public override void OnEffectPulse(GameSpellEffect effect)
 		{
 			if (m_campfire == null) return;
+
 
 			foreach (GamePlayer player in m_campfire.GetPlayersInRadius(500))
 			{
@@ -581,6 +593,18 @@ namespace DOL.GS.Spells
 
 				if ((GameServer.ServerRules.IsSameRealm(Caster, player, true)) && (player.InCombat == false))
 				{
+					bool good = true;
+					foreach (GameSpellEffect eff in player.EffectList.GetAllOfType(GameSpellEffect) as GameSpellEffect)
+					{
+						if (eff.SpellHandler.GetType == this.GetType())
+						{
+							good = false;
+							break;
+						}
+					}
+					if (!good)
+						continue;
+					CreateSpellEffect(player, 1.0);
 					int mr = player.MaxMana / 20;
 					int hr = player.MaxHealth / 20;
 					int er = player.MaxEndurance / 20;
