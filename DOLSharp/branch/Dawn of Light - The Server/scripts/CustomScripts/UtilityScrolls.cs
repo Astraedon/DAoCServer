@@ -571,17 +571,6 @@ namespace DOL.GS.Spells
 			: base(caster, spell, line)
 		{ }
 
-		protected override GameSpellEffect CreateSpellEffect(GameLiving target, double effectiveness)
-		{
-			// damage is not reduced with distance
-			return new GameSpellEffect(this, m_spell.Frequency, m_spellLine.IsBaseLine ? 5000 : 4000, 1);
-		}
-
-		public override bool IsNewEffectBetter(GameSpellEffect oldeffect, GameSpellEffect neweffect)
-		{
-			return false;
-		}
-
 		public override void OnEffectPulse(GameSpellEffect effect)
 		{
 			if (m_campfire == null) return;
@@ -593,18 +582,6 @@ namespace DOL.GS.Spells
 
 				if ((GameServer.ServerRules.IsSameRealm(Caster, player, true)) && (player.InCombat == false))
 				{
-					bool good = true;
-					foreach (GameSpellEffect eff in player.EffectList.GetAllOfType(typeof(GameSpellEffect)))
-					{
-						if (eff.SpellHandler.GetType() == this.GetType())
-						{
-							good = false;
-							break;
-						}
-					}
-					if (!good)
-						continue;
-					CreateSpellEffect(player, 1.0);
 					int mr = player.MaxMana / 20;
 					int hr = player.MaxHealth / 20;
 					int er = player.MaxEndurance / 20;

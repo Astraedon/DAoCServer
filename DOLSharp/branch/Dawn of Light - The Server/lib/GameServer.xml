@@ -1296,6 +1296,11 @@
             Cancels all concentration effects by this living and on this living
             </summary>
         </member>
+        <member name="M:DOL.GS.GameLiving.CancelAllConcentrationEffects(System.Boolean)">
+            <summary>
+            Cancels all concentration effects by this living and on this living
+            </summary>
+        </member>
         <member name="F:DOL.GS.GameLiving.m_targetObjectWeakReference">
             <summary>
             The targetobject of this living
@@ -6693,6 +6698,17 @@
             <param name="centerObject">The center object of the message</param>
             <param name="message">The message to send</param>
             <param name="chatType">The type of message to send</param>
+            <remarks>If the centerObject is a player, he won't receive the message</remarks>
+        </member>
+        <member name="M:DOL.GS.Message.SystemToOthers2(DOL.GS.GameObject,DOL.GS.PacketHandler.eChatType,System.String,System.Object[])">
+            <summary>
+            Sends a message to the system window of players inside
+            INFO_DISTANCE radius of the center object
+            </summary>
+            <param name="centerObject">The center object of the message</param>
+            <param name="chatType">The type of message to send</param>
+            <param name="message">The Translation-Message-ID to send</param>
+            <param name="args">The Translation args</param>
             <remarks>If the centerObject is a player, he won't receive the message</remarks>
         </member>
         <member name="M:DOL.GS.Message.SystemToArea(DOL.GS.GameObject,System.String,DOL.GS.PacketHandler.eChatType,System.UInt16,DOL.GS.GameObject[])">
@@ -28867,6 +28883,11 @@
             Cancels all list effects
             </summary>
         </member>
+        <member name="M:DOL.GS.Spells.ConcentrationList.CancelAll(System.Boolean)">
+            <summary>
+            Cancels all list effects
+            </summary>
+        </member>
         <member name="M:DOL.GS.Spells.ConcentrationList.BeginChanges">
             <summary>
             Stops list updates for multiple changes
@@ -34077,6 +34098,18 @@
         <member name="F:DOL.AI.Brain.eAggressionState.Passive">
             <summary>
             Attack only on order
+            </summary>
+        </member>
+        <member name="T:DOL.GS.PropertyCalc.SpellLevelCalculator">
+            <summary>
+            The Character Stat calculator
+            
+            BuffBonusCategory1 is used for all single stat buffs
+            BuffBonusCategory2 is used for all dual stat buffs
+            BuffBonusCategory3 is used for all debuffs (positive values expected here)
+            BuffBonusCategory4 is used for all other uncapped modifications
+                               category 4 kicks in at last
+            BuffBonusMultCategory1 used after all buffs/debuffs
             </summary>
         </member>
     </members>
