@@ -81,7 +81,7 @@ namespace DOL.GS.Scripts
 											int alb = WorldMgr.GetClientsOfRegionCount(249, 1);
 											int mid = WorldMgr.GetClientsOfRegionCount(249, 2);
 											int hib = WorldMgr.GetClientsOfRegionCount(249, 3);
-											msg += " Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
+											msg += "|| Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
 											IRCBot.SendNotice(source.Nick, msg);
 										}
 										break;
@@ -101,7 +101,7 @@ namespace DOL.GS.Scripts
 								int alb = WorldMgr.GetClientsOfRegionCount(249, 1);
 								int mid = WorldMgr.GetClientsOfRegionCount(249, 2);
 								int hib = WorldMgr.GetClientsOfRegionCount(249, 3);
-								msg += " Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
+								msg += "|| Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
 								IRCBot.SendNotice(source.Nick, msg);
 							}
 						}
@@ -115,8 +115,8 @@ namespace DOL.GS.Scripts
 							int alb = WorldMgr.GetClientsOfRegionCount((ushort)keep.Region, 1);
 							int mid = WorldMgr.GetClientsOfRegionCount((ushort)keep.Region, 2);
 							int hib = WorldMgr.GetClientsOfRegionCount((ushort)keep.Region, 3);
-							msg += " Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
-							IRCBot.SendMessage(CHANNEL, msg);
+							msg += "|| Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
+							IRCBot.SendNotice(source.Nick, msg);
 						}
 
 						break;

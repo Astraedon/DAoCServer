@@ -1965,11 +1965,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="P:DOL.GS.GameLiving.IsCasting">
-            <summary>
-            spell handlers that are currently running duration spells
-            </summary>
-        </member>
         <member name="P:DOL.GS.GameLiving.CurrentSpellHandler">
             <summary>
             active spellhandler (casting phase) or null
@@ -3317,6 +3312,15 @@
             This method is called to drop loot after this mob dies
             </summary>
             <param name="killer">The killer</param>
+        </member>
+        <member name="M:DOL.GS.GameNPC.EnemyHealed(DOL.GS.GameLiving,DOL.GS.GameObject,DOL.GS.GameLiving.eHealthChangeType,System.Int32)">
+            <summary>
+            The enemy is healed, so we add to the xp gainers list
+            </summary>
+            <param name="enemy"></param>
+            <param name="healSource"></param>
+            <param name="changeType"></param>
+            <param name="healAmount"></param>
         </member>
         <member name="M:DOL.GS.GameNPC.StartSpellAttack(DOL.GS.GameObject)">
             <summary>
@@ -5080,8 +5084,19 @@
             </summary>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:DOL.GS.CharacterClassSpec.OnLevelUp(DOL.GS.GamePlayer)" -->
-        <!-- Badly formed XML comment ignored for member "M:DOL.GS.CharacterClassSpec.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)" -->
+        <member name="M:DOL.GS.CharacterClassSpec.OnLevelUp(DOL.GS.GamePlayer)">
+            <summary>
+            Add all skills and other things that are required for current level
+            </summary>
+            <param name="player">player to modify</param>
+        </member>
+        <member name="M:DOL.GS.CharacterClassSpec.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)">
+            <summary>
+            Add all spell-lines and other things that are new when this skill is trained
+            </summary>
+            <param name="player">player to modify</param>
+            <param name="skill">The skill that is trained</param>
+        </member>
         <member name="M:DOL.GS.CharacterClassSpec.CanUseLefthandedWeapon(DOL.GS.GamePlayer)">
             <summary>
             Checks whether player has ability to use lefthanded weapons
@@ -6469,6 +6484,12 @@
             <param name="p">The player owner</param>
             <returns>The house object</returns>
         </member>
+        <member name="M:DOL.GS.Housing.HouseMgr.getHousesCloseToSpot(System.UInt16,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            This function gets the house close to spot
+            </summary>
+            <returns>array of house</returns>
+        </member>
         <member name="T:DOL.GS.PlayerGroup">
             <summary>
             Summary description for PlayerGroup.
@@ -6707,7 +6728,7 @@
             </summary>
             <param name="centerObject">The center object of the message</param>
             <param name="chatType">The type of message to send</param>
-            <param name="message">The Translation-Message-ID to send</param>
+            <param name="LanguageMessageID">The language message ID</param>
             <param name="args">The Translation args</param>
             <remarks>If the centerObject is a player, he won't receive the message</remarks>
         </member>
@@ -7091,7 +7112,6 @@
             <summary>
             Gets the count of enemies in the Area
             </summary>
-            <param name="guard">The guard object</param>
             <returns></returns>
         </member>
         <member name="M:DOL.GS.Keeps.GameKeepGuard.AddToWorld">
@@ -8876,7 +8896,13 @@
             Checks whether player has ability to use lefthanded weapons
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:DOL.GS.Scripts.ClassShadowblade.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)" -->
+        <member name="M:DOL.GS.Scripts.ClassShadowblade.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)">
+            <summary>
+            Add all spell-lines and other things that are new when this skill is trained
+            </summary>
+            <param name="player">player to modify</param>
+            <param name="skill">The skill to train</param>
+        </member>
         <member name="T:DOL.GS.Scripts.ClassMinstrel">
             <summary>
             
@@ -8887,7 +8913,13 @@
             
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:DOL.GS.Scripts.ClassMinstrel.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)" -->
+        <member name="M:DOL.GS.Scripts.ClassMinstrel.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)">
+            <summary>
+            Add all spell-lines and other things that are new when this skill is trained
+            </summary>
+            <param name="player">player to modify</param>
+            <param name="skill">The skill to train</param>
+        </member>
         <member name="T:DOL.GS.Keeps.GameKeepHookPoint">
             <summary>
             A keepComponent
@@ -10825,7 +10857,7 @@
             Is player allowed to make the item
             </summary>
             <param name="player"></param>
-            <param name="point"></param>
+            <param name="item"></param>
             <returns></returns>
         </member>
         <member name="M:DOL.GS.ServerRules.AbstractServerRules.GetObjectSpecLevel(DOL.GS.GamePlayer,DOL.GS.eObjectType)">
@@ -11220,6 +11252,7 @@
             </summary>
             <param name="ItemName">Name for the object</param>
             <param name="ItemLevel">Level to give to the object</param>
+            <param name="Model">Model for the object</param>
             <returns>InventoryItem of given Name and Level</returns>
         </member>
         <member name="M:DOL.GS.Quests.AbstractTask.CheckAvailability(DOL.GS.GamePlayer,DOL.GS.GameLiving,System.Int32)">
@@ -11227,6 +11260,8 @@
             Check if Player can accept a new Task
             </summary>
             <param name="player">The GamePlayer Object</param>
+            <param name="target">The target</param>
+            <param name="chanceOfSuccess">The chance of success</param>
             <returns>True Player have no other Chart</returns>
         </member>
         <member name="P:DOL.GS.Quests.AbstractTask.TaskActive">
@@ -11291,6 +11326,7 @@
             Create an Item, Search for a NPC to consign the Item and give Item to the Player
             </summary>
             <param name="player">The GamePlayer Object</param>
+            <param name="source">The source of the task</param>
         </member>
         <member name="M:DOL.GS.Quests.CraftTask.GetRandomNPC(DOL.GS.GamePlayer)">
             <summary>
@@ -11890,7 +11926,11 @@
             The player currently crafting
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:DOL.GS.AbstractCraftingSkill.ITEM_CRAFTER" -->
+        <member name="F:DOL.GS.AbstractCraftingSkill.ITEM_CRAFTER">
+            <summary>
+            The item in construction
+            </summary>
+        </member>
         <member name="F:DOL.GS.AbstractCraftingSkill.log">
             <summary>
             Defines a logger for this class.
@@ -11929,6 +11969,14 @@
         <member name="M:DOL.GS.AbstractCraftingSkill.CheckTool(DOL.GS.GamePlayer,DOL.Database.DBCraftedItem)">
             <summary>
             Check if the player own all needed tools
+            </summary>
+            <param name="player"></param>
+            <param name="craftItemData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DOL.GS.AbstractCraftingSkill.CheckSecondCraftingSkillRequirement(DOL.GS.GamePlayer,DOL.Database.DBCraftedItem)">
+            <summary>
+            Check if the player have enough secondary crafting skill to build the item
             </summary>
             <param name="player"></param>
             <param name="craftItemData"></param>
@@ -11988,11 +12036,6 @@
             Calculate crafting time
             </summary>
         </member>
-        <member name="M:DOL.GS.AbstractCraftingSkill.CalculateChanceToLooseMaterial(DOL.GS.GamePlayer,DOL.Database.DBCraftedItem)">
-            <summary>
-            Calculate chance to lose material
-            </summary>
-        </member>
         <member name="M:DOL.GS.AbstractCraftingSkill.CalculateSecondCraftingSkillMinimumLevel(DOL.Database.DBCraftedItem)">
             <summary>
             Calculate the minumum needed secondary crafting skill level to make the item
@@ -12005,11 +12048,11 @@
         </member>
         <member name="M:DOL.GS.AbstractCraftingSkill.GetItemCon(System.Int32,System.Int32)">
             <summary>
-            get item con color compared to crafters skill, TODO no floating point calculation yet
+            get item con color compared to crafters skill
             </summary>
             <param name="crafterSkill"></param>
             <param name="itemCraftingLevel"></param>
-            <returns></returns>
+            <returns>-3 grey, -2 green, -1 blue, 0 yellow, 1 orange, 2 red, 3 purple</returns>
         </member>
         <member name="P:DOL.GS.AbstractCraftingSkill.eSkill">
             <summary>
@@ -12737,7 +12780,13 @@
             
              </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:DOL.GS.Scripts.ClassInfiltrator.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)" -->
+        <member name="M:DOL.GS.Scripts.ClassInfiltrator.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)">
+            <summary>
+            Add all spell-lines and other things that are new when this skill is trained
+            </summary>
+            <param name="player">player to modify</param>
+            <param name="skill">The skill to train</param>
+        </member>
         <member name="T:DOL.GS.Items.DefaultHiberniaItems">
             <summary>
             Creates Level 5 items given by trainer for Hibernia
@@ -13964,6 +14013,7 @@
             Checks wether given point is within area boundaries
             </summary>
             <param name="p"></param>
+            <param name="checkZ"></param>
             <returns></returns>
         </member>
         <member name="P:DOL.GS.Area.Circle.X">
@@ -14114,6 +14164,7 @@
             <param name="bytes">Packet to be sent</param>
             <param name="count">The count of bytes to send</param>
             <param name="clientEndpoint">Address of receiving client</param>
+            <param name="callback"></param>
         </member>
         <member name="M:DOL.GS.GameServer.SendToCallback(System.IAsyncResult)">
             <summary>
@@ -14500,7 +14551,15 @@
             Standard brain for standard mobs
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:DOL.AI.APlayerVicinityBrain" -->
+        <member name="T:DOL.AI.APlayerVicinityBrain">
+            <summary>
+            <p>This class is the base brain of all npc's that only stay active when players are close</p>
+            <p>This class defines the base for a brain that activates itself when players get close to
+            it's body and becomes dormat again after a certain amount of time when no players are close
+            to it's body anymore.</p>
+            <p>Useful to save CPU for MANY mobs that have no players in range, they will stay dormant.</p>
+            </summary>
+        </member>
         <member name="T:DOL.AI.ABrain">
             <summary>
             This class is the base of all arteficial intelligence in game objects
@@ -14981,9 +15040,11 @@
             <summary>
             calculates distance between 2 locations
             </summary>
+            <param name="r1"></param>
             <param name="x1"></param>
             <param name="y1"></param>
             <param name="z1"></param>
+            <param name="r2"></param>
             <param name="x2"></param>
             <param name="y2"></param>
             <param name="z2"></param>
@@ -15132,6 +15193,7 @@
             <summary>
             Calculates endurance needed to use style
             </summary>
+            <param name="living">The living doing the style</param>
             <param name="style">The style to be used</param>
             <param name="weaponSpd">The weapon speed</param>
             <returns>Endurance needed to use style</returns>
@@ -15871,6 +15933,7 @@
             </summary>
             <param name="fromSlot">Source slot</param>
             <param name="toSlot">Destination slot</param>
+            <param name="itemCount"></param>
             <returns>true if successfull false if not</returns>
         </member>
         <member name="M:DOL.GS.GameLivingInventory.AddTemplate(DOL.Database.ItemTemplate,System.Int32,DOL.GS.eInventorySlot,DOL.GS.eInventorySlot)">
@@ -16478,6 +16541,7 @@
             Starts a new day with a certain increment
             </summary>
             <param name="dayInc"></param>
+            <param name="dayStart"></param>
         </member>
         <member name="M:DOL.GS.WorldMgr.GetCurrentDayTime">
             <summary>
@@ -16726,6 +16790,7 @@
             </summary>
             <param name="playerName">Name to search</param>
             <param name="exactMatch">true if AccountName match exactly</param>
+            <param name="activeRequired"></param>
             <returns>The found GameClient or null</returns>
         </member>
         <member name="M:DOL.GS.WorldMgr.GetClientByPlayerNameAndRealm(System.String,System.Int32,System.Boolean)">
@@ -16735,6 +16800,7 @@
             </summary>
             <param name="playerName">Name to search</param>
             <param name="realmID">search in: 0=all realms or player.Realm</param>
+            <param name="activeRequired"></param>
             <returns>The found GameClient or null</returns>
         </member>
         <member name="M:DOL.GS.WorldMgr.GuessClientByPlayerNameAndRealm(System.String,System.Int32,System.Boolean,System.Int32@)">
@@ -16745,6 +16811,7 @@
             <param name="playerName">Name to search</param>
             <param name="realmID">search in: 0=all realms or player.Realm</param>
             <param name="result">returns: 1=no name found, 2=name is not unique, 3=exact match, 4=guessed name</param>
+            <param name="activeRequired"></param>
             <returns>The found GameClient or null</returns>
         </member>
         <member name="M:DOL.GS.WorldMgr.GetClientByPlayerNameFromRegion(System.String,System.UInt16,System.Boolean,System.Boolean)">
@@ -16754,6 +16821,7 @@
             <param name="playerName">Name to search</param>
             <param name="regionID">Region ID of region to search through</param>
             <param name="exactMatch">true if the Name must match exactly</param>
+            <param name="activeRequired"></param>
             <returns>The first found GameClient or null</returns>
         </member>
         <member name="M:DOL.GS.WorldMgr.GetAllPlayingClients">
@@ -17933,7 +18001,7 @@
             Returns an enumeration with all mounted Relics of an realm by a specified RelicType
             </summary>
             <param name="Realm"></param>
-            <param name="Type"></param>
+            <param name="RelicType"></param>
             <returns></returns>
         </member>
         <member name="M:DOL.GS.RelicMgr.GetRelicCount(System.Byte)">
@@ -18624,7 +18692,8 @@
             <summary>
             Get how much the gem use like bonus point
             </summary>
-            <param name="gem"></param>
+            <param name="bonusType"></param>
+            <param name="bonusValue"></param>
             <returns></returns>
         </member>
         <member name="M:DOL.GS.SpellCrafting.GetOverchargePenality(System.Int32,System.Int32)">
@@ -19429,7 +19498,12 @@
             
              </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:DOL.GS.Scripts.ClassScout.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)" -->
+        <member name="M:DOL.GS.Scripts.ClassScout.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)">
+            <summary>
+            Add all spell-lines and other things that are new when this skill is trained
+            </summary>
+            <param name="player">player to modify</param>
+        </member>
         <member name="T:DOL.GS.LootGeneratorMoney">
             <summary>
             MoneyLootGenerator
@@ -19719,8 +19793,6 @@
             <summary>
             Returns a Template for Name and Model for the relic
             </summary>
-            <param name="Realm"></param>
-            <param name="RelicType"></param>
             <returns>this object has only set Realm and Name</returns>
         </member>
         <member name="T:DOL.GS.Keeps.PositionMgr">
@@ -19791,7 +19863,7 @@
             <summary>
             Creates a position
             </summary>
-            <param name="objectID">The object ID</param>
+            <param name="templateID">The template ID</param>
             <param name="component">The component object</param>
             <param name="player">The creating player object</param>
             <returns>The position object</returns>
@@ -19844,11 +19916,6 @@
         <member name="P:DOL.GS.Keeps.GuardLord.MaxHealth">
             <summary>
             Lord needs more health at the moment
-            </summary>
-        </member>
-        <member name="F:DOL.GS.PropertyChangingAbility.log">
-            <summary>
-            Defines a logger for this class.
             </summary>
         </member>
         <member name="M:DOL.GS.PropertyChangingAbility.SendUpdates(DOL.GS.GameLiving)">
@@ -20496,7 +20563,6 @@
             <summary>
             Adds an interact QuestPart that will display some sort of text, depending on texttype.
             </summary>
-            <param name="questType">type of quest this interact Questpart should be added to.</param>
             <param name="npc">NPC player must interact with</param>
             <param name="step">QuestStep Player must have to fire interaction. 
             -1 means Player does not have quest defined by questType
@@ -20511,8 +20577,6 @@
             <summary>
             Adds an interact QuestPart that will display some sort of text, depending on texttype.
             </summary>
-            <param name="questType">type of quest this interact Questpart should be added to.</param>
-            <param name="npc">NPC player must interact with</param>
             <param name="step">QuestStep Player must have to fire interaction. 
             -1 means Player does not have quest defined by questType
             0 means Player has quest defined by questType
@@ -20618,7 +20682,7 @@
             <summary>
             Executes the stealth ability
             </summary>
-            <param name="spec"></param>
+            <param name="ab"></param>
             <param name="player"></param>
         </member>
         <member name="T:DOL.GS.PropertyCalc.CriticalMeleeHitChanceCalculator">
@@ -20643,7 +20707,6 @@
             <summary>
             send message to all member of alliance
             </summary>
-            <param name="obj"></param>
         </member>
         <member name="M:DOL.GS.Alliance.LoadFromDatabase(DOL.Database.DataObject)">
             <summary>
@@ -22025,11 +22088,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="F:DOL.GS.Spells.WaterBreathingSpellHandler.log">
-            <summary>
-            Defines a logger for this class.
-            </summary>
-        </member>
         <member name="T:DOL.GS.Spells.SavageEvadeHandler">
             <summary>
             Summary description for SavageHasteHandler.
@@ -23228,7 +23286,6 @@
             <summary>
             Method to determine if an attack result, resulted in a hit
             </summary>
-            <param name="result">eAttackResult</param>
             <returns>true if it was a hit</returns>
         </member>
         <member name="T:DOL.GS.AttackData.eAttackType">
@@ -24543,7 +24600,11 @@
             The player currently crafting
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:DOL.GS.Repair.ITEM_CRAFTER" -->
+        <member name="F:DOL.GS.Repair.ITEM_CRAFTER">
+            <summary>
+            The item in construction
+            </summary>
+        </member>
         <member name="F:DOL.GS.Repair.log">
             <summary>
             Defines a logger for this class.
@@ -25123,7 +25184,12 @@
             </summary>
             <param name="player"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:DOL.GS.Scripts.ClassRanger.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)" -->
+        <member name="M:DOL.GS.Scripts.ClassRanger.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)">
+            <summary>
+            Add all spell-lines and other things that are new when this skill is trained
+            </summary>
+            <param name="player">player to modify</param>
+        </member>
         <member name="T:DOL.GS.Scripts.ClassNightshade">
             <summary>
             
@@ -25135,7 +25201,12 @@
             </summary>
             <param name="player"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:DOL.GS.Scripts.ClassNightshade.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)" -->
+        <member name="M:DOL.GS.Scripts.ClassNightshade.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)">
+            <summary>
+            Add all spell-lines and other things that are new when this skill is trained
+            </summary>
+            <param name="player">player to modify</param>
+        </member>
         <member name="T:DOL.GS.Scripts.ClassFriar">
              <summary>
             
@@ -25766,7 +25837,7 @@
             Method to tell us if a player can interact with the lord to do certain tasks
             </summary>
             <param name="player">The player object</param>
-            <param name="area">The area object</param>
+            <param name="keep">The area object</param>
             <param name="type">The type of interaction</param>
             <returns></returns>
         </member>
@@ -26308,7 +26379,6 @@
             Is player allowed to make the item
             </summary>
             <param name="player"></param>
-            <param name="point"></param>
             <returns></returns>
         </member>
         <member name="M:DOL.GS.ServerRules.PvEServerRules.GetColorHandling(DOL.GS.GameClient)">
@@ -26455,7 +26525,6 @@
             </summary>
             <param name="questType">The type of the quest</param>
             <param name="source">The npc source</param>
-            <param name="target">The player to ask</param>
             <param name="sentence">The sentence to show</param>
         </member>
         <member name="M:DOL.GS.Quests.QuestMgr.AbortQuestToPlayer(System.Type,System.String,DOL.GS.GamePlayer,DOL.GS.GameNPC)">
@@ -26465,7 +26534,6 @@
             <param name="questType">The type of the quest</param>
             <param name="source">The npc source</param>
             <param name="target">The player to ask</param>
-            <param name="sentence">The sentence to show</param>
         </member>
         <member name="M:DOL.GS.Quests.QuestMgr.GiveQuestToPlayer(System.Type,DOL.GS.GamePlayer)">
             <summary>
@@ -27138,9 +27206,21 @@
             The player currently crafting
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:DOL.GS.Salvage.ITEM_CRAFTER" -->
-        <!-- Badly formed XML comment ignored for member "F:DOL.GS.Salvage.MATERIAL_CRAFTER" -->
-        <!-- Badly formed XML comment ignored for member "F:DOL.GS.Salvage.MATERIAL_COUNT_CRAFTER" -->
+        <member name="F:DOL.GS.Salvage.ITEM_CRAFTER">
+            <summary>
+            The item to salvage
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Salvage.MATERIAL_CRAFTER">
+            <summary>
+            The material to give
+            </summary>
+        </member>
+        <member name="F:DOL.GS.Salvage.MATERIAL_COUNT_CRAFTER">
+            <summary>
+            The material to give
+            </summary>
+        </member>
         <member name="F:DOL.GS.Salvage.log">
             <summary>
             Defines a logger for this class.
@@ -27175,7 +27255,6 @@
             </summary>
             <param name="player"></param>
             <param name="item"></param>
-            <param name="percentNeeded">min 50 max 100</param>
             <returns></returns>
         </member>
         <member name="M:DOL.GS.Salvage.CalculateMaterialCount(DOL.GS.GamePlayer,DOL.Database.InventoryItem,DOL.Database.DBSalvage)">
@@ -27571,7 +27650,7 @@
             Is player allowed to make the item
             </summary>
             <param name="player"></param>
-            <param name="point"></param>
+            <param name="item"></param>
             <returns></returns>
         </member>
         <member name="M:DOL.GS.ServerRules.NormalServerRules.CheckAbilityToUseItem(DOL.GS.GameLiving,DOL.Database.ItemTemplate)">
@@ -27745,7 +27824,12 @@
             
              </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:DOL.GS.Scripts.ClassHunter.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)" -->
+        <member name="M:DOL.GS.Scripts.ClassHunter.OnSkillTrained(DOL.GS.GamePlayer,DOL.GS.Specialization)">
+            <summary>
+            Add all spell-lines and other things that are new when this skill is trained
+            </summary>
+            <param name="player">player to modify</param>
+        </member>
         <member name="T:DOL.GS.ISpecActionHandler">
             <summary>
             callback handler for a spec that is activated by clicking on an associated icon
@@ -29350,7 +29434,11 @@
             <param name="specKey"></param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:DOL.GS.NpcTemplate" -->
+        <member name="T:DOL.GS.NpcTemplate">
+            <summary>
+            A npc template
+            </summary>
+        </member>
         <member name="F:DOL.GS.NpcTemplate.log">
             <summary>
             Defines a logger for this class.
@@ -29665,6 +29753,18 @@
         <member name="P:DOL.GS.Effects.DivineInterventionEffect.DelveInfo">
             <summary>
             Delve Info
+            </summary>
+        </member>
+        <member name="T:DOL.GS.PropertyCalc.SpellLevelCalculator">
+            <summary>
+            The Character Stat calculator
+            
+            BuffBonusCategory1 is used for all single stat buffs
+            BuffBonusCategory2 is used for all dual stat buffs
+            BuffBonusCategory3 is used for all debuffs (positive values expected here)
+            BuffBonusCategory4 is used for all other uncapped modifications
+                               category 4 kicks in at last
+            BuffBonusMultCategory1 used after all buffs/debuffs
             </summary>
         </member>
         <member name="T:DOL.GS.PacketHandler.eLoginError">
@@ -30267,7 +30367,11 @@
             Holds the Spell lines the player can use
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:DOL.GS.GamePlayer.m_styles" -->
+        <member name="F:DOL.GS.GamePlayer.m_styles">
+            <summary>
+            Holds all styles of the player
+            </summary>
+        </member>
         <member name="F:DOL.GS.GamePlayer.m_skillList">
             <summary>
             Holds all non trainable skills in determined order without styles
@@ -30334,7 +30438,7 @@
             <summary>
             Respec single line
             </summary>
-            <param name="player">Player that is doing respec</param>
+            <param name="specLine">spec line being respec'd</param>
             <returns>Amount of points spent in that line</returns>
         </member>
         <member name="M:DOL.GS.GamePlayer.GetSpecList">
@@ -30466,7 +30570,14 @@
             </summary>
             <param name="sendMessages">sends "you learn" messages if true</param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:DOL.GS.GamePlayer.UpdateSpellLineLevels(System.Boolean)" -->
+        <member name="M:DOL.GS.GamePlayer.UpdateSpellLineLevels(System.Boolean)">
+            <summary>
+            updates the levels of all spell lines
+            specialized spell lines depend from spec levels
+            base lines depend from player level
+            </summary>
+            <param name="sendMessages">sends "You gain power" messages if true</param>
+        </member>
         <member name="M:DOL.GS.GamePlayer.OnSkillTrained(DOL.GS.Specialization)">
             <summary>
             Called by trainer when specialization points were added to a skill
@@ -30732,7 +30843,7 @@
             Does needed interrupt checks and interrupts if needed
             </summary>
             <param name="attacker">the attacker that is interrupting</param>
-            <param name="attacktype">The attack type</param>
+            <param name="attackType">The attack type</param>
             <returns>true if interrupted successfully</returns>
         </member>
         <member name="M:DOL.GS.GamePlayer.CalculateArmorHitLocation">
@@ -32656,7 +32767,6 @@
             <summary>
             Constructs a new TimerEventArgs
             </summary>
-            <param name="text">the text being said</param>
         </member>
         <member name="P:DOL.Events.TimerEventArgs.TimerID">
             <summary>
@@ -33585,7 +33695,7 @@
             <summary>
             Checks if a GameRelic is mounted at this GameRelicPad
             </summary>
-            <param name="Relic"></param>
+            <param name="relic"></param>
             <returns></returns>
         </member>
         <member name="T:DOL.GS.GameRelicPad.PadArea">
@@ -34098,18 +34208,6 @@
         <member name="F:DOL.AI.Brain.eAggressionState.Passive">
             <summary>
             Attack only on order
-            </summary>
-        </member>
-        <member name="T:DOL.GS.PropertyCalc.SpellLevelCalculator">
-            <summary>
-            The Character Stat calculator
-            
-            BuffBonusCategory1 is used for all single stat buffs
-            BuffBonusCategory2 is used for all dual stat buffs
-            BuffBonusCategory3 is used for all debuffs (positive values expected here)
-            BuffBonusCategory4 is used for all other uncapped modifications
-                               category 4 kicks in at last
-            BuffBonusMultCategory1 used after all buffs/debuffs
             </summary>
         </member>
     </members>

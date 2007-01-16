@@ -343,7 +343,6 @@ namespace DOL.GS.GameEvents
 				if (m_trainerTemplate == null)
 				{
 					m_trainerTemplate = new NpcTemplate();
-					m_trainerTemplate.Flags += (byte)GameNPC.eFlags.PEACE;
 					m_trainerTemplate.Flags += (byte)GameNPC.eFlags.TRANSPARENT;
 					m_trainerTemplate.GuildName = "Trainer";
 					m_trainerTemplate.Name = "Summoned Trainer";
@@ -365,7 +364,6 @@ namespace DOL.GS.GameEvents
 				if (m_merchantTemplate == null)
 				{
 					m_merchantTemplate = new NpcTemplate();
-					m_merchantTemplate.Flags += (byte)GameNPC.eFlags.PEACE;
 					m_merchantTemplate.Flags += (byte)GameNPC.eFlags.TRANSPARENT;
 					m_merchantTemplate.GuildName = "Merchant";
 					m_merchantTemplate.Name = "Summoned Merchant";
@@ -387,7 +385,6 @@ namespace DOL.GS.GameEvents
 				if (m_healerTemplate == null)
 				{
 					m_healerTemplate = new NpcTemplate();
-					m_healerTemplate.Flags += (byte)GameNPC.eFlags.PEACE;
 					m_healerTemplate.Flags += (byte)GameNPC.eFlags.TRANSPARENT;
 					m_healerTemplate.GuildName = "Healer";
 					m_healerTemplate.Name = "Summoned Healer";
@@ -409,7 +406,6 @@ namespace DOL.GS.GameEvents
 				if (m_teleporterTemplate == null)
 				{
 					m_teleporterTemplate = new NpcTemplate();
-					m_teleporterTemplate.Flags += (byte)GameNPC.eFlags.PEACE;
 					m_teleporterTemplate.Flags += (byte)GameNPC.eFlags.TRANSPARENT;
 					m_teleporterTemplate.GuildName = "Realm Translocator";
 					m_teleporterTemplate.Name = "Scroll Translocator";
