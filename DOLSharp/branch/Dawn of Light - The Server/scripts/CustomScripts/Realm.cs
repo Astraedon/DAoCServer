@@ -18,7 +18,8 @@ namespace DOL.GS.Scripts
 
 			ArrayList list = new ArrayList();
 			int alb = 0, mid = 0, hib = 0;
-			list.Add(thidranki.Name + ": " + GlobalConstants.RealmToName((eRealm)thidranki.Realm));
+			string guildName = orseo.Guild == null ? "" : " (" + orseo.Guild.Name + ")";
+			list.Add(thidranki.Name + ": " + GlobalConstants.RealmToName((eRealm)thidranki.Realm) + guildName);
 			alb = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 1);
 			mid = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 2);
 			hib = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 3);

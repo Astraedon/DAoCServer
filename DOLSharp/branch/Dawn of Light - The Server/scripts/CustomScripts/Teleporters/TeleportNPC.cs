@@ -70,11 +70,16 @@ namespace DOL.GS.GameEvents
             if ((template.GetItem(eInventorySlot.TwoHandWeapon) != null) && (template.GetItem(eInventorySlot.RightHandWeapon) == null))
                 SwitchWeapon(eActiveWeaponSlot.TwoHanded);
 
+			Flags ^= (uint)GameNPC.eFlags.PEACE;
+
         }
 		//callbacks
 		public override bool Interact(GamePlayer player)
 		{
 			if (!base.Interact(player)) return false;
+
+			if (player.Client.Account.PrivLevel == 1 && Realm != player.Realm)
+				return false;
 
 			TurnTo(player.X, player.Y);
 

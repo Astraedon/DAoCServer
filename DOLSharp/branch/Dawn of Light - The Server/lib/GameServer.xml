@@ -32072,6 +32072,11 @@
             Bounty point value of this player
             </summary>
         </member>
+        <member name="P:DOL.GS.GamePlayer.ExperienceValue">
+            <summary>
+            Returns the amount of experience this player is worth
+            </summary>
+        </member>
         <member name="P:DOL.GS.GamePlayer.MoneyValue">
             <summary>
             Money value of this player
