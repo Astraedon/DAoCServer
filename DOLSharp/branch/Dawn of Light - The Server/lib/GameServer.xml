@@ -7974,6 +7974,11 @@
             The helper class for quckcast ability
             </summary>
         </member>
+        <member name="T:DOL.GS.Effects.StaticEffect">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:DOL.GS.Effects.IGameEffect">
             <summary>
             
@@ -7984,6 +7989,12 @@
             Effect must be canceled
             </summary>
             <param name="playerCanceled">true if player decided to cancel that effect by shift + rightclick</param>
+        </member>
+        <member name="M:DOL.GS.Effects.IGameEffect.getSavedEffect">
+            <summary>
+            Get the save effect
+            </summary>
+            <returns></returns>
         </member>
         <member name="P:DOL.GS.Effects.IGameEffect.Name">
             <summary>
@@ -8008,6 +8019,49 @@
         <member name="P:DOL.GS.Effects.IGameEffect.DelveInfo">
             <summary>
             Delve Info
+            </summary>
+        </member>
+        <member name="M:DOL.GS.Effects.StaticEffect.#ctor">
+            <summary>
+            create static effect
+            </summary>
+        </member>
+        <member name="M:DOL.GS.Effects.StaticEffect.Cancel(System.Boolean)">
+            <summary>
+            Cancel effect
+            </summary>
+            <param name="playerCanceled"></param>
+        </member>
+        <member name="M:DOL.GS.Effects.StaticEffect.Start(DOL.GS.GameLiving)">
+            <summary>
+            Start the effect on target
+            </summary>
+            <param name="target">The effect target</param>
+        </member>
+        <member name="M:DOL.GS.Effects.StaticEffect.Stop">
+            <summary>
+            Stop the effect on owner
+            </summary>
+        </member>
+        <member name="M:DOL.GS.Effects.StaticEffect.getSavedEffect">
+            <summary>
+            Get the save effect
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:DOL.GS.Effects.StaticEffect.Name">
+            <summary>
+            Name of the effect
+            </summary>
+        </member>
+        <member name="P:DOL.GS.Effects.StaticEffect.RemainingTime">
+            <summary>
+            Remaining Time of the effect in milliseconds
+            </summary>
+        </member>
+        <member name="P:DOL.GS.Effects.StaticEffect.InternalID">
+            <summary>
+            unique id for identification in effect list
             </summary>
         </member>
         <member name="F:DOL.GS.Effects.QuickCastEffect.delveString">
@@ -12621,48 +12675,6 @@
         <member name="T:DOL.GS.Effects.TrueshotEffect">
             <summary>
             Trueshot grants 50% more range for next archery attack
-            </summary>
-        </member>
-        <member name="T:DOL.GS.Effects.StaticEffect">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:DOL.GS.Effects.StaticEffect.#ctor">
-            <summary>
-            create static effect
-            </summary>
-        </member>
-        <member name="M:DOL.GS.Effects.StaticEffect.Cancel(System.Boolean)">
-            <summary>
-            Cancel effect
-            </summary>
-            <param name="playerCanceled"></param>
-        </member>
-        <member name="M:DOL.GS.Effects.StaticEffect.Start(DOL.GS.GameLiving)">
-            <summary>
-            Start the effect on target
-            </summary>
-            <param name="target">The effect target</param>
-        </member>
-        <member name="M:DOL.GS.Effects.StaticEffect.Stop">
-            <summary>
-            Stop the effect on owner
-            </summary>
-        </member>
-        <member name="P:DOL.GS.Effects.StaticEffect.Name">
-            <summary>
-            Name of the effect
-            </summary>
-        </member>
-        <member name="P:DOL.GS.Effects.StaticEffect.RemainingTime">
-            <summary>
-            Remaining Time of the effect in milliseconds
-            </summary>
-        </member>
-        <member name="P:DOL.GS.Effects.StaticEffect.InternalID">
-            <summary>
-            unique id for identification in effect list
             </summary>
         </member>
         <member name="T:DOL.GS.PropertyCalc.PropertyIndexer">
@@ -25320,6 +25332,11 @@
             the size of a shield
             </summary>
         </member>
+        <member name="T:DOL.GS.InstrumentType">
+            <summary>
+            The type of instrument
+            </summary>
+        </member>
         <member name="T:DOL.GS.eMaterial">
             <summary>
             the material type
@@ -31406,7 +31423,7 @@
             <param name="item">the item to create on the ground</param>
             <returns>the GameInventoryItem on the ground</returns>
         </member>
-        <member name="M:DOL.GS.GamePlayer.PickupObject(DOL.GS.GameObject)">
+        <member name="M:DOL.GS.GamePlayer.PickupObject(DOL.GS.GameObject,System.Boolean)">
             <summary>
             Called when the player picks up an item from the ground
             </summary>
@@ -31852,6 +31869,11 @@
         <member name="P:DOL.GS.GamePlayer.GainRP">
             <summary>
             Gets or sets the gain RP flag for this player
+            </summary>
+        </member>
+        <member name="P:DOL.GS.GamePlayer.Autoloot">
+            <summary>
+            Gets or sets the gain XP flag for this player
             </summary>
         </member>
         <member name="P:DOL.GS.GamePlayer.QuitTime">
@@ -32331,6 +32353,11 @@
         <member name="P:DOL.GS.GamePlayer.IsClimbing">
             <summary>
             Gets/sets the current diving state
+            </summary>
+        </member>
+        <member name="P:DOL.GS.GamePlayer.IsSwimming">
+            <summary>
+            Gets/sets the current swimming state
             </summary>
         </member>
         <member name="P:DOL.GS.GamePlayer.Stuck">
