@@ -434,16 +434,17 @@ namespace DOL.GS
                 list.AddFixed(UtilityScrollsEvent.Tinderbox);
             #endregion
 			#region Trainer
-			int chance = Math.Max(1, 100 / (int)(GameServer.ServerRules.GetExperienceForLevel(killer.Level + 1) / mob.ExperienceValue));
+			int chance = Math.Max(2, 100 / (int)(GameServer.ServerRules.GetExperienceForLevel(killer.Level + 1) / mob.ExperienceValue));
 			if (Util.Chance(chance))
 				list.AddFixed(UtilityScrollsEvent.TrainerScroll);
 			#endregion
 			#region Merchant
-			if (Util.Chance(5))
+			if (Util.Chance(2))
 				list.AddFixed(UtilityScrollsEvent.MerchantScroll);
 			#endregion
 			#region Healer
-			if (Util.Chance(Math.Max(1, (int)(killer.GetConLevel(mob) + 1 / 2))))
+			//if (Util.Chance(Math.Max(1, (int)(killer.GetConLevel(mob) + 1 / 2))))
+			if (Util.Chance(1))
 				list.AddFixed(UtilityScrollsEvent.HealerScroll);
 			#endregion
 			#region Teleporter

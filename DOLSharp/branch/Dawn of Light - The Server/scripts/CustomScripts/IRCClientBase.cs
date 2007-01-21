@@ -129,12 +129,12 @@ namespace IRC
 				else
 				{
 					string suf = "";
-
-					if (c == 'k' && false)
+					/*
+					if (c == 'k')
 					{
 						suf = " " + split[pos];
 						pos++;
-					}
+					}*/
 					m_Modes.Add(premode + c + suf);
 				}
 			}

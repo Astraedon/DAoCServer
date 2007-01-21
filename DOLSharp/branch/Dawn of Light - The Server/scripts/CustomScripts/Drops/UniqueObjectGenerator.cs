@@ -1792,7 +1792,6 @@ namespace DOL.GS
 					{
 						//There isn't a single armortype that doesn't use magical skills at all. Thus, we always allow it.
 						return true;
-						break;
 					}
 				case eProperty.AllMeleeWeaponSkills:
 					{
@@ -1801,13 +1800,11 @@ namespace DOL.GS
 							return true;
 						else
 							return true;
-						break;
 					}
 				case eProperty.AllSkills:
 					{
 						//everyone can use this
 						return true;
-						break;
 					}
 			}
 
@@ -2175,7 +2172,6 @@ namespace DOL.GS
 							return false;
 						else
 							return true;
-						break;
 					}
 				case eProperty.AllMeleeWeaponSkills:
 					{
@@ -2188,7 +2184,6 @@ namespace DOL.GS
 							return false;
 						else
 							return true;
-						break;
 					}
 			}
 			return false;

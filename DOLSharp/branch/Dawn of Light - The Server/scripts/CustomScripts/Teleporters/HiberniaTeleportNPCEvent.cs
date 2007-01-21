@@ -27,6 +27,7 @@ namespace DOL.GS.GameEvents
 			m_locs.Add(new Location("Connla", 200, 295723, 642545, 4848, 2026));
 			m_locs.Add(new Location("Culraid", 200, 298606, 688040, 4949, 3916));
 			m_locs.Add(new Location("Cursed Forest", 200, 447147, 525480, 6448, 2908));
+			m_locs.Add(new Location("Druim Cain", 200, 421994, 485663, 1824, 666));
 			m_locs.Add(new Location("Druim Ligen", 200, 335534, 422669, 5226, 2068));
 			m_locs.Add(new Location("Howth", 200, 342582, 592316, 5456, 4946));
 			m_locs.Add(new Location("Innis Carthaig", 200, 333848, 719126, 4296, 515));

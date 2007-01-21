@@ -82,7 +82,7 @@ namespace DOL.GS.Scripts
 			Hibernia_RespecMerchant.X = 32815;
 			Hibernia_RespecMerchant.Y = 31784;
 			Hibernia_RespecMerchant.Z = 8000;
-			Hibernia_RespecMerchant.Heading = 1098;
+			Hibernia_RespecMerchant.Heading = 25;
 			Hibernia_RespecMerchant.Inventory = template;
 			Hibernia_RespecMerchant.AddToWorld();
 			Hibernia_RespecMerchant.SwitchWeapon(eActiveWeaponSlot.TwoHanded);
