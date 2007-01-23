@@ -399,7 +399,7 @@ namespace DOL.GS.Scripts
 			private string m_str;
 			public bool ApplyFilter(GamePlayer player)
 			{
-				if (!player.IsAnonymous && player.Client.Account.Language == m_str)
+				if (!player.IsAnonymous && player.Client.Account.Language.ToLower() == m_str)
 					return true;
 				return false;
 			}
