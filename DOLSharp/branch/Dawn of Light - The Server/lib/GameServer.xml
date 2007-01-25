@@ -8030,22 +8030,7 @@
             The ability description
             </summary>
         </member>
-        <member name="F:DOL.GS.Effects.QuickCastEffect.m_player">
-            <summary>
-            The owner of the effect
-            </summary>
-        </member>
-        <member name="F:DOL.GS.Effects.QuickCastEffect.m_id">
-            <summary>
-            The internal unique effect ID
-            </summary>
-        </member>
-        <member name="M:DOL.GS.Effects.QuickCastEffect.#ctor">
-            <summary>
-            Creates a new quickcast effect
-            </summary>
-        </member>
-        <member name="M:DOL.GS.Effects.QuickCastEffect.Start(DOL.GS.GamePlayer)">
+        <member name="M:DOL.GS.Effects.QuickCastEffect.Start(DOL.GS.GameLiving)">
             <summary>
             Start the quickcast on player
             </summary>
@@ -8068,11 +8053,6 @@
         <member name="P:DOL.GS.Effects.QuickCastEffect.Icon">
             <summary>
             Icon to show on players, can be id
-            </summary>
-        </member>
-        <member name="P:DOL.GS.Effects.QuickCastEffect.InternalID">
-            <summary>
-            unique id for identification in effect list
             </summary>
         </member>
         <member name="P:DOL.GS.Effects.QuickCastEffect.DelveInfo">
@@ -24328,6 +24308,13 @@
             <summary>
             Call this function to close the door
             </summary>
+        </member>
+        <member name="M:DOL.GS.GameDoor.NPCManipulateDoorRequest(DOL.GS.GameNPC,System.Boolean)">
+            <summary>
+            Allow a NPC to manipulate the door
+            </summary>
+            <param name="npc"></param>
+            <param name="open"></param>
         </member>
         <member name="P:DOL.GS.GameDoor.DoorID">
             <summary>

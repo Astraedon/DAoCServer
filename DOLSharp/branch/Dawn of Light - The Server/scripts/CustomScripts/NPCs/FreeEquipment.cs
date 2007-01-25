@@ -389,9 +389,7 @@ namespace DOL.GS.Scripts
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Spear, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Spear, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Spear, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.CompositeBow, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.CompositeBow, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.CompositeBow, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.DistanceWeapon, eObjectType.CompositeBow, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
 
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
@@ -524,10 +522,7 @@ namespace DOL.GS.Scripts
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.RecurvedBow, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.RecurvedBow, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.RecurvedBow, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.DistanceWeapon, eObjectType.RecurvedBow, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
 
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Blades, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
@@ -602,6 +597,7 @@ namespace DOL.GS.Scripts
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.DistanceWeapon, eObjectType.Longbow, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
 									break;
 								}
 							case eCharacterClass.Shadowblade:
