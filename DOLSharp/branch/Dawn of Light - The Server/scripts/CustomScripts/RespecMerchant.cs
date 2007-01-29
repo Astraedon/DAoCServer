@@ -66,7 +66,7 @@ namespace DOL.GS.Scripts
 			Midgard_RespecMerchant.X = 32059;
 			Midgard_RespecMerchant.Y = 27616;
 			Midgard_RespecMerchant.Z = 8800;
-			Midgard_RespecMerchant.Heading = 4085;
+			Midgard_RespecMerchant.Heading = 1015;
 			Midgard_RespecMerchant.Inventory = template;
 			Midgard_RespecMerchant.AddToWorld();
 			Midgard_RespecMerchant.SwitchWeapon(eActiveWeaponSlot.TwoHanded);

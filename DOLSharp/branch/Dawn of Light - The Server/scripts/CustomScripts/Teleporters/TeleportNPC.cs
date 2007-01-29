@@ -275,7 +275,6 @@ namespace DOL.GS.GameEvents
 
 			if (!IsSummoned)
 			{
-
 				BindPoint bp = new BindPoint();
 				bp.Realm = Realm;
 				bp.Region = this.CurrentRegionID;

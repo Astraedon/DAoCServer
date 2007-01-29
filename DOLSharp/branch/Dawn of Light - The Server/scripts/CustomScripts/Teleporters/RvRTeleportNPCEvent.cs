@@ -57,7 +57,7 @@ namespace DOL.GS.GameEvents
 			m_albLocs.Add(new SpecialLocation("Bind Point", SpecialLocation.eSpecialLocation.BindPoint));
 			TeleportNPCUtility.CreateTeleporters(1, m_albLocs, "AlbionRvRTeleportNPCEvent", m_albNpcs);
 
-			m_midLocs.Add(new Location("Jordheim", 101, 31750, 28519, 8800, 2050));
+			m_midLocs.Add(new Location("Jordheim", 101, 31746, 28726, 8800, 2035));
 			m_midLocs.Add(new LocationExpansion("Thidranki (20-24)", 238, 570038, 540351, 5408, 4076, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 20, 24));
 			AbstractGameKeep midMolvikPK = KeepMgr.getKeepByID(644);
 			m_midLocs.Add(new LocationExpansion("Molvik (35-39)", (ushort)midMolvikPK.Region, midMolvikPK.X, midMolvikPK.Y, midMolvikPK.Z, (ushort)midMolvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 35, 39));

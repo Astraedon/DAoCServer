@@ -143,63 +143,63 @@ namespace DOL.GS
 
 		public static InventoryItem GenerateFreeEquipment(eInventorySlot slot, eObjectType type, byte level, GamePlayer player, eDamageType damage)
 		{
-				InventoryItem item = new InventoryItem();
-				//item realm
-				item.Realm = player.Realm;
-				//item level
-				item.Level = level;
+			InventoryItem item = new InventoryItem();
+			//item realm
+			item.Realm = player.Realm;
+			//item level
+			item.Level = level;
 
-				//object type
-				item.Object_Type = (int)type;
+			//object type
+			item.Object_Type = (int)type;
 
-				//item slot
-				item.Item_Type = (int)slot;
+			//item slot
+			item.Item_Type = (int)slot;
 
-				//damage type
-				item.Type_Damage = (int)damage;
+			//damage type
+			item.Type_Damage = (int)damage;
 
-				//item stats
-				//instrument dps_af needs to be known before name generation
-				GenerateItemStats(item);
+			//item stats
+			//instrument dps_af needs to be known before name generation
+			GenerateItemStats(item);
 
-				//item name and model
-				GenerateItemNameModel(item);
+			//item name and model
+			GenerateItemNameModel(item);
 
-				if (item.Object_Type == (int)eObjectType.Staff)
-				{
-					item.Bonus1 = item.Level;
-					item.Bonus1Type = (int)eProperty.AllFocusLevels;
-				}
+			if (item.Object_Type == (int)eObjectType.Staff)
+			{
+				item.Bonus1 = item.Level;
+				item.Bonus1Type = (int)eProperty.AllFocusLevels;
+			}
 
-				item.IsDropable = true;
-				item.IsPickable = true;
-				item.IsTradable = false;
+			item.IsDropable = false;
+			item.IsPickable = true;
+			item.IsTradable = false;
 
-				//item quality / maxquality
-				item.Quality = 85;
+			//item quality / maxquality
+			item.Quality = 85;
 
-				//item bonus
-				int temp = item.Level - 15;
-				temp -= temp % 5;
-				item.Bonus = temp;
-				if (item.Bonus < 0)
-					item.Bonus = 0;
+			//item bonus
+			int temp = item.Level - 15;
+			temp -= temp % 5;
+			item.Bonus = temp;
+			if (item.Bonus < 0)
+				item.Bonus = 0;
 
-				//constants
-				item.MaxQuality = 100;
-				int condition = item.Level * 2000;
-				item.Condition = condition;
-				item.MaxCondition = condition;
-				item.Durability = condition;
-				item.MaxDurability = condition;
+			//constants
+			item.MaxQuality = 100;
+			int condition = item.Level * 2000;
+			item.Condition = condition;
+			item.MaxCondition = condition;
+			item.Durability = condition;
+			item.MaxDurability = condition;
 
-				item.Weight = GenerateItemWeight((eObjectType)item.Object_Type, (eInventorySlot)item.Item_Type);
+			item.Weight = GenerateItemWeight((eObjectType)item.Object_Type, (eInventorySlot)item.Item_Type);
 
-				item.CrafterName = "Free Equipment";
-				item.Copper = 1;
-				item.Id_nb = "Free";
+			item.CrafterName = "Free Equipment";
+			item.Copper = 1;
+			item.Id_nb = "Free";
 
-				return item;
+			return item;
 		}
 
 		private static eObjectType GenerateObjectType(int realm)

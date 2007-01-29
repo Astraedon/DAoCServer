@@ -4339,11 +4339,6 @@ public void ReadMyData(string myConnString) {
             Create a guild
             </summary>
         </member>
-        <member name="F:DOL.Database.DBGuild.Characters">
-            <summary>
-            characters in guild
-            </summary>
-        </member>
         <member name="F:DOL.Database.DBGuild.Ranks">
             <summary>
             rank rules
@@ -4392,6 +4387,16 @@ public void ReadMyData(string myConnString) {
         <member name="P:DOL.Database.DBGuild.BountyPoints">
             <summary>
             bounty point of guild
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBGuild.Webpage">
+            <summary>
+            Webpage for the guild
+            </summary>
+        </member>
+        <member name="P:DOL.Database.DBGuild.Email">
+            <summary>
+            Email for the guild
             </summary>
         </member>
         <member name="T:DOL.Database.DBRelic">

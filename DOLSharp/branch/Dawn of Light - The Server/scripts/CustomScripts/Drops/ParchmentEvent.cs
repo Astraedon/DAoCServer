@@ -17,7 +17,7 @@ namespace DOL.GS.GameEvents
 		private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
 		//Every entry in this array gets a Merchant
-		private static GLoc[] m_locations = { new GLoc(33626, 30638, 8002, 2000, 10, 1), new GLoc(31996, 34241, 8032, 4000, 101, 2), new GLoc(33685, 32299, 8000, 1535, 201, 3) };
+		private static GLoc[] m_locations = { new GLoc(33626, 30638, 8002, 2000, 10, 1), new GLoc(31996, 34241, 8032, 4000, 101, 2), new GLoc(33383, 32330, 8000, 2044, 201, 3) };
 		//Every string in this array is added to m_tradeItems
 		private static ItemTemplate[] m_items = { UtilityScrollsEvent.HealerScroll, UtilityScrollsEvent.MerchantScroll, UtilityScrollsEvent.TeleporterScroll, UtilityScrollsEvent.Tinderbox, UtilityScrollsEvent.TrainerScroll};
 

@@ -9859,6 +9859,11 @@
             StatSave Interval
             </summary>
         </member>
+        <member name="F:DOL.GS.ServerProperties.Properties.ANON_MODIFIER">
+            <summary>
+            Anon Modifier
+            </summary>
+        </member>
         <member name="M:DOL.GS.ServerProperties.Properties.Load(DOL.GS.ServerProperties.ServerPropertyAttribute)">
             <summary>
             This method loads the property from the database and returns
@@ -32543,6 +32548,11 @@
         <member name="F:DOL.GS.GamePlayer.eReleaseType.Duel">
             <summary>
             Release to the current location
+            </summary>
+        </member>
+        <member name="F:DOL.GS.GamePlayer.eReleaseType.Bind">
+            <summary>
+            Release to your bind point
             </summary>
         </member>
         <member name="T:DOL.GS.GamePlayer.PrayAction">

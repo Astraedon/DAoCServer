@@ -386,7 +386,6 @@ namespace DOL.GS.Scripts
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Spear, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Spear, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Spear, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.DistanceWeapon, eObjectType.CompositeBow, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));

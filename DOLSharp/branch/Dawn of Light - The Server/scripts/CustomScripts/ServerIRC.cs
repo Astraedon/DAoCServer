@@ -226,7 +226,7 @@ namespace DOL.GS.Scripts
 
 							string classstr = ((eCharacterClass)c.Class).ToString();
 
-							msg = string.Format("{0}, the RR {1} {2}, {3}with {4} and {5} RPs", c.Name, rrstr, classstr, guildstr, killsstr, c.RealmPoints);
+							msg = string.Format("{0}, the RR {1} level {2} {3}, {4} with {5} and {6} RPs", c.Name, rrstr, c.Level, classstr, guildstr, killsstr, c.RealmPoints);
 						}
 						//<firstname> <lastname>, the realm rank <rank> <classname>, in <guild> with <totalkills> kills and <playing status>
 						IRCBot.SendMessage(CHANNEL, msg);
@@ -269,6 +269,19 @@ namespace DOL.GS.Scripts
 							client.Player.Out.SendCustomTextWindow("Broadcast", textList);
 						}
 						IRCBot.SendNotice(source.Nick, "\"" + message + "\" sent");
+						break;
+					}
+				case "!report":
+					{
+						message = message.Replace(data[0] + " ", "");
+						BugReport report = new BugReport();
+						report.DateSubmitted = DateTime.Now;
+						report.ID = GameServer.Database.GetObjectCount(typeof(BugReport)) + 1;
+						report.Message = message;
+						report.Submitter = source.Nick;
+						GameServer.Database.AddNewObject(report);
+
+						IRCBot.SendNotice(source.Nick, "\"" + message + "\" reported");
 						break;
 					}
 			}
