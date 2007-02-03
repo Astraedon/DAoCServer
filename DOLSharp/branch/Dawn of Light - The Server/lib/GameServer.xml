@@ -3380,6 +3380,11 @@
             Is this NPC currently confused
             </summary>
         </member>
+        <member name="P:DOL.GS.GameNPC.BodyType">
+            <summary>
+            The NPC's body type
+            </summary>
+        </member>
         <member name="P:DOL.GS.GameNPC.Flags">
             <summary>
             Gets or Sets the flags of this npc
@@ -19505,6 +19510,11 @@
             Gets the template npc size
             </summary>
         </member>
+        <member name="P:DOL.GS.INpcTemplate.Level">
+            <summary>
+            Gets the template npc level
+            </summary>
+        </member>
         <member name="P:DOL.GS.INpcTemplate.MaxSpeed">
             <summary>
             Gets the template npc max speed
@@ -19613,6 +19623,11 @@
         <member name="P:DOL.GS.INpcTemplate.AggroRange">
             <summary>
             Gets the template npc aggro range
+            </summary>
+        </member>
+        <member name="P:DOL.GS.INpcTemplate.BodyType">
+            <summary>
+            Gets the body type of the npc
             </summary>
         </member>
         <member name="T:DOL.GS.DoorMgr">

@@ -84,19 +84,21 @@ namespace DOL.GS.Scripts
 			ArrayList filters = null;
 			ArrayList clientsList = new ArrayList();
 			ArrayList resultMessages = new ArrayList();
+
 			// get list of clients depending on server type
 			foreach (GameClient serverClient in WorldMgr.GetAllPlayingClients())
 			{
 				GamePlayer addPlayer = serverClient.Player;
                 if (addPlayer == null) continue;
-				if (serverClient.Account.PrivLevel > (int)ePrivLevel.Player)
+				if (serverClient.Account.PrivLevel > (int)ePrivLevel.Player && serverClient.Player.IsAnonymous == false)
 				{
 					clientsList.Add(addPlayer.Client);
 					continue;
 				}
 				if (addPlayer.Client != client // allways add self
 					&& client.Account.PrivLevel==(int)ePrivLevel.Player
-					&& (!GameServer.ServerRules.IsSameRealm(addPlayer, client.Player, true)))
+					&& (addPlayer.IsAnonymous
+					|| !GameServer.ServerRules.IsSameRealm(addPlayer, client.Player, true)))
 					continue;
 				clientsList.Add(addPlayer.Client);
 			}
@@ -142,34 +144,15 @@ namespace DOL.GS.Scripts
 
 
 			int resultCount = 0;
-			log.Debug("Starting Iterations liststart = " + listStart + " clientsList = " + clientsList.Count);
 			foreach (GameClient clients in clientsList)
 			{
-				log.Debug("Handling client " + client.Player.Name);
 				if (ApplyFilter(filters, clients.Player))
 				{
-					log.Debug("Passed filters");
+					resultCount++;
 					if (resultMessages.Count < MAX_LIST_SIZE && resultCount >= listStart)
 					{
-						log.Debug("passed limit check");
-						if (client.Player.IsAnonymous)
-						{
-							log.Debug("displaying anon");
-							resultCount++;
-							resultMessages.Add(resultCount + ") " + FormatLine(client.Player, client.Account.PrivLevel));
-						}
-						else
-						{
-							if (clients.Player.IsAnonymous && clients != client)
-								continue;
-							else
-							{
-								resultCount++;
-								resultMessages.Add(resultCount + ") " + FormatLine(clients.Player, client.Account.PrivLevel));
-							}
-						}
+						resultMessages.Add(resultCount + ") " + FormatLine(clients.Player, client.Account.PrivLevel));
 					}
-					else resultCount++;
 				}
 			}
 
@@ -211,11 +194,6 @@ namespace DOL.GS.Scripts
 				return "???";
 			}
 
-			if (ServerProperties.Properties.ANON_MODIFIER == 1)
-			{
-				return "ANONYMOUS";
-			}
-
 			StringBuilder result = new StringBuilder(player.Name, 100);
 			if (player.GuildName != "")
 			{
@@ -251,7 +229,7 @@ namespace DOL.GS.Scripts
 					log.Error("no currentzone in who commandhandler for player " + player.Name);
 			}
 			ChatGroup mychatgroup = (ChatGroup) player.TempProperties.getObjectProperty(ChatGroup.CHATGROUP_PROPERTY, null);
-			if (mychatgroup != null && ((bool) mychatgroup.Members[player]) == true)
+			if (mychatgroup != null && ((bool) mychatgroup.Members[player]) == true && (mychatgroup.IsPublic || mychatgroup.Members[player] != null))
 			{
 				result.Append(" [CG]");
 			}
@@ -398,7 +376,7 @@ namespace DOL.GS.Scripts
 		{
 			public bool ApplyFilter(GamePlayer player)
 			{
-				if(player.Client.Account.PrivLevel > (int)ePrivLevel.Player)
+				if(!player.IsAnonymous && player.Client.Account.PrivLevel > (int)ePrivLevel.Player)
 					return true;
 				return false;
 			}
@@ -409,7 +387,7 @@ namespace DOL.GS.Scripts
 			private string m_str;
 			public bool ApplyFilter(GamePlayer player)
 			{
-				if (player.Client.Account.Language.ToLower() == m_str)
+				if (!player.IsAnonymous && player.Client.Account.Language.ToLower() == m_str)
 					return true;
 				return false;
 			}
