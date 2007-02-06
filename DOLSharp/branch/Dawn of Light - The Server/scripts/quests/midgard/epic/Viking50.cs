@@ -1805,7 +1805,9 @@ namespace DOL.GS.Quests.Midgard
 					case 2:
 						return "[Step #2] Return to Lynnleigh and give her tome of Enchantments!";
 					case 3:
-						return "[Step #3] Tell Lynnleigh you can 'take them' for your rewards!";
+						return "[Step #3] Take the Sealed Pouch to Elizabeth in Mularn";
+					case 4:
+						return "[Step #4] Tell Elizabeth you can 'take them' for your rewards!";
 				}
 				return base.Description;
 			}

@@ -692,5 +692,14 @@ namespace DOL.GS.Trainer
 
 			return true;
 		}
+
+		public override IList GetExamineMessages(GamePlayer player)
+		{
+			IList list = new ArrayList();
+			list.Add("You target [" + GetName(0, false) + "]");
+			list.Add("You examine " + GetName(0, false) + ".  " + GetPronoun(0, true) + " is " + GetAggroLevelString(player, false) + " and trains members of all classes.");
+			list.Add("[Right click to display a trainer window]");
+			return list;
+		}
 	}
 }

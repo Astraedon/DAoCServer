@@ -3250,11 +3250,6 @@ public void AddSqlParameters()
             Heading of component
             </summary>
         </member>
-        <member name="P:DOL.Database.DBKeepComponent.Height">
-            <summary>
-            Height of component
-            </summary>
-        </member>
         <member name="P:DOL.Database.DBKeepComponent.Health">
             <summary>
             Health of component

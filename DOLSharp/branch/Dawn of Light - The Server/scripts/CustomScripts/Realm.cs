@@ -19,12 +19,16 @@ namespace DOL.GS.Scripts
 			ArrayList list = new ArrayList();
 			int alb = 0, mid = 0, hib = 0;
 			list.Add(thidranki.Name + ": " + GlobalConstants.RealmToName((eRealm)thidranki.Realm));
+			if (thidranki.InCombat)
+				list.Add("Under Siege");
 			alb = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 1);
 			mid = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 2);
 			hib = WorldMgr.GetClientsOfRegionCount((ushort)thidranki.Region, 3);
 			list.Add("Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")");
 
 			list.Add(molvik.Name + ": " + GlobalConstants.RealmToName((eRealm)molvik.Realm));
+			if (molvik.InCombat)
+				list.Add("Under Siege");
 			alb = WorldMgr.GetClientsOfRegionCount((ushort)molvik.Region, 1);
 			mid = WorldMgr.GetClientsOfRegionCount((ushort)molvik.Region, 2);
 			hib = WorldMgr.GetClientsOfRegionCount((ushort)molvik.Region, 3);
@@ -33,6 +37,8 @@ namespace DOL.GS.Scripts
 
 			string guildName = orseo.Guild == null ? "" : " (" + orseo.Guild.Name + ")";
 			list.Add(orseo.Name + ": " + GlobalConstants.RealmToName((eRealm)orseo.Realm) + guildName);
+			if (orseo.InCombat)
+				list.Add("Under Siege");
 			alb = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 1);
 			mid = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 2);
 			hib = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 3);
