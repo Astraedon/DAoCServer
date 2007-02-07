@@ -203,6 +203,7 @@ namespace DOL.GS.GameEvents
 					m_tinderbox.Item_Type = 41;
 					m_tinderbox.Level = 1;
 					m_tinderbox.MaxCharges = 1;
+					m_tinderbox.MaxCount = 2;
 					m_tinderbox.Model = 1347;
 					m_tinderbox.Name = "Enchanted Tinderbox";
 					m_tinderbox.Object_Type = (int)eObjectType.Magical;
@@ -233,6 +234,7 @@ namespace DOL.GS.GameEvents
 					m_trainerScroll.Item_Type = 41;
 					m_trainerScroll.Level = 1;
 					m_trainerScroll.MaxCharges = 1;
+					m_trainerScroll.MaxCount = 10;
 					m_trainerScroll.Model = 499;
 					m_trainerScroll.Name = "Trainer Scroll";
 					m_trainerScroll.Object_Type = (int)eObjectType.Magical;
@@ -262,6 +264,7 @@ namespace DOL.GS.GameEvents
 					m_merchantScroll.Item_Type = 41;
 					m_merchantScroll.Level = 1;
 					m_merchantScroll.MaxCharges = 1;
+					m_merchantScroll.MaxCount = 10;
 					m_merchantScroll.Model = 499;
 					m_merchantScroll.Name = "Merchant Scroll";
 					m_merchantScroll.Object_Type = (int)eObjectType.Magical;
@@ -291,6 +294,7 @@ namespace DOL.GS.GameEvents
 					m_healerScroll.Item_Type = 41;
 					m_healerScroll.Level = 1;
 					m_healerScroll.MaxCharges = 1;
+					m_healerScroll.MaxCount = 10;
 					m_healerScroll.Model = 499;
 					m_healerScroll.Name = "Healer Scroll";
 					m_healerScroll.Object_Type = (int)eObjectType.Magical;
@@ -320,6 +324,7 @@ namespace DOL.GS.GameEvents
 					m_teleporterScroll.Item_Type = 41;
 					m_teleporterScroll.Level = 1;
 					m_teleporterScroll.MaxCharges = 1;
+					m_teleporterScroll.MaxCount = 10;
 					m_teleporterScroll.Model = 499;
 					m_teleporterScroll.Name = "Translocator Scroll";
 					m_teleporterScroll.Object_Type = (int)eObjectType.Magical;

@@ -117,7 +117,6 @@ namespace DOL.GS
 				item.Bonus = 0;
 
 			//constants
-			item.MaxQuality = 100;
 			int condition = item.Level * 2000;
 			item.Condition = condition;
 			item.MaxCondition = condition;
@@ -186,7 +185,6 @@ namespace DOL.GS
 				item.Bonus = 0;
 
 			//constants
-			item.MaxQuality = 100;
 			int condition = item.Level * 2000;
 			item.Condition = condition;
 			item.MaxCondition = condition;

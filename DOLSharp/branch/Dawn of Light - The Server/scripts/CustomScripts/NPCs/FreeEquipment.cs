@@ -618,6 +618,21 @@ namespace DOL.GS.Scripts
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.LeftAxe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
 									break;
 								}
+							case eCharacterClass.Shaman:
+								{
+									//armor
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									//weapons
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									break;
+								}
 							case eCharacterClass.Skald:
 								{
 									//armor

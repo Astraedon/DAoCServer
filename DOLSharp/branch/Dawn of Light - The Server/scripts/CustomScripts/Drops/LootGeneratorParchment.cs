@@ -39,7 +39,6 @@ namespace DOL.GS.Scripts
 					m_parchment.Condition = 100;
 					m_parchment.MaxCondition = 100;
 					m_parchment.Quality = 0;
-					m_parchment.MaxQuality = 0;
 					m_parchment.Object_Type = (int)eObjectType.Magical;
 					m_parchment.Weight = 1;
 					m_parchment.Copper = 50;

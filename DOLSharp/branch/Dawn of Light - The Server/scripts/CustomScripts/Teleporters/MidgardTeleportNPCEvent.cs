@@ -31,7 +31,7 @@ namespace DOL.GS.GameEvents
 			m_locs.Add(new Location("Haggerfel", 100, 805532, 700591, 4960, 4152));
 			m_locs.Add(new Location("Huginfel", 100, 712753, 783853, 4672, 5034));
 			m_locs.Add(new Location("Jordheim", 101, 31746, 27104, 8814, 0));
-			m_locs.Add(new Location("Mularn", 100, 804508, 724289, 4680, 4097));
+			m_locs.Add(new Location("Mularn", 100, 803696, 726548, 4750, 870));
 			m_locs.Add(new Location("Nalliten", 100, 770332, 837474, 4624, 132));
 			m_locs.Add(new Location("Svasud Faste", 100, 764362, 675133, 5722, 4083));
 			m_locs.Add(new Location("Vasudheim", 100, 774936, 755183, 4600, 4493));
