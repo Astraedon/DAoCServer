@@ -490,17 +490,17 @@ namespace DOL.GS.Spells
 						{
 							case 1:
 								{
-									npc = new TeleportNPC(Caster.CurrentRegionID, Caster.X, Caster.Y, Caster.Z, Caster.Heading, Convert.ToUInt16(template.Model), Caster.Realm, "name", "guild", RvRTeleportNPCEvent.AlbLocs, 1, "I can teleport you to various major towns around your realm. Which town would you like me to teleport you to?\n\n");
+									npc = new TeleportNPC(Caster.CurrentRegionID, Caster.X, Caster.Y, Caster.Z, Caster.Heading, Convert.ToUInt16(template.Model), Caster.Realm, "name", "guild", RvRTeleportNPCEvent.AlbLocs, -1, "I can teleport you to various major towns around your realm. Which town would you like me to teleport you to?\n\n");
 									break;
 								}
 							case 2:
 								{
-									npc = new TeleportNPC(Caster.CurrentRegionID, Caster.X, Caster.Y, Caster.Z, Caster.Heading, Convert.ToUInt16(template.Model), Caster.Realm, "name", "guild", RvRTeleportNPCEvent.MidLocs, 1, "I can teleport you to various major towns around your realm. Which town would you like me to teleport you to?\n\n");
+									npc = new TeleportNPC(Caster.CurrentRegionID, Caster.X, Caster.Y, Caster.Z, Caster.Heading, Convert.ToUInt16(template.Model), Caster.Realm, "name", "guild", RvRTeleportNPCEvent.MidLocs, -1, "I can teleport you to various major towns around your realm. Which town would you like me to teleport you to?\n\n");
 									break;
 								}
 							case 3:
 								{
-									npc = new TeleportNPC(Caster.CurrentRegionID, Caster.X, Caster.Y, Caster.Z, Caster.Heading, Convert.ToUInt16(template.Model), Caster.Realm, "name", "guild", RvRTeleportNPCEvent.HibLocs, 1, "I can teleport you to various major towns around your realm. Which town would you like me to teleport you to?\n\n");
+									npc = new TeleportNPC(Caster.CurrentRegionID, Caster.X, Caster.Y, Caster.Z, Caster.Heading, Convert.ToUInt16(template.Model), Caster.Realm, "name", "guild", RvRTeleportNPCEvent.HibLocs, -1, "I can teleport you to various major towns around your realm. Which town would you like me to teleport you to?\n\n");
 									break;
 								}
 						}
@@ -679,6 +679,7 @@ namespace DOL.GS.Scripts
 			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.HealerScroll));
 			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.Tinderbox));
 			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.TeleporterScroll));
+			client.Player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(LootGeneratorRam.Ram));
 			return 1;
 		}
 	}

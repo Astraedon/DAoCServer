@@ -17,6 +17,7 @@ namespace DOL.GS
 		[ScriptLoadedEvent]
 		public static void OnScriptLoaded(DOLEvent e, object sender, EventArgs args)
 		{
+			Spell load = RamSpell;
 			LootMgr.RegisterLootGenerator(new LootGeneratorRam(), "", "", "", 165);
 			log.Info("Ram Drop System Loaded!");
 		}
@@ -35,7 +36,7 @@ namespace DOL.GS
 					spell.Icon = 0;
 					spell.Duration = 0;
 					spell.Description = "Summons a Ram at your location, can only be used in RvR.";
-					spell.Name = "Comforting Flames";
+					spell.Name = "Summon Ram";
 					spell.Range = 0;
 					spell.SpellID = 64004;
 					spell.Target = "Self";
@@ -112,6 +113,7 @@ namespace DOL.GS.Spells
 			ram.X = x;
 			ram.Y = y;
 			ram.Z = m_caster.Z;
+			ram.CurrentRegion = m_caster.CurrentRegion;
 			ram.Model = 2600;
 			ram.Level = 1;
 			ram.Name = "light ram";
