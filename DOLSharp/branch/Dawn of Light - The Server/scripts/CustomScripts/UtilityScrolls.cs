@@ -182,6 +182,33 @@ namespace DOL.GS.GameEvents
 			}
 		}
 		#endregion
+		#region VaultKeeper
+		protected static Spell m_vaultKeeperSpell;
+		public static Spell VaultKeeperSpell
+		{
+			get
+			{
+				if (m_vaultKeeperSpell == null)
+				{
+					DBSpell spell = new DBSpell();
+					spell.AutoSave = false;
+					spell.CastTime = 0;
+					spell.ClientEffect = 0;
+					spell.Duration = 60;
+					spell.Description = "Summons a Vault Keeper, which stores extra items for you, to your location for " + spell.Duration + " seconds, to use: move to your quickbar and click it.";
+					spell.Name = "Vault Keeper Spell";
+					spell.Range = 0;
+					spell.SpellID = 64005;
+					spell.Target = "Self";
+					spell.Type = "UtilityNPC";
+					spell.Value = VaultKeeperTemplate.TemplateId;
+					m_vaultKeeperSpell = new Spell(spell, 1);
+					SkillBase.GetSpellList(GlobalSpellsLines.Item_Effects).Add(m_vaultKeeperSpell);
+				}
+				return m_vaultKeeperSpell;
+			}
+		}
+		#endregion
 		#endregion
 
 		#region Items
@@ -336,6 +363,36 @@ namespace DOL.GS.GameEvents
 			}
 		}
 		#endregion
+		#region Vault Keeper
+		protected static ItemTemplate m_vaultKeeperScroll;
+		public static ItemTemplate VaultKeeperScroll
+		{
+			get
+			{
+				if (m_vaultKeeperScroll == null)
+				{
+					m_vaultKeeperScroll = new ItemTemplate();
+					m_vaultKeeperScroll.CanDropAsLoot = false;
+					m_vaultKeeperScroll.Charges = 1;
+					m_vaultKeeperScroll.Id_nb = "vaultkeeper_scroll";
+					m_vaultKeeperScroll.IsDropable = true;
+					m_vaultKeeperScroll.IsPickable = true;
+					m_vaultKeeperScroll.IsTradable = false;
+					m_vaultKeeperScroll.Item_Type = 41;
+					m_vaultKeeperScroll.Level = 1;
+					m_vaultKeeperScroll.MaxCharges = 1;
+					m_vaultKeeperScroll.MaxCount = 10;
+					m_vaultKeeperScroll.Model = 499;
+					m_vaultKeeperScroll.Name = "Vault Keeper Scroll";
+					m_vaultKeeperScroll.Object_Type = (int)eObjectType.Magical;
+					m_vaultKeeperScroll.Realm = 0;
+					m_vaultKeeperScroll.SpellID = VaultKeeperSpell.ID;
+					m_vaultKeeperScroll.Copper = 10;
+				}
+				return m_vaultKeeperScroll;
+			}
+		}
+		#endregion
 		#endregion
 
 		#region NPC Template
@@ -423,6 +480,27 @@ namespace DOL.GS.GameEvents
 			}
 		}
 		#endregion
+		#region Vault Keeper
+		protected static NpcTemplate m_vaultKeeperTemplate;
+		public static NpcTemplate VaultKeeperTemplate
+		{
+			get
+			{
+				if (m_vaultKeeperTemplate == null)
+				{
+					m_vaultKeeperTemplate = new NpcTemplate();
+					m_vaultKeeperTemplate.Flags += (byte)GameNPC.eFlags.TRANSPARENT;
+					m_vaultKeeperTemplate.GuildName = "Vault Keeper";
+					m_vaultKeeperTemplate.Name = "Summoned Vault Keeper";
+					m_vaultKeeperTemplate.ClassType = "DOL.GS.Scripts.GameVaultKeeper";
+					m_vaultKeeperTemplate.Model = "50";
+					m_vaultKeeperTemplate.TemplateId = 604;
+					NpcTemplateMgr.AddTemplate(m_vaultKeeperTemplate);
+				}
+				return m_vaultKeeperTemplate;
+			}
+		}
+		#endregion
 		#endregion
 	}
 }
@@ -455,6 +533,8 @@ namespace DOL.GS
 			#region Teleporter
 			if (Util.Chance(2))
 				list.AddFixed(UtilityScrollsEvent.TeleporterScroll);
+			if (Util.Chance(1))
+				list.AddFixed(UtilityScrollsEvent.VaultKeeperScroll);
 			#endregion
 			return list;
 		}

@@ -6757,9 +6757,9 @@
             <param name="sender"></param>
             <param name="arguments"></param>
         </member>
-        <member name="T:DOL.GS.Effects.ArmsLengthEffect">
+        <member name="T:DOL.GS.Effects.BlindingDustEffect">
             <summary>
-            Helper for charge realm ability
+            Adrenaline Rush
             </summary>
         </member>
         <member name="T:DOL.GS.Effects.TimedEffect">
@@ -6882,6 +6882,11 @@
         <member name="P:DOL.GS.Effects.TimedEffect.RemainingTime">
             <summary>
             Remaining Time of the effect in milliseconds
+            </summary>
+        </member>
+        <member name="T:DOL.GS.Effects.ArmsLengthEffect">
+            <summary>
+            Helper for charge realm ability
             </summary>
         </member>
         <member name="M:DOL.GS.Effects.ArmsLengthEffect.#ctor">
@@ -33566,6 +33571,17 @@
             </summary>
         </member>
         <member name="M:DOL.GS.RealmAbilities.FuryOfNatureAbility.Execute(DOL.GS.GameLiving)">
+            <summary>
+            Action
+            </summary>
+            <param name="living"></param>
+        </member>
+        <member name="T:DOL.GS.RealmAbilities.BlindingDustAbility">
+            <summary>
+            Mastery of Concentration RA
+            </summary>
+        </member>
+        <member name="M:DOL.GS.RealmAbilities.BlindingDustAbility.Execute(DOL.GS.GameLiving)">
             <summary>
             Action
             </summary>
