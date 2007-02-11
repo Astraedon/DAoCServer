@@ -17,7 +17,7 @@ namespace DOL.GS.Scripts
 	public class ServerIRC
 	{
 		public static IRCClient IRCBot = null;
-		private const string CHANNEL = "#dolplay";
+		public const string CHANNEL = "#dolplay";
 
 		private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

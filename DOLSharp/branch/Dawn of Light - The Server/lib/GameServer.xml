@@ -5564,6 +5564,17 @@
             </summary>
             <param name="living"></param>
         </member>
+        <member name="T:DOL.GS.RealmAbilities.RestorativeMindAbility">
+            <summary>
+            Anger of the Gods RA
+            </summary>
+        </member>
+        <member name="M:DOL.GS.RealmAbilities.RestorativeMindAbility.Execute(DOL.GS.GameLiving)">
+            <summary>
+            Action
+            </summary>
+            <param name="living"></param>
+        </member>
         <member name="F:DOL.GS.Quests.AbstractMission.CHECK_MISSION_TICK">
             <summary>
             The temp property name for next check mission millisecond
@@ -6742,6 +6753,17 @@
             <param name="chatLoc">The chat location</param>
             <param name="distance">The distance</param>
             <param name="excludes">A list of GameObjects to exlude from the message</param>
+        </member>
+        <member name="T:DOL.GS.RealmAbilities.FerociousWillAbility">
+            <summary>
+            Mastery of Concentration RA
+            </summary>
+        </member>
+        <member name="M:DOL.GS.RealmAbilities.FerociousWillAbility.Execute(DOL.GS.GameLiving)">
+            <summary>
+            Action
+            </summary>
+            <param name="living"></param>
         </member>
         <member name="M:DOL.GS.RealmAbilities.IchorOfTheDeepAbility.SendUpdates(DOL.GS.GameLiving)">
             <summary>
@@ -10029,6 +10051,11 @@
             Action
             </summary>
             <param name="living"></param>
+        </member>
+        <member name="T:DOL.GS.Effects.RestorativeMindEffect">
+            <summary>
+            Mastery of Concentration
+            </summary>
         </member>
         <member name="T:DOL.GS.Effects.JuggernautEffect">
             <summary>
@@ -13714,6 +13741,11 @@
             </summary>
             <param name="living"></param>
         </member>
+        <member name="T:DOL.GS.Effects.FerociousWillEffect">
+            <summary>
+            Adrenaline Rush
+            </summary>
+        </member>
         <member name="T:DOL.GS.PacketHandler.PacketProcessor">
             <summary>
             This class handles the packets, receiving and sending
@@ -15660,6 +15692,22 @@
         <member name="T:DOL.GS.RealmAbilities.DeterminationAbility">
             <summary>
             Determination
+            </summary>
+        </member>
+        <member name="T:DOL.GS.RealmAbilities.ShieldOfImmunityAbility">
+            <summary>
+            Mastery of Concentration RA
+            </summary>
+        </member>
+        <member name="M:DOL.GS.RealmAbilities.ShieldOfImmunityAbility.Execute(DOL.GS.GameLiving)">
+            <summary>
+            Action
+            </summary>
+            <param name="living"></param>
+        </member>
+        <member name="T:DOL.GS.Effects.ShieldOfImmunityEffect">
+            <summary>
+            Mastery of Concentration
             </summary>
         </member>
         <member name="T:DOL.GS.Effects.FuryOfNatureEffect">
@@ -17950,6 +17998,22 @@
             The level of door is keep level now
             </summary>
         </member>
+        <member name="T:DOL.GS.RealmAbilities.CombatAwarenessAbility">
+            <summary>
+            Mastery of Concentration RA
+            </summary>
+        </member>
+        <member name="M:DOL.GS.RealmAbilities.CombatAwarenessAbility.Execute(DOL.GS.GameLiving)">
+            <summary>
+            Action
+            </summary>
+            <param name="living"></param>
+        </member>
+        <member name="T:DOL.GS.Effects.CombatAwarenessEffect">
+            <summary>
+            Adrenaline Rush
+            </summary>
+        </member>
         <member name="T:DOL.GS.Effects.BarrierOfFortitudeEffect">
             <summary>
             Effect handler for Barrier Of Fortitude
@@ -19801,6 +19865,17 @@
             This function get the door close to spot
             </summary>
             <returns>array of door</returns>
+        </member>
+        <member name="T:DOL.GS.RealmAbilities.RuneOfUtterAgilityAbility">
+            <summary>
+            Mastery of Concentration RA
+            </summary>
+        </member>
+        <member name="M:DOL.GS.RealmAbilities.RuneOfUtterAgilityAbility.Execute(DOL.GS.GameLiving)">
+            <summary>
+            Action
+            </summary>
+            <param name="living"></param>
         </member>
         <member name="T:DOL.GS.Effects.WhirlingStaffEffect">
             <summary>
@@ -25769,6 +25844,37 @@
             Delve information
             </summary>
         </member>
+        <member name="T:DOL.GS.Effects.SputinsLegacyEffect">
+            <summary>
+            Helper for charge realm ability
+            </summary>
+        </member>
+        <member name="M:DOL.GS.Effects.SputinsLegacyEffect.#ctor">
+            <summary>
+            Creates a new effect
+            </summary>
+        </member>
+        <member name="M:DOL.GS.Effects.SputinsLegacyEffect.Start(DOL.GS.GameLiving)">
+            <summary>
+            Start the effect on player
+            </summary>
+            <param name="target">The effect target</param>
+        </member>
+        <member name="P:DOL.GS.Effects.SputinsLegacyEffect.Name">
+            <summary>
+            Name of the effect
+            </summary>
+        </member>
+        <member name="P:DOL.GS.Effects.SputinsLegacyEffect.Icon">
+            <summary>
+            Icon to show on players, can be id
+            </summary>
+        </member>
+        <member name="P:DOL.GS.Effects.SputinsLegacyEffect.DelveInfo">
+            <summary>
+            Delve Info
+            </summary>
+        </member>
         <member name="T:DOL.GS.PacketHandler.PacketHandlerType">
             <summary>
             Type of packet handler
@@ -27124,6 +27230,17 @@
             Toughness
             </summary>
         </member>
+        <member name="T:DOL.GS.RealmAbilities.RetributionOfTheFaithfulAbility">
+            <summary>
+            Mastery of Concentration RA
+            </summary>
+        </member>
+        <member name="M:DOL.GS.RealmAbilities.RetributionOfTheFaithfulAbility.Execute(DOL.GS.GameLiving)">
+            <summary>
+            Action
+            </summary>
+            <param name="living"></param>
+        </member>
         <member name="T:DOL.GS.RealmAbilities.NaturesWombAbility">
             <summary>
             Mastery of Concentration RA
@@ -28413,6 +28530,11 @@
         <member name="P:DOL.GS.Effects.TheEmptyMindEffect.DelveInfo">
             <summary>
             Delve Info
+            </summary>
+        </member>
+        <member name="T:DOL.GS.Effects.RuneOfUtterAgilityEffect">
+            <summary>
+            Mastery of Concentration
             </summary>
         </member>
         <member name="P:DOL.GS.Effects.ChargeEffect.RemainingTime">
@@ -29795,6 +29917,28 @@
             <param name="mob"></param>
             <returns></returns>
         </member>
+        <member name="T:DOL.GS.RealmAbilities.SputinsLegacyAbility">
+            <summary>
+            Sputins Legacy Realm Ability
+            </summary>
+        </member>
+        <member name="M:DOL.GS.RealmAbilities.SputinsLegacyAbility.Execute(DOL.GS.GameLiving)">
+            <summary>
+            Action
+            </summary>
+            <param name="living"></param>
+        </member>
+        <member name="T:DOL.GS.RealmAbilities.EntwiningSnakesAbility">
+            <summary>
+            Mastery of Concentration RA
+            </summary>
+        </member>
+        <member name="M:DOL.GS.RealmAbilities.EntwiningSnakesAbility.Execute(DOL.GS.GameLiving)">
+            <summary>
+            Action
+            </summary>
+            <param name="living"></param>
+        </member>
         <member name="T:DOL.GS.RealmAbilities.DecimationTrapAbility">
             <summary>
             Mastery of Concentration RA
@@ -29877,6 +30021,16 @@
         <member name="P:DOL.GS.Effects.StrikePredictionEffect.DelveInfo">
             <summary>
             Delve information
+            </summary>
+        </member>
+        <member name="T:DOL.GS.Effects.RetributionOfTheFaithfulStunEffect">
+            <summary>
+            Adrenaline Rush
+            </summary>
+        </member>
+        <member name="T:DOL.GS.Effects.EntwiningSnakesEffect">
+            <summary>
+            Mastery of Concentration
             </summary>
         </member>
         <member name="T:DOL.GS.Effects.DivineInterventionEffect">
@@ -31966,6 +32120,11 @@
             Stores the count of captured towers.
             </summary>
         </member>
+        <member name="F:DOL.GS.GamePlayer.m_killsDragon">
+            <summary>
+            Stores the count of killed dragons
+            </summary>
+        </member>
         <member name="M:DOL.GS.GamePlayer.ToString">
             <summary>
             Returns the string representation of the GamePlayer
@@ -32739,6 +32898,11 @@
         <member name="P:DOL.GS.GamePlayer.CapturedTowers">
             <summary>
             Gets or sets the count of captured towers.
+            </summary>
+        </member>
+        <member name="P:DOL.GS.GamePlayer.KillsDragon">
+            <summary>
+            Gets or sets the count of dragons killed.
             </summary>
         </member>
         <member name="P:DOL.GS.GamePlayer.IsCarryingGuildBanner">
@@ -33576,6 +33740,17 @@
             </summary>
             <param name="living"></param>
         </member>
+        <member name="T:DOL.GS.RealmAbilities.EpiphanyAbility">
+            <summary>
+            Anger of the Gods RA
+            </summary>
+        </member>
+        <member name="M:DOL.GS.RealmAbilities.EpiphanyAbility.Execute(DOL.GS.GameLiving)">
+            <summary>
+            Action
+            </summary>
+            <param name="living"></param>
+        </member>
         <member name="T:DOL.GS.RealmAbilities.BlindingDustAbility">
             <summary>
             Mastery of Concentration RA
@@ -33592,18 +33767,12 @@
             Effect handler for Barrier Of Fortitude
             </summary> 
         </member>
-        <member name="M:DOL.GS.Effects.SpeedOfSoundEffect.#ctor">
-            <summary>
-            Default constructor for AmelioratingMelodiesEffect
-            </summary>
-        </member>
         <member name="M:DOL.GS.Effects.SpeedOfSoundEffect.Start(DOL.GS.GamePlayer,System.Int32)">
             <summary>
             Called when effect is to be started
             </summary>
             <param name="player">The player to start the effect for</param>
             <param name="duration">The effectduration in secounds</param>
-            <param name="value">The percentage additional value for melee absorb</param>
         </member>
         <member name="M:DOL.GS.Effects.SpeedOfSoundEffect.AttackFinished(DOL.Events.DOLEvent,System.Object,System.EventArgs)">
             <summary>
