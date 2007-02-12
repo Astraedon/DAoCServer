@@ -53,17 +53,13 @@ namespace DOL.GS.Scripts
 		{
 			get
 			{
-				return Level * 350;
+				return base.MaxHealth * Level;
 			}
 		}
 
-		public override bool AddToWorld()
+		public override double AttackDamage(InventoryItem weapon)
 		{
-			base.AddToWorld();
-			Model = 613;
-			Level = 70;
-			Name = "Dragon";
-			return true;
+			return base.AttackDamage(weapon) * 1.5;
 		}
 
 		/// <summary>
@@ -106,22 +102,6 @@ namespace DOL.GS.Scripts
 				return 400;
 			}
 			set { }
-		}
-
-		/// <summary>
-		/// Callback timer for health regeneration
-		/// </summary>
-		/// <param name="selfRegenerationTimer">the regeneration timer</param>
-		/// <returns>the new interval</returns>
-		protected override int HealthRegenerationTimerCallback(RegionTimer selfRegenerationTimer)
-		{
-			int period = m_healthRegenerationPeriod;
-			if (Util.Chance(100)) // mobs have only 50% chance to heal itself 
-			{
-				period = base.HealthRegenerationTimerCallback(selfRegenerationTimer);
-				BroadcastUpdate();
-			}
-			return (Health < MaxHealth) ? period : 0;
 		}
 
 		#endregion
@@ -250,15 +230,6 @@ namespace DOL.GS.Scripts
 				m_dragonTarget.Heading);
 		}
 
-		void GetTarget()
-		{
-			foreach (GamePlayer player in GetPlayersInRadius(200))
-			{
-				m_dragonTarget = player;
-				break;
-			}
-		}
-
 		#endregion
 
 		#region Spells
@@ -281,7 +252,7 @@ namespace DOL.GS.Scripts
 					spell.SpellID = 6001;
 					spell.Target = "Enemy";
 					spell.Type = "DirectDamage";
-					m_glare = new Spell(spell, 1);
+					m_glare = new Spell(spell, 70);
 					SkillBase.GetSpellList(GlobalSpellsLines.Mob_Spells).Add(m_glare);
 				}
 				return m_glare;
@@ -309,7 +280,7 @@ namespace DOL.GS.Scripts
 					spell.SpellID = 6000;
 					spell.Target = "Enemy";
 					spell.Type = "DirectDamage";
-					m_nuke = new Spell(spell, 1);
+					m_nuke = new Spell(spell, 70);
 					SkillBase.GetSpellList(GlobalSpellsLines.Mob_Spells).Add(m_nuke);
 				}
 				return m_nuke;
@@ -340,7 +311,7 @@ namespace DOL.GS.Scripts
 					spell.Type = "Stun";
 					spell.Message1 = "You cannot move!";
 					spell.Message2 = "{0} cannot seem to move!";
-					m_stun = new Spell(spell, 1);
+					m_stun = new Spell(spell, 70);
 					SkillBase.GetSpellList(GlobalSpellsLines.Mob_Spells).Add(m_stun);
 				}
 				return m_stun;

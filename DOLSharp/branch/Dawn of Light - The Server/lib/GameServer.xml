@@ -9037,7 +9037,6 @@
             A keepComponent
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:DOL.GS.Keeps.GameKeepHookPoint.m_index" -->
         <member name="T:DOL.GS.Keeps.GameKeepComponent">
             <summary>
             A keepComponent
@@ -9981,6 +9980,11 @@
             Buff Range
             </summary>
         </member>
+        <member name="F:DOL.GS.ServerProperties.Properties.DISABLE_BUG_REPORTS">
+            <summary>
+            Disable Bug Reports
+            </summary>
+        </member>
         <member name="M:DOL.GS.ServerProperties.Properties.Load(DOL.GS.ServerProperties.ServerPropertyAttribute)">
             <summary>
             This method loads the property from the database and returns
@@ -10110,11 +10114,6 @@
         <member name="P:DOL.GS.Effects.JuggernautEffect.Icon">
             <summary>
             Icon ID
-            </summary>
-        </member>
-        <member name="P:DOL.GS.Effects.JuggernautEffect.InternalID">
-            <summary>
-            Unique ID for identification in the effect list
             </summary>
         </member>
         <member name="P:DOL.GS.Effects.JuggernautEffect.DelveInfo">
@@ -29955,11 +29954,6 @@
             Effect handler for Barrier Of Fortitude
             </summary>
         </member>
-        <member name="M:DOL.GS.Effects.StrikePredictionEffect.#ctor">
-            <summary>
-            Default constructor for AmelioratingMelodiesEffect
-            </summary>
-        </member>
         <member name="M:DOL.GS.Effects.StrikePredictionEffect.Start(DOL.GS.GamePlayer,System.Int32,System.Int32)">
             <summary>
             Called when effect is to be started
@@ -30011,11 +30005,6 @@
         <member name="P:DOL.GS.Effects.StrikePredictionEffect.Icon">
             <summary>
             Icon ID
-            </summary>
-        </member>
-        <member name="P:DOL.GS.Effects.StrikePredictionEffect.InternalID">
-            <summary>
-            Unique ID for identification in the effect list
             </summary>
         </member>
         <member name="P:DOL.GS.Effects.StrikePredictionEffect.DelveInfo">
@@ -30987,6 +30976,9 @@
             Called when this living buy something with realm points
             </summary>
             <param name="amount">The amount of realm points loosed</param>
+            <param name="loc">The chat location</param>
+            <param name="str">The message</param>
+            <param name="type">The chat type</param>
         </member>
         <member name="M:DOL.GS.GamePlayer.GainBountyPoints(System.Int64)">
             <summary>
@@ -32199,6 +32191,11 @@
             Gets or sets the gain XP flag for this player
             </summary>
         </member>
+        <member name="P:DOL.GS.GamePlayer.Advisor">
+            <summary>
+            Gets or sets the advisor flag for this player
+            </summary>
+        </member>
         <member name="P:DOL.GS.GamePlayer.QuitTime">
             <summary>
             Gets the amount of time the player must wait before quit, in seconds
@@ -32598,7 +32595,7 @@
             Gets or sets the database guildid of this player
             </summary>
         </member>
-        <member name="P:DOL.GS.GamePlayer.GuildNameFlag">
+        <member name="P:DOL.GS.GamePlayer.ClassNameFlag">
             <summary>
             Gets or sets the player's guild flag
             </summary>
