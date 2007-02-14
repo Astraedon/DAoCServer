@@ -88,7 +88,7 @@ namespace DOL.GS.GameEvents
 			//m_hibLocs.Add(new Location("Moycullen (Housing)", 202, 493620, 688573, 3137, 3123));
 			//m_hibLocs.Add(new Location("Saeranthal (Housing)", 202, 493562, 619855, 3129, 2503));
 			//m_hibLocs.Add(new Location("Dunshire (Housing)", 202, 493610, 555502, 3137, 3109));
-			m_hibLocs.Add(new Location("Meath (Housing)", 202, 562625, 559998, 3076, 3186));
+			m_hibLocs.Add(new Location("Meath (Housing)", 202, 564857, 559680, 3008, 481));
 			m_hibLocs.Add(new SpecialLocation("Personal House", SpecialLocation.eSpecialLocation.PersonalHouse));
 			m_hibLocs.Add(new SpecialLocation("Bind Point", SpecialLocation.eSpecialLocation.BindPoint));
 			TeleportNPCUtility.CreateTeleporters(3, m_hibLocs, "HiberniaRvRTeleportNPCEvent", m_hibNpcs);

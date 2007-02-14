@@ -17,9 +17,9 @@ namespace DOL.GS
 		[ScriptLoadedEvent]
 		public static void OnScriptLoaded(DOLEvent e, object sender, EventArgs args)
 		{
-			Spell load = RamSpell;
-			LootMgr.RegisterLootGenerator(new LootGeneratorRam(), "", "", "", 165);
-			log.Info("Ram Drop System Loaded!");
+			//Spell load = RamSpell;
+			//LootMgr.RegisterLootGenerator(new LootGeneratorRam(), "", "", "", 165);
+			//log.Info("Ram Drop System Loaded!");
 		}
 
 		protected static Spell m_ramSpell;

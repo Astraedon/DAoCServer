@@ -279,7 +279,12 @@ HousingPlaceItemHandler.IndoorObjectPlaced:	Indoor Object placed. {0} slots rema
 HousingPlaceItemHandler.NoHookpoint:		No hookpoints now !
 HousingPlaceItemHandler.PutMoney:			You put money in your house.
 
+# AbstractArea
+AbstractArea.Left:					(Region) You have left {0}!
+AbstractArea.Entered:					(Region) You have entered {0}!
+
 # SCRIPTS
+
 # /Afk
 Scripts.Players.Afk.Off:				Your AFK flag is now off.
 Scripts.Players.Afk.On:					Your AFK flag is now on.
@@ -354,3 +359,8 @@ Scripts.Players.Chatgroup.UsageInvite:			Usage: /cg invite <playername>"
 # /Language
 Scripts.Players.Language.Set:				You change your server display language to {0}.
 Scripts.Players.Language.Current:			Your language is currently set to: {0}.
+
+# /Playerenterexit
+Scripts.Events.PlayerEnterExit.Entered:			{0} just entered the game!
+Scripts.Events.PlayerEnterExit.Left:			{0} just left the game!
+Scripts.Events.PlayerEnterExit.Staff:			[Staff Member] {0}
