@@ -4169,6 +4169,12 @@
             <param name="target"></param>
             <returns></returns>
         </member>
+        <member name="M:DOL.GS.Spells.SpellHandler.CalculateEnduranceCost">
+            <summary>
+            Calculates the enduance cost of the spell
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:DOL.GS.Spells.SpellHandler.CalculateSpellRange">
             <summary>
             Calculates the range to target needed to cast the spell
@@ -33203,6 +33209,11 @@
         <member name="P:DOL.GS.Effects.InterceptEffect.InterceptTarget">
             <summary>
             Gets the intercepted
+            </summary>
+        </member>
+        <member name="P:DOL.GS.Effects.InterceptEffect.InterceptChance">
+            <summary>
+            chance to intercept
             </summary>
         </member>
         <member name="P:DOL.GS.Effects.InterceptEffect.Name">

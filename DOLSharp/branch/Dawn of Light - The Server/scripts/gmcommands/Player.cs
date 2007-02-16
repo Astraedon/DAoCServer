@@ -151,7 +151,12 @@ namespace DOL.GS.Scripts
 								client.Out.SendMessage(player.Name + "'s level can only be set to a number 1 to 255!", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
 								return 0;
 							}
+							int curLevel = player.Level;
 							player.Level = newLevel;
+							if (curLevel < 40)
+								curLevel = 40;
+							for (int i = curLevel; i < 50; i++)
+								player.SkillSpecialtyPoints += player.CharacterClass.SpecPointsMultiplier * i / 20; 
 							client.Out.SendMessage("You changed " + player.Name + "'s level successfully to " + newLevel.ToString() + "!", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
 							player.Out.SendMessage(client.Player.Name + "(PrivLevel: " + client.Account.PrivLevel + ") has changed your level to " + newLevel.ToString() + "!", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
 							player.Out.SendUpdatePlayer();
