@@ -47,7 +47,7 @@ namespace DOL.GS.Scripts
 	 "/player bps <amount>",
 	 "/player stat <typeofStat> <value>",
 	 "/player friend <list|playerName>",
-	 "/player respec <all|line> <lineName>",
+	 "/player respec <all|line|realm> <lineName>",
 	 "/player kill <albs|mids|hibs|self|all>", // if realm not specified, it will kill target.
 	 "/player rez <albs|mids|hibs|self|all>", // if realm not specified, it will rez target.
 	 "/player jump <group|guild|cg> <name>", // to jump a group to you, just type in a player's name and his or her entire group will come with.

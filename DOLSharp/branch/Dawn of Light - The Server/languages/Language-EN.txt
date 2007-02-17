@@ -350,6 +350,11 @@ Scripts.Players.Boot.YouRemoved:			You have been removed from the house by {0}!
 Scripts.Players.Bountyrent.InHouseError:		You have to be in your house to use this command!
 Scripts.Players.Bountyrent.NoHouseError:		You don't own a house!
 
+# /Broadcast
+Scripts.Players.Broadcast.Message:			[Broadcast] {0} : {1}
+Scripts.Players.Broadcast.NoHere:			You cannot broadcast here.
+Scripts.Players.Broadcast.NoText:			You must broadcast something...
+
 # /Cancelstyle
 Scripts.Players.Cancelstyle.Set:			Cancel Style now set to {0}.
 
@@ -404,6 +409,38 @@ Scripts.Players.Disband.NoYourself:			Can't disband yourself in such way.
 
 # /Dismount
 Scripts.Players.Dismount:				You are not riding any steed!
+
+# /Duel
+Scripts.Players.Duel.ChallengesYou:			{0} challenges you to a duel! /duel accept to begin, /duel decline to decline.
+Scripts.Players.Duel.DuelOptions:			/duel options are challenge/decline/cancel/surrender/accept
+Scripts.Players.Duel.EnemyRealm:			Can't duel enemy realm players.
+Scripts.Players.Duel.NeedTarget:			You need to target someone to duel!
+Scripts.Players.Duel.ConsideringDuel:			You're not currently considering a duel.
+Scripts.Players.Duel.NotInDuel:				You aren't in a duel!
+Scripts.Players.Duel.PlayerVsPlayer:			{0} surrenders to {1}!
+Scripts.Players.Duel.SafeZone:				This is a safe zone and you cannot duel here!
+Scripts.Players.Duel.TargetAccept:			{0} accepts the duel.  Begin fighting!
+Scripts.Players.Duel.TargetAlreadyChallenging:		{0} is already challenging someone to a duel.
+Scripts.Players.Duel.TargetAlreadyConsidering:		{0} is already considering a duel.
+Scripts.Players.Duel.TargetCancel:			{0} cancels his duel invitation.	
+Scripts.Players.Duel.TargetDeclines:			{0} declines your duel invitation.
+Scripts.Players.Duel.TargetHealth:			Your target must have full health.
+Scripts.Players.Duel.TargetInCombat:			{0} is in combat.
+Scripts.Players.Duel.TargetInDuel:			{0} is already in a duel.
+Scripts.Players.Duel.TargetInGroup:			{0} is in a group.
+Scripts.Players.Duel.TargetSurrender:			{0} surrenders to you!
+Scripts.Players.Duel.YouAccept:				You accept your duel!  Begin fighting!
+Scripts.Players.Duel.YouAlreadyChallenging:		You are already challenging {0} to a duel. Cancel it first before challenging someone else.
+Scripts.Players.Duel.YouAlreadyConsidering:		You are already considering a duel with {0}. Decline it first before challenging someone.
+Scripts.Players.Duel.YouCancel:				You cancel your duel invitation.
+Scripts.Players.Duel.YouChallenge:			You challenge {0} to a duel!
+Scripts.Players.Duel.YouDecline:			You decline {0}'s duel invitation.
+Scripts.Players.Duel.YouHaventChallenged:		You haven't challenged anyone to a duel.
+Scripts.Players.Duel.YouHealth:				You must have full health.
+Scripts.Players.Duel.YouInCombat:			You are in combat.
+Scripts.Players.Duel.YouInDuel:				You are already in a duel.
+Scripts.Players.Duel.YouInGroup:			You are in a group.
+Scripts.Players.Duel.YouSurrender:			You surrender to {0}!
 
 # /Language
 Scripts.Players.Language.Current:			Your language is currently set to: {0}.

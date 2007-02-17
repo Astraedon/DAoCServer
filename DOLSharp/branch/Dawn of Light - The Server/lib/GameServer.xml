@@ -32123,6 +32123,11 @@
             Stores the count of killed dragons
             </summary>
         </member>
+        <member name="F:DOL.GS.GamePlayer.m_deathsPvP">
+            <summary>
+            Stores the count of PvP deaths
+            </summary>
+        </member>
         <member name="M:DOL.GS.GamePlayer.ToString">
             <summary>
             Returns the string representation of the GamePlayer
@@ -32906,6 +32911,11 @@
         <member name="P:DOL.GS.GamePlayer.KillsDragon">
             <summary>
             Gets or sets the count of dragons killed.
+            </summary>
+        </member>
+        <member name="P:DOL.GS.GamePlayer.DeathsPvP">
+            <summary>
+            Gets or sets the pvp deaths
             </summary>
         </member>
         <member name="P:DOL.GS.GamePlayer.IsCarryingGuildBanner">
