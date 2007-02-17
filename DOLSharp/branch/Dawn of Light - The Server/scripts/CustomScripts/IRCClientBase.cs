@@ -457,7 +457,8 @@ namespace IRC
 							if (chan.Clients.ContainsKey(old))
 							{
 								chan.Clients.Remove(old);
-								chan.Clients.Add(nick, clt);
+								if (chan.Clients.ContainsKey(nick) == false)
+									chan.Clients.Add(nick, clt);
 							}
 						}
 
