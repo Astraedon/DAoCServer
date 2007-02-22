@@ -271,6 +271,33 @@ namespace DOL.GS.Scripts
 						IRCBot.SendNotice(source.Nick, "\"" + message + "\" sent");
 						break;
 					}
+				case "!restart":
+					{
+						if (source.Auth == "")
+						{
+							IRCBot.SendNotice(source.Nick, "You need to be authed to use this command");
+							break;
+						}
+
+						Account acc = (Account)GameServer.Database.FindObjectByKey(typeof(Account), source.Auth);
+						if (acc == null)
+						{
+							IRCBot.SendNotice(source.Nick, "Account " + source.Auth + " not found in the DB");
+							break;
+						}
+						if (acc.PrivLevel < 3)
+							break;
+
+						int time = 15;
+						if (data.Length >= 2)
+							break;
+
+						int.TryParse(data[1], out time);
+
+						new ShutdownCommandHandler().OnCommand(null, new string[] {"/shutdown", time.ToString() });
+
+						break;
+					}
 				case "!report":
 					{
 						message = message.Replace(data[0] + " ", "");

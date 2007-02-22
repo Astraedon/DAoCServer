@@ -20148,6 +20148,11 @@
             The Stopped event is fired whenever the GameServer is stopping
             </summary>
         </member>
+        <member name="F:DOL.Events.GameServerEvent.WorldSave">
+            <summary>
+            The WorldSave event is fired whenever the GameServer saves the world
+            </summary>
+        </member>
         <member name="T:DOL.Events.RiderMountEventArgs">
             <summary>
             Holds the arguments for the RiderMount event of GameNPC
