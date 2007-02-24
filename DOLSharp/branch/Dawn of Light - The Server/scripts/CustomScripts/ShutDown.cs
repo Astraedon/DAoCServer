@@ -89,7 +89,7 @@ namespace DOL.GS.Scripts
 			if (!success || minHour == -1 || maxHour == -1)
 				return;
 
-			if (uptime.Days >= days && DateTime.Now.Hour >= minHour && DateTime.Now.Hour <= maxHour)
+			if (24 * days - (maxHour - minHour) > uptime.TotalHours && DateTime.Now.Hour >= minHour && DateTime.Now.Hour <= maxHour)
 			{
 				m_counter = 15 * 60;
 				m_timer = new Timer(new TimerCallback(CountDown), null, 0, 15000);

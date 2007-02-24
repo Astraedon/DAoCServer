@@ -289,7 +289,7 @@ namespace DOL.GS.Scripts
 							break;
 
 						int time = 15;
-						if (data.Length >= 2)
+						if (data.Length > 2)
 							break;
 
 						int.TryParse(data[1], out time);
