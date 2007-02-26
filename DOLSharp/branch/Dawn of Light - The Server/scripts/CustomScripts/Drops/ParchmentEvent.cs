@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Reflection;
 using DOL.Events;
 using DOL.GS.PacketHandler;
@@ -19,17 +20,27 @@ namespace DOL.GS.GameEvents
 		//Every entry in this array gets a Merchant
 		private static GLoc[] m_locations = { new GLoc(33626, 30638, 8002, 2000, 10, 1), new GLoc(31996, 34241, 8032, 4000, 101, 2), new GLoc(33383, 32330, 8000, 2044, 201, 3) };
 		//Every string in this array is added to m_tradeItems
-		private static ItemTemplate[] m_items = { UtilityScrollsEvent.HealerScroll, UtilityScrollsEvent.MerchantScroll, UtilityScrollsEvent.TeleporterScroll, UtilityScrollsEvent.Tinderbox, UtilityScrollsEvent.TrainerScroll, UtilityScrollsEvent.VaultKeeperScroll, "brownstandardmount", "whitestandardmount", "spottedstandardmount" };
+		private static ArrayList m_items = new ArrayList();
 
 		[ScriptLoadedEvent]
 		public static void OnScriptCompiled(DOLEvent e, object sender, EventArgs args)
 		{
+			m_items.Add(UtilityScrollsEvent.HealerScroll);
+			m_items.Add(UtilityScrollsEvent.MerchantScroll);
+			m_items.Add(UtilityScrollsEvent.TeleporterScroll);
+			m_items.Add(UtilityScrollsEvent.Tinderbox);
+			m_items.Add(UtilityScrollsEvent.TrainerScroll);
+			m_items.Add(UtilityScrollsEvent.VaultKeeperScroll);
+			m_items.Add(GameServer.Database.FindObjectByKey(typeof(ItemTemplate), "brownstandardmount"));
+			m_items.Add(GameServer.Database.FindObjectByKey(typeof(ItemTemplate), "whitestandardmount"));
+			m_items.Add(GameServer.Database.FindObjectByKey(typeof(ItemTemplate), "spottedstandardmount"));
+
 			//Stores items to be sold
 			MerchantTradeItems m_tradeitems = new MerchantTradeItems("ScrollMerchant");
 			//Stores the page items are being added to
 			int m_page = 0;
 			//Loops through the m_items array
-			for (int i = 0; i <= m_items.Length - 1; i++)
+			for (int i = 0; i <= m_items.Count - 1; i++)
 			{
 				//if i is 30 60 90 120 or 150 pages in being increased by 1
 				if (i > MerchantTradeItems.MAX_ITEM_IN_TRADEWINDOWS * (m_page + 1))
