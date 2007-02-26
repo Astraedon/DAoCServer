@@ -305,7 +305,7 @@ namespace DOL.GS.GameEvents
 			if (mob.AddToWorld())
 				sfx = mob;
 
-			if (!IsSummoned)
+			if (!IsSummoned && this.NPCTemplate == null)
 			{
 				BindPoint bp = new BindPoint();
 				bp.Realm = Realm;
