@@ -19,7 +19,7 @@ namespace DOL.GS.GameEvents
 		//Every entry in this array gets a Merchant
 		private static GLoc[] m_locations = { new GLoc(33626, 30638, 8002, 2000, 10, 1), new GLoc(31996, 34241, 8032, 4000, 101, 2), new GLoc(33383, 32330, 8000, 2044, 201, 3) };
 		//Every string in this array is added to m_tradeItems
-		private static ItemTemplate[] m_items = { UtilityScrollsEvent.HealerScroll, UtilityScrollsEvent.MerchantScroll, UtilityScrollsEvent.TeleporterScroll, UtilityScrollsEvent.Tinderbox, UtilityScrollsEvent.TrainerScroll, UtilityScrollsEvent.VaultKeeperScroll};
+		private static ItemTemplate[] m_items = { UtilityScrollsEvent.HealerScroll, UtilityScrollsEvent.MerchantScroll, UtilityScrollsEvent.TeleporterScroll, UtilityScrollsEvent.Tinderbox, UtilityScrollsEvent.TrainerScroll, UtilityScrollsEvent.VaultKeeperScroll, "brownstandardmount", "whitestandardmount", "spottedstandardmount" };
 
 		[ScriptLoadedEvent]
 		public static void OnScriptCompiled(DOLEvent e, object sender, EventArgs args)

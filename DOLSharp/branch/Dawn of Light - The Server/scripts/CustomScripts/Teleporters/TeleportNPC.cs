@@ -26,7 +26,7 @@ namespace DOL.GS.GameEvents
 		/// </summary>
 		private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-		public int m_index;
+		public int m_index = -1;
 		public ArrayList m_locs;
 		public string m_message;
 		public Queue m_animTeleportTimerQueue = new Queue();
@@ -36,6 +36,28 @@ namespace DOL.GS.GameEvents
 		public Queue m_portDestinationQueue = new Queue();
 		public bool IsSummoned = false;
 		protected GameNPC sfx;
+
+		public TeleportNPC()
+			: base()
+		{
+			m_message = "I can teleport you to various major towns around your realm. Which town would you like me to teleport you to?\n\n";
+
+			Level = 60;
+			Size = 55;
+			GameNpcInventoryTemplate template = new GameNpcInventoryTemplate();
+			template.AddNPCEquipment(eInventorySlot.TwoHandWeapon, 1658);
+			template.AddNPCEquipment(eInventorySlot.Cloak, 1720);
+			template.AddNPCEquipment(eInventorySlot.TorsoArmor, 2245);
+			template = template.CloseTemplate();
+			Inventory = template;
+
+			//Rudal - Needed for Teleporters with Staff in Two Handed Slot
+			if ((template.GetItem(eInventorySlot.TwoHandWeapon) != null) && (template.GetItem(eInventorySlot.RightHandWeapon) == null))
+				SwitchWeapon(eActiveWeaponSlot.TwoHanded);
+
+			Flags ^= (uint)GameNPC.eFlags.PEACE;
+		}
+
 		//constructor
         public TeleportNPC(ushort region, int x, int y, int z, ushort heading,
                              ushort model, byte realm, string name, string guild,
@@ -82,6 +104,16 @@ namespace DOL.GS.GameEvents
 				return false;
 
 			TurnTo(player.X, player.Y);
+
+			if (m_locs == null)
+			{
+				switch (player.Realm)
+				{
+					case 1: m_locs = RvRTeleportNPCEvent.AlbLocs; break;
+					case 2: m_locs = RvRTeleportNPCEvent.MidLocs; break;
+					case 3: m_locs = RvRTeleportNPCEvent.HibLocs; break;
+				}
+			}
 
 			string message = player.Name + " the " + player.CharacterClass.Name + ", " + m_message;
 

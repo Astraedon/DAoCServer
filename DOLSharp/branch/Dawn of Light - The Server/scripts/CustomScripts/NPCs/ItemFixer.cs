@@ -119,8 +119,11 @@ namespace DOL.GS.Scripts
 				SayTo(player, "Unfortunately I can't find a template for " + id);
 				return false;
 			}
+			InventoryItem newItem = new InventoryItem(template);
+			newItem.Condition = item.Condition;
+			newItem.Durability = item.Durability;
 			player.Inventory.RemoveItem(item);
-			player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(template));
+			player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, newItem);
 			SayTo(player, "There you go, " + item.Name + " is updated to the latest version");
 			return true;
 		}
