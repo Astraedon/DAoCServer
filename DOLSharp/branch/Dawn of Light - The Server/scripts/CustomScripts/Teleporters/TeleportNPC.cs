@@ -105,14 +105,11 @@ namespace DOL.GS.GameEvents
 
 			TurnTo(player.X, player.Y);
 
-			if (m_locs == null)
+			switch (player.Realm)
 			{
-				switch (player.Realm)
-				{
-					case 1: m_locs = RvRTeleportNPCEvent.AlbLocs; break;
-					case 2: m_locs = RvRTeleportNPCEvent.MidLocs; break;
-					case 3: m_locs = RvRTeleportNPCEvent.HibLocs; break;
-				}
+				case 1: m_locs = RvRTeleportNPCEvent.AlbLocs; break;
+				case 2: m_locs = RvRTeleportNPCEvent.MidLocs; break;
+				case 3: m_locs = RvRTeleportNPCEvent.HibLocs; break;
 			}
 
 			string message = player.Name + " the " + player.CharacterClass.Name + ", " + m_message;

@@ -13,7 +13,8 @@ namespace DOL.GS.Scripts
 		public int OnCommand(GameClient client, string[] args)
 		{
 			AbstractGameKeep thidranki = KeepMgr.getKeepByID(129);
-			AbstractGameKeep orseo = KeepMgr.getKeepByID(5);
+			//AbstractGameKeep orseo = KeepMgr.getKeepByID(5);
+			AbstractGameKeep leirvik = KeepMgr.getKeepByID(134);
 			AbstractGameKeep molvik = KeepMgr.getKeepByID(132);
 
 			ArrayList list = new ArrayList();
@@ -35,17 +36,17 @@ namespace DOL.GS.Scripts
 			list.Add("Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")");
 
 
-			string guildName = orseo.Guild == null ? "" : " (" + orseo.Guild.Name + ")";
-			list.Add(orseo.Name + ": " + GlobalConstants.RealmToName((eRealm)orseo.Realm) + guildName);
-			if (orseo.InCombat)
+			string guildName = leirvik.Guild == null ? "" : " (" + leirvik.Guild.Name + ")";
+			list.Add(leirvik.Name + ": " + GlobalConstants.RealmToName((eRealm)leirvik.Realm) + guildName);
+			if (leirvik.InCombat)
 				list.Add("Under Siege");
-			alb = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 1);
-			mid = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 2);
-			hib = WorldMgr.GetClientsOfRegionCount((ushort)orseo.Region, 3);
+			alb = WorldMgr.GetClientsOfRegionCount((ushort)leirvik.Region, 1);
+			mid = WorldMgr.GetClientsOfRegionCount((ushort)leirvik.Region, 2);
+			hib = WorldMgr.GetClientsOfRegionCount((ushort)leirvik.Region, 3);
 			list.Add("Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")");
 
 			list.Add("");
-			list.Add("Darkness Falls: " + GlobalConstants.RealmToName((eRealm)orseo.Realm));
+			list.Add("Darkness Falls: " + GlobalConstants.RealmToName((eRealm)leirvik.Realm));
 			alb = WorldMgr.GetClientsOfRegionCount(249, 1);
 			mid = WorldMgr.GetClientsOfRegionCount(249, 2);
 			hib = WorldMgr.GetClientsOfRegionCount(249, 3);

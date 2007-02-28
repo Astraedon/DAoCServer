@@ -65,10 +65,10 @@ namespace DOL.GS.PacketHandler.Client.v168
 			//going into DF
 			if (client.Account.PrivLevel == 1 && zonePoint.Region == 249 && client.Player.CurrentRegionID != 249)
 			{
-				Keeps.AbstractGameKeep keep = Keeps.KeepMgr.getKeepByID(5);
+				Keeps.AbstractGameKeep keep = Keeps.KeepMgr.getKeepByID(134);
 				if (keep.Realm != client.Player.Realm)
 				{
-					client.Out.SendMessage("You realm does not control Darkness Falls, fight in Cathul Valley for Dun Orseo!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+					client.Out.SendMessage("You realm does not control Darkness Falls, you must own " + keep.Name + "!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 					return 1;
 				}
 			}
