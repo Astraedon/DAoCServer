@@ -35,8 +35,7 @@ namespace DOL.GS.Scripts
             switch (str)
             {
                 case "parchment":
-                    player.Out.SendMessage("Parchment is often being carried around by humanoid-type " +
-                                            "foes which carry any type of items.",eChatType.CT_System,eChatLoc.CL_PopupWindow);
+					player.Out.SendMessage("Parchment is often being carried around by foes in Darkness Falls.", eChatType.CT_System, eChatLoc.CL_PopupWindow);
                     break;
             }
 

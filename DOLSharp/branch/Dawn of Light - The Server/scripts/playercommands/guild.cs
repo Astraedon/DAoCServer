@@ -831,7 +831,7 @@ namespace DOL.GS.Scripts
 
 								if (showOffline)
 								{
-									foreach (Character ply in (Character[])GameServer.Database.SelectObjects(typeof(Character), "GuildID = '" + client.Player.GuildID + "'"))
+									foreach (Character ply in (Character[])GameServer.Database.SelectObjects(typeof(Character), "GuildID = '" + GameServer.Database.Escape(client.Player.GuildID) + "'"))
 									{
 										string keyStr = "";
 										switch (sort)
@@ -1112,7 +1112,7 @@ namespace DOL.GS.Scripts
 								}
 								else
 								{
-									Character c = (Character)GameServer.Database.SelectObject(typeof(Character), "Name = '" + playername + "'");
+									Character c = (Character)GameServer.Database.SelectObject(typeof(Character), "Name = '" + GameServer.Database.Escape(playername) + "'");
 									if (c == null)
 									{
 										client.Out.SendMessage("No player by the name " + playername + " found.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
@@ -1120,7 +1120,7 @@ namespace DOL.GS.Scripts
 									}
 									accountname = c.AccountName;
 								}
-								Character[] chars = (Character[])GameServer.Database.SelectObjects(typeof(Character), "AccountName = '" + accountname + "'");
+								Character[] chars = (Character[])GameServer.Database.SelectObjects(typeof(Character), "AccountName = '" + GameServer.Database.Escape(accountname) + "'");
 								foreach (Character c in chars)
 								{
 									c.GuildID = "";
