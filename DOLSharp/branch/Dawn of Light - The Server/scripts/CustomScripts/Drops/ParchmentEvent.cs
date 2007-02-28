@@ -31,9 +31,15 @@ namespace DOL.GS.GameEvents
 			m_items.Add(UtilityScrollsEvent.Tinderbox);
 			m_items.Add(UtilityScrollsEvent.TrainerScroll);
 			m_items.Add(UtilityScrollsEvent.VaultKeeperScroll);
-			m_items.Add(GameServer.Database.FindObjectByKey(typeof(ItemTemplate), "brownstandardmount"));
-			m_items.Add(GameServer.Database.FindObjectByKey(typeof(ItemTemplate), "whitestandardmount"));
-			m_items.Add(GameServer.Database.FindObjectByKey(typeof(ItemTemplate), "spottedstandardmount"));
+			ItemTemplate brownHorse = (ItemTemplate)GameServer.Database.FindObjectByKey(typeof(ItemTemplate), "brownstandardmount");
+			if (brownHorse != null)
+				m_items.Add(brownHorse);
+			ItemTemplate whiteHorse = (ItemTemplate)GameServer.Database.FindObjectByKey(typeof(ItemTemplate), "whitestandardmount");
+			if (whiteHorse != null)
+				m_items.Add(whiteHorse);
+			ItemTemplate spottedHorse = (ItemTemplate)GameServer.Database.FindObjectByKey(typeof(ItemTemplate), "spottedstandardmount");
+			if (spottedHorse != null)
+				m_items.Add(spottedHorse);
 
 			//Stores items to be sold
 			MerchantTradeItems m_tradeitems = new MerchantTradeItems("ScrollMerchant");
