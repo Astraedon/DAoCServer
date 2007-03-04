@@ -41,7 +41,7 @@ namespace DOL.GS.Scripts
 			string siege = "";
 			if (keep.InCombat)
 				siege = " (Under Siege)";
-			return keep.Name + ": " + GlobalConstants.RealmToName((eRealm)keep.Realm) + siege + keep;
+			return keep.Name + ": " + GlobalConstants.RealmToName((eRealm)keep.Realm) + guild + keep;
 		}
 
 		private static string GetPlayersLine(int regionID)

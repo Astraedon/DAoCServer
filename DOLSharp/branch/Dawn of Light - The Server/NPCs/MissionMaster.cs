@@ -11,6 +11,7 @@ namespace DOL.GS.Scripts
 		{
 			Name = "Frontier Watchman";
 			GuildName = "Mission Master";
+			Level = 60;
 			switch (Realm)
 			{
 				case 0:

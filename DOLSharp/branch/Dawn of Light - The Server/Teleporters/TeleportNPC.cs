@@ -44,6 +44,8 @@ namespace DOL.GS.GameEvents
 
 			Level = 60;
 			Size = 55;
+			Name = "Teleporter";
+			GuildName = "Teleporter";
 			GameNpcInventoryTemplate template = new GameNpcInventoryTemplate();
 			template.AddNPCEquipment(eInventorySlot.TwoHandWeapon, 1658);
 			template.AddNPCEquipment(eInventorySlot.Cloak, 1720);
