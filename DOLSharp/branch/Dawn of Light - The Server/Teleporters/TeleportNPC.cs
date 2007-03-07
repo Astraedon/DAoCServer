@@ -298,6 +298,7 @@ namespace DOL.GS.GameEvents
 			mob.Name = "teleport spell effect";
 			mob.Flags = (uint)GameNPC.eFlags.PEACE + (uint)GameNPC.eFlags.DONTSHOWNAME;
 			mob.Size = 255;
+			mob.Realm = Realm;
 			mob.CurrentRegion = this.CurrentRegion;
 			mob.X = this.X;
 			mob.Y = this.Y;

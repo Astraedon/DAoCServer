@@ -37,14 +37,18 @@ namespace DOL.GS.GameEvents
 		[ScriptLoadedEvent]
 		public static void OnScriptCompiled(DOLEvent e, object sender, EventArgs args)
 		{
+			#region Albion
 			//create locations for npcs
 			m_albLocs.Add(new Location("Camelot", 10, 35253, 25005, 8751, 1549));
+			m_albLocs.Add(new LocationExpansion("Gothwaite Harbor", 51, 525725, 542460, 3168, 3238, GameClient.eClientType.ShroudedIsles, 0, GameClient.eClientVersion.Version168));
 			m_albLocs.Add(new LocationExpansion("Thidranki (20-39)", 238, 563466, 574358, 5408, 2121, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 20, 39));
 			//AbstractGameKeep albMolvikPK = KeepMgr.getKeepByID(388);
 			//m_albLocs.Add(new LocationExpansion("Molvik (30-39)", (ushort)albMolvikPK.Region, albMolvikPK.X, albMolvikPK.Y, albMolvikPK.Z, (ushort)albMolvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 30, 39));
-			AbstractGameKeep albLeirvikPK = KeepMgr.getKeepByID(390);
-			m_albLocs.Add(new LocationExpansion("Leirvik (40+)", (ushort)albLeirvikPK.Region, albLeirvikPK.X, albLeirvikPK.Y, albLeirvikPK.Z, (ushort)albLeirvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 40, 50));
+			//AbstractGameKeep albLeirvikPK = KeepMgr.getKeepByID(390);
+			//m_albLocs.Add(new LocationExpansion("Leirvik (40+)", (ushort)albLeirvikPK.Region, albLeirvikPK.X, albLeirvikPK.Y, albLeirvikPK.Z, (ushort)albLeirvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 40, 50));
 			//m_albLocs.Add(new LocationExpansion("Cathal Valley (40+)", 165, 583159, 585478, 4896, 2417, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 40, 50));
+			m_albLocs.Add(new Location("Castle Sauvage", 163, 653811, 616998, 9560, 2040));
+			m_albLocs.Add(new Location("Snowdonia Fortress", 163, 616149, 679042, 9560, 1611));
 			m_albLocs.Add(new Location("Caerwent (Housing)", 2, 556483, 559261, 3646, 2940));
 			//m_albLocs.Add(new Location("Old Sarum (Housing)", 2, 559714, 620708, 3650, 2940));
 			//m_albLocs.Add(new Location("Rilan (Housing)", 2, 559587, 489821, 3418, 2868));
@@ -57,14 +61,18 @@ namespace DOL.GS.GameEvents
 			m_albLocs.Add(new SpecialLocation("Personal House", SpecialLocation.eSpecialLocation.PersonalHouse));
 			m_albLocs.Add(new SpecialLocation("Bind Point", SpecialLocation.eSpecialLocation.BindPoint));
 			TeleportNPCUtility.CreateTeleporters(1, m_albLocs, "AlbionRvRTeleportNPCEvent", m_albNpcs);
-
+			#endregion
+			#region Midgard
 			m_midLocs.Add(new Location("Jordheim", 101, 31746, 28726, 8800, 2035));
+			m_midLocs.Add(new LocationExpansion("Aegir's Landing", 151, 294776, 355988, 3488, 741, GameClient.eClientType.ShroudedIsles, 0, GameClient.eClientVersion.Version168));
 			m_midLocs.Add(new LocationExpansion("Thidranki (20-39)", 238, 570038, 540351, 5408, 4076, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 20, 39));
 			//AbstractGameKeep midMolvikPK = KeepMgr.getKeepByID(644);
 			//m_midLocs.Add(new LocationExpansion("Molvik (30-39)", (ushort)midMolvikPK.Region, midMolvikPK.X, midMolvikPK.Y, midMolvikPK.Z, (ushort)midMolvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 30, 39));
-			AbstractGameKeep midLeirvikPK = KeepMgr.getKeepByID(646);
-			m_midLocs.Add(new LocationExpansion("Leirvik (40+)", (ushort)midLeirvikPK.Region, midLeirvikPK.X, midLeirvikPK.Y, midLeirvikPK.Z, (ushort)midLeirvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 40, 50));
+			//AbstractGameKeep midLeirvikPK = KeepMgr.getKeepByID(646);
+			//m_midLocs.Add(new LocationExpansion("Leirvik (40+)", (ushort)midLeirvikPK.Region, midLeirvikPK.X, midLeirvikPK.Y, midLeirvikPK.Z, (ushort)midLeirvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 40, 50));
 			//m_midLocs.Add(new LocationExpansion("Cathal Valley (40+)", 165, 575858, 537997, 4832, 1043, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 40, 50));
+			m_midLocs.Add(new Location("Svasud Faste", 163, 651460, 313758, 9432, 1004));
+			m_midLocs.Add(new Location("Vindsaul Faste", 163, 715179, 365101, 9432, 314));
 			//m_midLocs.Add(new Location("Carlingford (Housing)", 102, 623984, 557289, 3722, 1359));
 			//m_midLocs.Add(new Location("Arothi (Housing)", 102, 556954, 484844, 3514, 1250));
 			//m_midLocs.Add(new Location("Kaupang (Housing)", 102, 626252, 482408, 3618, 1539));
@@ -77,14 +85,18 @@ namespace DOL.GS.GameEvents
 			m_midLocs.Add(new SpecialLocation("Personal House", SpecialLocation.eSpecialLocation.PersonalHouse));
 			m_midLocs.Add(new SpecialLocation("Bind Point", SpecialLocation.eSpecialLocation.BindPoint));
 			TeleportNPCUtility.CreateTeleporters(2, m_midLocs, "MidgardRvRTeleportNPCEvent", m_midNpcs);
-
+			#endregion
+			#region Hibernia
 			m_hibLocs.Add(new Location("Tir na Nog", 201, 33680, 31800, 7999, 4684));
+			m_hibLocs.Add(new LocationExpansion("Grove of Domnann", 181, 423786, 440322, 5959, 863, GameClient.eClientType.ShroudedIsles, 0, GameClient.eClientVersion.Version168));
 			m_hibLocs.Add(new LocationExpansion("Thidranki (20-39)", 238, 533649, 533990, 5408, 3503, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 20, 39));
 			//AbstractGameKeep hibMolvikPK = KeepMgr.getKeepByID(900);
 			//m_hibLocs.Add(new LocationExpansion("Molvik (30-39)", (ushort)hibMolvikPK.Region, hibMolvikPK.X, hibMolvikPK.Y, hibMolvikPK.Z, (ushort)hibMolvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version170, 30, 39));
-			AbstractGameKeep hibLeirvikPK = KeepMgr.getKeepByID(902);
-			m_hibLocs.Add(new LocationExpansion("Leirvik (40+)", (ushort)hibLeirvikPK.Region, hibLeirvikPK.X, hibLeirvikPK.Y, hibLeirvikPK.Z, (ushort)hibLeirvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 40, 50));
+			//AbstractGameKeep hibLeirvikPK = KeepMgr.getKeepByID(902);
+			//m_hibLocs.Add(new LocationExpansion("Leirvik (40+)", (ushort)hibLeirvikPK.Region, hibLeirvikPK.X, hibLeirvikPK.Y, hibLeirvikPK.Z, (ushort)hibLeirvikPK.Heading, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 40, 50));
 			//m_hibLocs.Add(new LocationExpansion("Cathal Valley (40+)", 165, 536144, 585708, 5800, 2158, GameClient.eClientType.ShroudedIsles, GameClient.eClientAddons.NewFrontiers, GameClient.eClientVersion.Version185, 40, 50));
+			m_hibLocs.Add(new Location("Druim Ligen", 163, 396519, 618017, 9838, 2159));
+			m_hibLocs.Add(new Location("Druim Cain", 163, 432841, 680032, 9747, 2585));
 			//m_hibLocs.Add(new Location("Torrylin (Housing)", 202, 565479, 618767, 3185, 3515));
 			//m_hibLocs.Add(new Location("Aberillan (Housing)", 202, 616881, 619453, 3185, 987));
 			//m_hibLocs.Add(new Location("Kilcullen (Housing)", 202, 619295, 561232, 3209, 3061));
@@ -97,6 +109,7 @@ namespace DOL.GS.GameEvents
 			m_hibLocs.Add(new SpecialLocation("Personal House", SpecialLocation.eSpecialLocation.PersonalHouse));
 			m_hibLocs.Add(new SpecialLocation("Bind Point", SpecialLocation.eSpecialLocation.BindPoint));
 			TeleportNPCUtility.CreateTeleporters(3, m_hibLocs, "HiberniaRvRTeleportNPCEvent", m_hibNpcs);
+			#endregion
 		}
 		[ScriptUnloadedEvent]
 		public static void OnScriptUnloaded(DOLEvent e, object sender, EventArgs args)

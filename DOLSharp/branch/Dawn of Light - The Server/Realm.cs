@@ -28,7 +28,7 @@ namespace DOL.GS.Scripts
 			list.Add(GenerateKeepLine(leirvikHibTower));
 			list.Add(GetPlayersLine(leirvik.Region));
 			list.Add("");
-			list.Add("Darkness Falls: " + GlobalConstants.RealmToName((eRealm)leirvik.Realm));
+			list.Add("Darkness Falls: " + GlobalConstants.RealmToName(ServerRules.DFEnterJumpPoint.DarknessFallOwner));
 			list.Add(GetPlayersLine(249));
 
 			client.Out.SendCustomTextWindow("Realm Status", list);
@@ -50,6 +50,7 @@ namespace DOL.GS.Scripts
 			alb = WorldMgr.GetClientsOfRegionCount((ushort)regionID, 1);
 			mid = WorldMgr.GetClientsOfRegionCount((ushort)regionID, 2);
 			hib = WorldMgr.GetClientsOfRegionCount((ushort)regionID, 3);
+			return "";
 			return "Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
 		}
 	}
