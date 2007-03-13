@@ -10,23 +10,21 @@ namespace DOL.GS.Scripts
 		"Show realm status", "/realm")]
 	public class RealmCommandHandler : AbstractCommandHandler, ICommandHandler 
 	{
+		private const int NUMBER_KEEPS = 7;
+		private const int NUMBER_TOWERS = NUMBER_KEEPS * 4;
+
 		public int OnCommand(GameClient client, string[] args)
 		{
 			AbstractGameKeep thidranki = KeepMgr.getKeepByID(129);
-			AbstractGameKeep leirvik = KeepMgr.getKeepByID(134);
-			AbstractGameKeep leirvikAlbTower = KeepMgr.getKeepByID(1414);
-			AbstractGameKeep leirvikMidTower = KeepMgr.getKeepByID(1158);
-			AbstractGameKeep leirvikHibTower = KeepMgr.getKeepByID(1670);
 
 			ArrayList list = new ArrayList();
+			list.Add("Frontier Status:");
+			foreach (string str in GenerateFrontierStatus())
+				list.Add(str);
+			list.Add("");
+			list.Add("Battlegrounds Status:");
 			list.Add(GenerateKeepLine(thidranki));
 			list.Add(GetPlayersLine(thidranki.Region));
-			list.Add("");
-			list.Add(GenerateKeepLine(leirvik));
-			list.Add(GenerateKeepLine(leirvikAlbTower));
-			list.Add(GenerateKeepLine(leirvikMidTower));
-			list.Add(GenerateKeepLine(leirvikHibTower));
-			list.Add(GetPlayersLine(leirvik.Region));
 			list.Add("");
 			list.Add("Darkness Falls: " + GlobalConstants.RealmToName(ServerRules.DFEnterJumpPoint.DarknessFallOwner));
 			list.Add(GetPlayersLine(249));
@@ -52,6 +50,29 @@ namespace DOL.GS.Scripts
 			hib = WorldMgr.GetClientsOfRegionCount((ushort)regionID, 3);
 			return "";
 			return "Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
+		}
+
+		private static ArrayList GenerateFrontierStatus()
+		{
+			ArrayList list = new ArrayList();
+			for (int i = 1; i <= 3; i++)
+			{
+				string msg = "";
+				eRealm realm = (eRealm)i;
+				int towersbyrealm = KeepMgr.GetTowerCountByRealm(realm);
+				int towernum = towersbyrealm - NUMBER_TOWERS;
+				string towers = towernum.ToString();
+				if (towernum > 0)
+					towers = "+" + towers;
+				int keepsbyrealm = KeepMgr.GetKeepCountByRealm(realm);
+				int keepnum = keepsbyrealm - NUMBER_KEEPS;
+				string keeps = keepnum.ToString();
+				if (keepnum > 0)
+					keeps = "+" + keeps;
+				msg += GlobalConstants.RealmToName(realm) + ": Towers " + towersbyrealm + " (" + towers + ") Keeps " + keepsbyrealm + " (" + keeps + ")";
+				list.Add(msg);
+			}
+			return list;
 		}
 	}
 }

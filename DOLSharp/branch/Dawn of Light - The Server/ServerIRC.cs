@@ -50,6 +50,9 @@ namespace DOL.GS.Scripts
 				IRCBot.SendMessage(CHANNEL, GameServer.Instance.Configuration.ServerName + " started!");
 			else IRCBot.SendNotice(clt.Nick, "Welcome to " + GameServer.Instance.Configuration.ServerName + " IRC you can look at my command list with !list Server Message: " + ServerProperties.Properties.MOTD);
 		}
+		
+		private const int NUMBER_KEEPS = 7;
+		private const int NUMBER_TOWERS = NUMBER_KEEPS * 4;
 
 		static void IRCBot_OnMessage(IRCClient sender, Client source, object target, string message)
 		{
@@ -58,64 +61,27 @@ namespace DOL.GS.Scripts
 			{
 				case "!rw":
 				case "!realmwar":
-				case "!realm":
 					{
-						AbstractGameKeep thidranki = KeepMgr.getKeepByID(129);
-						AbstractGameKeep leirvik = KeepMgr.getKeepByID(134);
-
-						ArrayList list = new ArrayList();
-						if (data.Length > 2)
+						string msg = "Realm Status: ";
+						for (int i = 1; i <= 3; i++)
 						{
-							switch (data[1])
-							{
-								case "thid":
-								case "thidranki": list.Add(thidranki); break;
-								case "leirvik": list.Add(leirvik); break;
-								case "df":
-									{
-										if (leirvik != null)
-										{
-											string msg = ("Darkness Falls: " + GlobalConstants.RealmToName((eRealm)leirvik.Realm));
-											int alb = WorldMgr.GetClientsOfRegionCount(249, 1);
-											int mid = WorldMgr.GetClientsOfRegionCount(249, 2);
-											int hib = WorldMgr.GetClientsOfRegionCount(249, 3);
-											//msg += "|| Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
-											IRCBot.SendNotice(source.Nick, msg);
-										}
-										break;
-									}
-							}
-						}
-						else
-						{
-							list.Add(thidranki);
-							list.Add(leirvik);
-
-
-							if (leirvik!= null)
-							{
-								string msg = ("Darkness Falls: " + GlobalConstants.RealmToName((eRealm)leirvik.Realm));
-								int alb = WorldMgr.GetClientsOfRegionCount(249, 1);
-								int mid = WorldMgr.GetClientsOfRegionCount(249, 2);
-								int hib = WorldMgr.GetClientsOfRegionCount(249, 3);
-								//msg += "|| Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
-								IRCBot.SendNotice(source.Nick, msg);
-							}
+							if (i > 1)
+								msg += " ";
+							eRealm realm = (eRealm)i;
+							int towersbyrealm = KeepMgr.GetTowerCountByRealm(realm);
+							int towernum = towersbyrealm - NUMBER_TOWERS;
+							string towers = towernum.ToString();
+							if (towernum > 0)
+								towers = "+" + towers;
+							int keepsbyrealm = KeepMgr.GetKeepCountByRealm(realm);
+							int keepnum = keepsbyrealm - NUMBER_KEEPS;
+							string keeps = keepnum.ToString();
+							if (keepnum > 0)
+								keeps = "+" + keeps;
+							msg += GlobalConstants.RealmToName(realm) + ": Towers " + towersbyrealm + " (" + towers + ") Keeps " + keepsbyrealm + " (" + keeps + ")";
 						}
 
-						foreach (AbstractGameKeep keep in list)
-						{
-							if (keep == null)
-								continue;
-
-							string msg = keep.Name + ": " + GlobalConstants.RealmToName((eRealm)keep.Realm);
-							int alb = WorldMgr.GetClientsOfRegionCount((ushort)keep.Region, 1);
-							int mid = WorldMgr.GetClientsOfRegionCount((ushort)keep.Region, 2);
-							int hib = WorldMgr.GetClientsOfRegionCount((ushort)keep.Region, 3);
-							//msg += "|| Players: Alb (" + alb + ") Mid (" + mid + ") Hib (" + hib + ") Total (" + (alb + mid + hib) + ")";
-							IRCBot.SendNotice(source.Nick, msg);
-						}
-
+						IRCBot.SendMessage(CHANNEL, msg);
 						break;
 					}
 				case "!stats":

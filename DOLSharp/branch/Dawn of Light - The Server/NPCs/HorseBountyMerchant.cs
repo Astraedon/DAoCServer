@@ -60,12 +60,15 @@ namespace DOL.GS.Scripts
 				m_items.Add(bayWarHorse);*/
 		}
 
-		public GameBountyHorseMerchant()
-			: base()
+		public override bool Interact(GamePlayer player)
 		{
-			m_tradeItems = new MerchantTradeItems("horsebountymerchant");
-			foreach (ItemTemplate item in m_items)
-				m_tradeItems.AddTradeItem(0, eMerchantWindowSlot.FirstEmptyInPage, item);
+			if (m_tradeItems == null)
+			{
+				m_tradeItems = new MerchantTradeItems("horsebountymerchant");
+				foreach (ItemTemplate item in m_items)
+					m_tradeItems.AddTradeItem(0, eMerchantWindowSlot.FirstEmptyInPage, item);
+			}
+			return base.Interact(player);
 		}
 	}
 }
