@@ -69,7 +69,8 @@ namespace DOL.GS.Scripts
 				string keeps = keepnum.ToString();
 				if (keepnum > 0)
 					keeps = "+" + keeps;
-				msg += GlobalConstants.RealmToName(realm) + ": Towers " + towersbyrealm + " (" + towers + ") Keeps " + keepsbyrealm + " (" + keeps + ")";
+
+				msg += GlobalConstants.RealmToName(realm) + ": Towers " + towersbyrealm + " (" + towers + ") Keeps " + keepsbyrealm + " (" + keeps + ")" + " Keep Balance: (" + KeepMgr.GetRealmBonusLevel(realm) + ")";
 				list.Add(msg);
 			}
 			return list;
