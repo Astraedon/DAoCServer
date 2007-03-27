@@ -120,8 +120,8 @@ namespace DOL.GS.Scripts
 				return false;
 			}
 			InventoryItem newItem = new InventoryItem(template);
-			newItem.Condition = item.Condition;
-			newItem.Durability = item.Durability;
+			//newItem.Condition = item.Condition;
+			//newItem.Durability = item.Durability;
 			player.Inventory.RemoveItem(item);
 			player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, newItem);
 			SayTo(player, "There you go, " + item.Name + " is updated to the latest version");

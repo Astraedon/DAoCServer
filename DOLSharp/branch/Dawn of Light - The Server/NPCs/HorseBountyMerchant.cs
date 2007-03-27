@@ -62,9 +62,9 @@ namespace DOL.GS.Scripts
 
 		public override bool Interact(GamePlayer player)
 		{
-			if (m_tradeItems == null)
+			if (m_tradeItems == null || m_tradeItems.GetAllItems().Count == 0)
 			{
-				m_tradeItems = new MerchantTradeItems("horsebountymerchant");
+				m_tradeItems = new MerchantTradeItems(null);
 				foreach (ItemTemplate item in m_items)
 					m_tradeItems.AddTradeItem(0, eMerchantWindowSlot.FirstEmptyInPage, item);
 			}
