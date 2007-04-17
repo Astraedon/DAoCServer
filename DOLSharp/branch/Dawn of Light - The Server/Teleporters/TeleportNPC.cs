@@ -180,7 +180,7 @@ namespace DOL.GS.GameEvents
 				{
 					LocationExpansion locationex = l as LocationExpansion;
 					bool good = true;
-					if (player.Client.ClientType < (int)locationex.Software)
+					if ((int)player.Client.ClientType < (int)locationex.Software)
 					{
 						SendReply(player, "You don't have the right client type. (" + locationex.Software.ToString() + ")");
 						good = false;

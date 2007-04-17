@@ -44,28 +44,16 @@ namespace DOL.GS.Scripts
 
 			TimeSpan uptime = TimeSpan.FromTicks(GameServer.Instance.TickCount);
 
-			ServerProperty propertyMin = GameServer.Database.SelectObject(typeof(ServerProperty), "`Key` = 'shutdown_hour_min'") as ServerProperty;
-			if (propertyMin == null)
+			ServerProperty propertyHour = GameServer.Database.SelectObject(typeof(ServerProperty), "`Key` = 'shutdown_hour'") as ServerProperty;
+			if (propertyHour == null)
 			{
-				propertyMin = new ServerProperty();
-				propertyMin.DefaultValue = "-1";
-				propertyMin.Description = "The min hour the server should shut down";
-				propertyMin.Key = "shutdown_hour_min";
-				propertyMin.Value = "-1";
+				propertyHour = new ServerProperty();
+				propertyHour.DefaultValue = "-1";
+				propertyHour.Description = "The hour the server should shut down";
+				propertyHour.Key = "shutdown_hour";
+				propertyHour.Value = "-1";
 
-				GameServer.Database.AddNewObject(propertyMin);
-			}
-
-			ServerProperty propertyMax = GameServer.Database.SelectObject(typeof(ServerProperty), "`Key` = 'shutdown_hour_max'") as ServerProperty;
-			if (propertyMax == null)
-			{
-				propertyMax = new ServerProperty();
-				propertyMax.DefaultValue = "-1";
-				propertyMax.Description = "The max hour the server should shut down";
-				propertyMax.Key = "shutdown_hour_max";
-				propertyMax.Value = "-1";
-
-				GameServer.Database.AddNewObject(propertyMax);
+				GameServer.Database.AddNewObject(propertyHour);
 			}
 
 			ServerProperty propertyDays = GameServer.Database.SelectObject(typeof(ServerProperty), "`Key` = 'shutdown_days'") as ServerProperty;
@@ -81,15 +69,14 @@ namespace DOL.GS.Scripts
 			}
 
 
-			int minHour = -1, maxHour = -1, days = -1;
-			bool success = int.TryParse(propertyMin.Value, out minHour);
-			success = int.TryParse(propertyMax.Value, out maxHour);
+			int hour = -1, days = -1;
+			bool success = int.TryParse(propertyHour.Value, out hour);
 			success = int.TryParse(propertyDays.Value, out days);
 
-			if (!success || minHour == -1 || maxHour == -1)
+			if (!success || hour == -1)
 				return;
 
-			if (24 * days - (maxHour - minHour) > uptime.TotalHours && DateTime.Now.Hour >= minHour && DateTime.Now.Hour <= maxHour)
+			if (24 * days - hour < uptime.TotalHours && DateTime.Now.Hour == hour)
 			{
 				m_counter = 15 * 60;
 				m_timer = new Timer(new TimerCallback(CountDown), null, 0, 15000);
