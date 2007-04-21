@@ -24,6 +24,8 @@ namespace DOL.GS.Scripts
 		[GameServerStartedEvent]
 		public static void OnScriptLoaded(DOLEvent e, object sender, EventArgs args)
 		{
+			//let's avoid crashing the server huh?
+			return;
 			if (GameServer.Instance.Configuration.ServerNameShort == "Etaew")
 				return;
 			log.Info("Starting IRC Bot");
