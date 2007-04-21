@@ -78,6 +78,7 @@ namespace DOL.GS.Scripts
 
 			if (24 * days - hour < uptime.TotalHours && DateTime.Now.Hour == hour)
 			{
+				DOL.Events.GameEventMgr.RemoveHandler(GameServerEvent.WorldSave, new DOLEventHandler(AutomaticShutdown));
 				m_counter = 15 * 60;
 				m_timer = new Timer(new TimerCallback(CountDown), null, 0, 15000);
 			}
