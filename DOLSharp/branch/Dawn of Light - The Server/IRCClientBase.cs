@@ -602,7 +602,9 @@ namespace IRC
 
 			try
 			{
-				m_Socket.EndReceive(res);
+				int read = m_Socket.EndReceive(res);
+				if (read == 0)
+					Thread.Sleep(50);
 			}
 			catch (SocketException e)
 			{
