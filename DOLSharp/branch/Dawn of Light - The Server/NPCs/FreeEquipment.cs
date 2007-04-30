@@ -10,7 +10,7 @@ namespace DOL.GS.Scripts
 {
 	public class FreeEquipment
 	{
-		public const int FREE_LEVEL = 49;
+		public const int FREE_LEVEL = 19;
 		private static GameNPC Albion_FreeEquipment = null;
 		private static GameNPC Midgard_FreeEquipment = null;
 		private static GameNPC Hibernia_FreeEquipment = null;
