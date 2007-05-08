@@ -25,5 +25,11 @@ namespace DOL.Database
 	{
 		private string m_inventoryitemid;
 		private long m_price;
+
+		public override bool AutoSave
+		{
+			get { return true; }
+			set { }
+		}
 	}
 }
