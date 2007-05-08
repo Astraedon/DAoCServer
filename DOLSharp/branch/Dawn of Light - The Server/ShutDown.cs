@@ -104,7 +104,7 @@ namespace DOL.GS.Scripts
 					if (hours > 3) //hours...
 					{
 						if (mins % 60 == 0 && secs % 60 == 0) //every hour..
-							client.Out.SendMessage("Server reboot in " + hours + " hours!", eChatType.CT_Staff,
+							client.Out.SendMessage("Server reboot in " + hours + " hours!", eChatType.CT_Broadcast,
 												   eChatLoc.CL_ChatWindow);
 					}
 					else if (hours > 0) //hours...
@@ -116,22 +116,22 @@ namespace DOL.GS.Scripts
 					else if (mins >= 10)
 					{
 						if (mins % 15 == 0 && secs % 60 == 0) //every 15 mins..
-							client.Out.SendMessage("Server reboot in " + mins + " mins!", eChatType.CT_Staff,
+							client.Out.SendMessage("Server reboot in " + mins + " mins!", eChatType.CT_Broadcast,
 												   eChatLoc.CL_ChatWindow);
 					}
 					else if (mins >= 3)
 					{
 						if (secs % 60 == 0) //every min...
-							client.Out.SendMessage("Server reboot in " + mins + " mins!", eChatType.CT_Staff,
+							client.Out.SendMessage("Server reboot in " + mins + " mins!", eChatType.CT_Broadcast,
 												   eChatLoc.CL_ChatWindow);
 					}
 					else if (secs > 60)
 					{
-						client.Out.SendMessage("Server reboot in " + mins + " minutes! (" + secs + " secs)", eChatType.CT_Staff,
+						client.Out.SendMessage("Server reboot in " + mins + " minutes! (" + secs + " secs)", eChatType.CT_Broadcast,
 												   eChatLoc.CL_ChatWindow);
 					}
 					else
-						client.Out.SendMessage("Server reboot in " + secs + " secs! Please logout!", eChatType.CT_Staff,
+						client.Out.SendMessage("Server reboot in " + secs + " secs! Please logout!", eChatType.CT_Broadcast,
 												   eChatLoc.CL_ChatWindow);
 				}
 
