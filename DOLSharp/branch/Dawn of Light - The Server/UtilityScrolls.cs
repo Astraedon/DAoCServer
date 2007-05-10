@@ -517,7 +517,7 @@ namespace DOL.GS
                 list.AddFixed(UtilityScrollsEvent.Tinderbox);
             #endregion
 			#region Trainer
-			int chance = Math.Max(2, 100 / (int)(GameServer.ServerRules.GetExperienceForLevel(killer.Level + 1) / mob.ExperienceValue));
+			int chance = Math.Max(2, (100 / (int)(GameServer.ServerRules.GetExperienceForLevel(killer.Level + 1) / mob.ExperienceValue)) + 1);
 			if (Util.Chance(chance))
 				list.AddFixed(UtilityScrollsEvent.TrainerScroll);
 			#endregion
