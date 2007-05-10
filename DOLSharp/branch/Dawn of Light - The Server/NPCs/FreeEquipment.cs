@@ -361,7 +361,7 @@ namespace DOL.GS.Scripts
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Heretic:
