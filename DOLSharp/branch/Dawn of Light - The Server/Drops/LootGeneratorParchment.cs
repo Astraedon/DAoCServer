@@ -43,7 +43,7 @@ namespace DOL.GS.Scripts
 					m_parchment.Weight = 1;
 					m_parchment.Copper = 50;
 					m_parchment.MaxCount = 100;
-					m_parchment.PackSize = 1;
+					m_parchment.PackSize = 5;
 					m_parchment.Realm = 0;
 					m_parchment.Model = 603;
 				}
