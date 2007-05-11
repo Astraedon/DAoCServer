@@ -87,6 +87,9 @@ namespace DOL.GS.Scripts
 			if (player.CraftingPrimarySkill == eCraftingSkill.NoCrafting)
 				return;
 
+			if (player.GetCraftingSkillValue(player.CraftingPrimarySkill) < 100)
+				return;
+
 			bool create = false;
 			DBCrafter crafter = (DBCrafter)GameServer.Database.SelectObject(typeof(DBCrafter), "`CharacterID` = '" + player.PlayerCharacter.ObjectId + "'");
 			if (crafter == null)
