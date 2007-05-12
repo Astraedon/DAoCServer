@@ -99,6 +99,7 @@ namespace DOL.GS.Scripts
 			}
 			crafter.SkillType = (int)player.CraftingPrimarySkill;
 			crafter.SkillAmount = player.GetCraftingSkillValue(player.CraftingPrimarySkill);
+			crafter.CharacterID = player.PlayerCharacter.ObjectId;
 
 			if (create)
 				GameServer.Database.AddNewObject(crafter);
