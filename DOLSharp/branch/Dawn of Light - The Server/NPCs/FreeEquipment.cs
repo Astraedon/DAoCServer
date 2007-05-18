@@ -104,7 +104,7 @@ namespace DOL.GS.Scripts
 			foreach (byte level in FreeEquipment.FreeEquipmentLevels)
 			{
 				if (player.Level > level && level > chosenlevel)
-					chosenlevel = 0;
+					chosenlevel = level;
 			}
 
 			SayTo(player, "Would you like some [equipment] suitable for level " + chosenlevel + "?");
@@ -127,7 +127,7 @@ namespace DOL.GS.Scripts
 			foreach (byte level in FreeEquipment.FreeEquipmentLevels)
 			{
 				if (player.Level > level && level > chosenlevel)
-					chosenlevel = 0;
+					chosenlevel = level;
 			}
 
 			chosenlevel -= 1;
