@@ -138,7 +138,9 @@ namespace DOL.GS.Scripts
 			}
 			if (CurrentSpellHandler == null)
 				CastBuffs();
-			player.Mana = player.MaxMana;
+			if (player.CharacterClass is ClassVampiir == false
+				&& player.CharacterClass is ClassMauler == false)
+				player.Mana = player.MaxMana;
 
 			return true;
 		}

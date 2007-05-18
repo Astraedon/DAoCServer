@@ -149,7 +149,8 @@ namespace DOL.GS.Scripts
 
 			string message = this.Name + " has been slain by a force of " + count + " warriors from the realm of " + GlobalConstants.RealmToName((eRealm)killer.Realm);
 			NewsMgr.CreateNews(message, killer.Realm, eNewsType.PvE, true);
-			ServerIRC.IRCBot.SendMessage(ServerIRC.CHANNEL, message);
+			if (ServerIRC.IRCBot != null)
+				ServerIRC.IRCBot.SendMessage(ServerIRC.CHANNEL, message);
 
 			base.Die(killer);
 			// dragon died message
