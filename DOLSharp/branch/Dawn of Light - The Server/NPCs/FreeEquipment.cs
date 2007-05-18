@@ -10,7 +10,7 @@ namespace DOL.GS.Scripts
 {
 	public class FreeEquipment
 	{
-		public const int FREE_LEVEL = 19;
+		public static byte[] FreeEquipmentLevels = new byte[] { 5, 10, 20, 30, 40, 45, 49 };
 		private static GameNPC Albion_FreeEquipment = null;
 		private static GameNPC Midgard_FreeEquipment = null;
 		private static GameNPC Hibernia_FreeEquipment = null;
@@ -94,13 +94,20 @@ namespace DOL.GS.Scripts
 			if (!base.Interact(player))
 				return false;
 
-			if (player.Level < 20)
+			if (player.Level < 5)
 			{
-				SayTo(player, "You need to be level 20!");
+				SayTo(player, "I'm sorry " + player.Name + ", but I only give equipment out to people above level 5.");
 				return false;
 			}
 
-			SayTo(player, "Would you like some [equipment] suitable for level " + FreeEquipment.FREE_LEVEL + "?");
+			byte chosenlevel = 0;
+			foreach (byte level in FreeEquipment.FreeEquipmentLevels)
+			{
+				if (player.Level > level && level > chosenlevel)
+					chosenlevel = 0;
+			}
+
+			SayTo(player, "Would you like some [equipment] suitable for level " + chosenlevel + "?");
 			return true;
 		}
 
@@ -113,8 +120,17 @@ namespace DOL.GS.Scripts
 			if (player == null)
 				return false;
 
-			if (player.Level < 20)
+			if (player.Level < 5)
 				return false;
+
+			byte chosenlevel = 0;
+			foreach (byte level in FreeEquipment.FreeEquipmentLevels)
+			{
+				if (player.Level > level && level > chosenlevel)
+					chosenlevel = 0;
+			}
+
+			chosenlevel -= 1;
 
 			switch (str)
 			{
@@ -125,719 +141,719 @@ namespace DOL.GS.Scripts
 							case eCharacterClass.Animist:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Armsman:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Plate, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Plate, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Plate, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Plate, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Plate, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Plate, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Plate, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Plate, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Plate, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Plate, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Plate, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Plate, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.PolearmWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.PolearmWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.PolearmWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.TwoHandedWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.TwoHandedWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.TwoHandedWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.CrushingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Medium));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Large));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.PolearmWeapon, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.PolearmWeapon, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.PolearmWeapon, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.TwoHandedWeapon, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.TwoHandedWeapon, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.TwoHandedWeapon, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.CrushingWeapon, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Medium));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Large));
 									break;
 								}
 							case eCharacterClass.Bainshee:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Bard:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Instrument, FreeEquipment.FREE_LEVEL, player, (eDamageType)1));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Instrument, FreeEquipment.FREE_LEVEL, player, (eDamageType)2));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Instrument, FreeEquipment.FREE_LEVEL, player, (eDamageType)3));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blunt, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Instrument, chosenlevel, player, (eDamageType)1));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Instrument, chosenlevel, player, (eDamageType)2));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Instrument, chosenlevel, player, (eDamageType)3));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blunt, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
 									break;
 								}
 							case eCharacterClass.Berserker:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Axe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Axe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.LeftAxe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Axe, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Axe, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.LeftAxe, chosenlevel, player, eDamageType.Slash));
 									break;
 								}
 							case eCharacterClass.Blademaster:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Medium));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Blades, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blunt, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Blunt, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Piercing, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Piercing, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Medium));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Blades, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blunt, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Blunt, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Piercing, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Piercing, chosenlevel, player, eDamageType.Thrust));
 									break;
 								}
 							case eCharacterClass.Bonedancer:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Cabalist:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Champion:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Medium));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blunt, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Piercing, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.LargeWeapons, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.LargeWeapons, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Medium));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blunt, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Piercing, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.LargeWeapons, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.LargeWeapons, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Cleric:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Medium));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.CrushingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Medium));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.CrushingWeapon, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Druid:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blunt, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blunt, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Eldritch:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Enchanter:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Friar:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.CrushingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.CrushingWeapon, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Healer:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Heretic:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Flexible, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Flexible, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Flexible, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Flexible, chosenlevel, player, eDamageType.Slash));
 									break;
 								}
 							case eCharacterClass.Hero:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Scale, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Scale, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Medium));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Large));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blunt, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Piercing, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.LargeWeapons, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.LargeWeapons, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.CelticSpear, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Medium));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Large));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blunt, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Piercing, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.LargeWeapons, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.LargeWeapons, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.CelticSpear, chosenlevel, player, eDamageType.Thrust));
 									break;
 								}
 							case eCharacterClass.Hunter:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Spear, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Spear, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.DistanceWeapon, eObjectType.CompositeBow, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Spear, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Spear, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.DistanceWeapon, eObjectType.CompositeBow, chosenlevel, player, eDamageType.Thrust));
 
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Infiltrator:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.SlashingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.ThrustWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.SlashingWeapon, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.ThrustWeapon, chosenlevel, player, eDamageType.Thrust));
 									break;
 								}
 							case eCharacterClass.Mentalist:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Mercenary:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Medium));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.SlashingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.ThrustWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.CrushingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.CrushingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Medium));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.SlashingWeapon, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.ThrustWeapon, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.CrushingWeapon, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.CrushingWeapon, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Minstrel:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, chosenlevel, player, eDamageType.Thrust));
 									break;
 								}
 							case eCharacterClass.Necromancer:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Nightshade:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Blades, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Blades, chosenlevel, player, eDamageType.Slash));
 
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Piercing, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Piercing, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Piercing, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Piercing, chosenlevel, player, eDamageType.Thrust));
 									break;
 								}
 							case eCharacterClass.Paladin:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Plate, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Plate, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Plate, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Plate, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Plate, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Plate, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Plate, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Plate, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Plate, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Plate, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Plate, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Plate, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Medium));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Large));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.TwoHandedWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.TwoHandedWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.TwoHandedWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.CrushingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Medium));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Large));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.TwoHandedWeapon, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.TwoHandedWeapon, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.TwoHandedWeapon, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.CrushingWeapon, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Ranger:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.DistanceWeapon, eObjectType.RecurvedBow, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.DistanceWeapon, eObjectType.RecurvedBow, chosenlevel, player, eDamageType.Thrust));
 
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Blades, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Blades, chosenlevel, player, eDamageType.Slash));
 
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Piercing, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Piercing, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Piercing, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Piercing, chosenlevel, player, eDamageType.Thrust));
 									break;
 								}
 							case eCharacterClass.Reaver:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.CrushingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Flexible, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Medium));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Large));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.CrushingWeapon, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Flexible, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Medium));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Large));
 									break;
 								}
 							case eCharacterClass.Runemaster:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Savage:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.HandToHand, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.HandToHand, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Axe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Axe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.HandToHand, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.HandToHand, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Axe, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Axe, chosenlevel, player, eDamageType.Slash));
 									break;
 								}
 							case eCharacterClass.Scout:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Studded, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Studded, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.DistanceWeapon, eObjectType.Longbow, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.SlashingWeapon, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.ThrustWeapon, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.DistanceWeapon, eObjectType.Longbow, chosenlevel, player, eDamageType.Thrust));
 									break;
 								}
 							case eCharacterClass.Shadowblade:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Axe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Axe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.LeftAxe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Axe, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Axe, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.LeftAxe, chosenlevel, player, eDamageType.Slash));
 									break;
 								}
 							case eCharacterClass.Shaman:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Skald:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Axe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Axe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Axe, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Axe, chosenlevel, player, eDamageType.Slash));
 									break;
 								}
 							case eCharacterClass.Sorcerer:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Spiritmaster:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Thane:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Medium));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Axe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Axe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Medium));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Axe, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Axe, chosenlevel, player, eDamageType.Slash));
 									break;
 								}
 							case eCharacterClass.Theurgist:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Valewalker:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Scythe, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Scythe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Scythe, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Scythe, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Scythe, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Scythe, chosenlevel, player, eDamageType.Thrust));
 									break;
 								}
 							case eCharacterClass.Valkyrie:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Spear, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Spear, chosenlevel, player, eDamageType.Thrust));
 									break;
 								}
 							case eCharacterClass.Vampiir:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Leather, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Leather, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Piercing, FreeEquipment.FREE_LEVEL, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Piercing, chosenlevel, player, eDamageType.Thrust));
 									break;
 								}
 							case eCharacterClass.Warden:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Reinforced, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Reinforced, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Medium));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blunt, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Medium));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blades, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Blunt, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Warlock:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 							case eCharacterClass.Warrior:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Small));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Medium));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, FreeEquipment.FREE_LEVEL, player, (eDamageType)ShieldLevel.Large));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Axe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Axe, FreeEquipment.FREE_LEVEL, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Small));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Medium));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LeftHandWeapon, eObjectType.Shield, chosenlevel, player, (eDamageType)ShieldLevel.Large));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Hammer, chosenlevel, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Axe, chosenlevel, player, eDamageType.Slash));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.RightHandWeapon, eObjectType.Axe, chosenlevel, player, eDamageType.Slash));
 									break;
 								}
 							case eCharacterClass.Wizard:
 								{
 									//armor
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, FreeEquipment.FREE_LEVEL, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.ArmsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.FeetArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HandsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.HeadArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.LegsArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Cloth, chosenlevel, player, eDamageType.Natural));
 									//weapons
-									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, FreeEquipment.FREE_LEVEL, player, eDamageType.Crush));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Staff, chosenlevel, player, eDamageType.Crush));
 									break;
 								}
 						}
