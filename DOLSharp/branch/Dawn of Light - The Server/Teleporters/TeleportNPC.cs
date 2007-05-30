@@ -102,7 +102,7 @@ namespace DOL.GS.GameEvents
 		{
 			if (!base.Interact(player)) return false;
 
-			if (player.Client.Account.PrivLevel == 1 && Realm != player.Realm)
+			if (player.Client.Account.PrivLevel == 1 && Realm != player.Realm && this.CurrentHouse == null)
 				return false;
 
 			TurnTo(player.X, player.Y);
@@ -135,11 +135,12 @@ namespace DOL.GS.GameEvents
 		{
 			if (!base.WhisperReceive(source, str)) return false;
 
-			if (!GameServer.ServerRules.IsSameRealm(this, source , true))
-				return false;
-
 			if (!(source is GamePlayer)) return false;
 			GamePlayer player = (GamePlayer)source;
+
+			if (player.Client.Account.PrivLevel == 1 && Realm != player.Realm && this.CurrentHouse == null)
+				return false;
+
 			TurnTo(player.X, player.Y);
 			if (m_animPlayerQueue.Contains(player))
 			{
