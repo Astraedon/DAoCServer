@@ -24,14 +24,20 @@ namespace DOL.GS.GameEvents
 		public static bool Start(ArrayList npcs, ArrayList locs, string eventname)
 		{
 			//add npcs to world
-			bool good = true;
-			for (int i = 0; i != npcs.Count; i++) 
+			try
 			{
-				((TeleportNPC)npcs[i]).AddToWorld();
+				foreach (TeleportNPC npc in npcs)
+					npc.AddToWorld();
+				if (log.IsInfoEnabled)
+					log.Info(eventname + " initialized");
 			}
-			if (log.IsInfoEnabled)
-				log.Info(eventname + " initialized");
-			return good;
+			catch
+			{
+				if (log.IsErrorEnabled)
+					log.Error(eventname + " failed to initialize");
+				return false;
+			}
+			return true;
 		}
    
 		public static bool Stop(ArrayList npcs, ArrayList locs)

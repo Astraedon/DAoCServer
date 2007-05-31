@@ -307,6 +307,7 @@ namespace DOL.GS.GameEvents
 			mob.Model = 0x783;
 			mob.Heading = this.Heading;
 			mob.MaxSpeedBase = 0;
+			mob.CurrentHouse = this.CurrentHouse;
 			if (mob.AddToWorld())
 				sfx = mob;
 
