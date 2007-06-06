@@ -103,8 +103,14 @@ namespace DOL.GS.Scripts
 			byte chosenlevel = 0;
 			foreach (byte level in FreeEquipment.FreeEquipmentLevels)
 			{
-				if (player.Level > level && level > chosenlevel)
+				if (player.Level >= level && level > chosenlevel)
 					chosenlevel = level;
+			}
+
+			if (chosenlevel == 0)
+			{
+				SayTo(player, "I have nothing for your level!");
+				return false;
 			}
 
 			SayTo(player, "Would you like some [equipment] suitable for level " + chosenlevel + "?");
@@ -126,9 +132,12 @@ namespace DOL.GS.Scripts
 			byte chosenlevel = 0;
 			foreach (byte level in FreeEquipment.FreeEquipmentLevels)
 			{
-				if (player.Level > level && level > chosenlevel)
+				if (player.Level >= level && level > chosenlevel)
 					chosenlevel = level;
 			}
+
+			if (chosenlevel == 0)
+				return false;
 
 			chosenlevel -= 1;
 
