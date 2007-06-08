@@ -27,7 +27,7 @@ namespace DOL.GS.GameEvents
 	{
 		private static readonly string URL_PAGE = "http://www.dolserver.net/portal/play/herald/server_update.php";
 
-		#region Tick intervals/retries configuration 
+		#region Tick intervals/retries configuration
 		/// <summary>
 		/// First run tick interval
 		/// </summary>
@@ -40,6 +40,10 @@ namespace DOL.GS.GameEvents
 		/// Retry interval if too many clients are connected
 		/// </summary>
 		private static readonly long INTERVAL_RETRY = 5 * 60 * 1000;
+		/// <summary>
+		/// Export player queue tick interval
+		/// </summary>
+		private static readonly long INTERVAL_PLAYERS_QUEUE = 1000;
 		/// <summary>
 		/// Max amount of connected clients to begin export
 		/// </summary>
@@ -69,6 +73,12 @@ namespace DOL.GS.GameEvents
 		/// Creates the thread which is used to export the herald.
 		/// </summary>
 		protected static Thread m_thread;
+
+		private static volatile Timer m_timerPlayers = null;
+		protected static Thread m_threadPlayers;
+		protected static Queue<Character> m_players = new Queue<Character>();
+		
+		protected static Character m_player = null;
 		
 		[ScriptLoadedEvent]
 		public static void OnScriptCompiled(DOLEvent e, object sender, EventArgs args)
@@ -85,6 +95,7 @@ namespace DOL.GS.GameEvents
 			else
 			{
 				log.Info("HeraldExport initialized");
+				m_timerPlayers = new Timer(new TimerCallback(StartPlayersExportThread), null, 1000, 0);
 				GameEventMgr.AddHandler(GamePlayerEvent.Quit, new DOLEventHandler(PlayerQuit));
 			}
 		}
@@ -92,6 +103,7 @@ namespace DOL.GS.GameEvents
 		[ScriptUnloadedEvent]
 		public static void OnScriptUnloaded(DOLEvent e, object sender, EventArgs args)
 		{
+			GameEventMgr.RemoveHandler(GamePlayerEvent.Quit, new DOLEventHandler(PlayerQuit));
 			try
 			{
 				if (m_timer != null)
@@ -113,9 +125,21 @@ namespace DOL.GS.GameEvents
 			catch (Exception ex)
 			{
 				if (log.IsErrorEnabled)
-					log.Error("Herald Export error occured stopping thread: \r\n" + ex.ToString());
+					log.Error("Herald Export error occured stopping guilds thread: \r\n" + ex.ToString());
 			}
-			GameEventMgr.RemoveHandler(GamePlayerEvent.Quit, new DOLEventHandler(PlayerQuit));
+			try
+			{
+				if (m_threadPlayers != null)
+				{
+					m_threadPlayers.Abort();
+					m_threadPlayers = null;
+				}
+			}
+			catch (Exception ex)
+			{
+				if (log.IsErrorEnabled)
+					log.Error("Herald Export error occured stopping players thread: \r\n" + ex.ToString());
+			}
 		}
 		
 		/// <summary>
@@ -219,7 +243,21 @@ namespace DOL.GS.GameEvents
 		{
 			GamePlayer player = sender as GamePlayer;
 			if (player == null) return;
-			ExportCharacter(player);
+			m_players.Enqueue(player.PlayerCharacter);
+			if (m_players.Count == 1)
+				m_timerPlayers.Change(INTERVAL_PLAYERS_QUEUE, 0);
+		}
+
+		/// <summary>
+		/// Starts a new thread for export operations
+		/// </summary>
+		/// <param name="timer"></param>
+		private static void StartPlayersExportThread(object timer)
+		{
+			if (m_players.Count == 0)
+				return;
+			m_threadPlayers = new Thread(new ThreadStart(ExportNextPlayer));
+			m_threadPlayers.Start();
 		}
 		
 		/// <summary>
@@ -227,19 +265,19 @@ namespace DOL.GS.GameEvents
 		/// </summary>
 		/// <param name="player">The player to export</param>
 		/// <returns></returns>
-		private static void ExportCharacter (GamePlayer player)
+		private static void ExportNextPlayer()
 		{
-			if (player.Client.Account.PrivLevel > 1)
-				return;
+			m_player = m_players.Dequeue();
+			Character player = m_player;
 			//Set up our URI to be passed to the WebClient.
 			string Updater = UrlEncode(URL_PAGE +
-				"?dolcharacters_id=" + player.InternalID + "&charname=" + player.Name + "&lastname=" + player.LastName +
-				"&realm=" + player.Realm + "&race=" + player.Race + "&gender=" + player.PlayerCharacter.Gender +
-				"&level=" + player.Level + "&class=" + player.PlayerCharacter.Class +
-				"&guildid=" + player.GuildID + "&guildname=" + (player.Guild != null ? player.Guild.Name : "") +
+				"?dolcharacters_id=" + player.ObjectId + "&charname=" + player.Name + "&lastname=" + player.LastName +
+				"&realm=" + player.Realm + "&race=" + player.Race + "&gender=" + player.Gender +
+				"&level=" + player.Level + "&class=" + player.Class +
+				"&guildid=" + player.GuildID +
 				"&realmpoints=" + player.RealmPoints + "&realmrank=" + player.RealmLevel + "&bountypoints=" + player.BountyPoints +
-				"&creationdate=" + player.PlayerCharacter.CreationDate.ToString("yyyy-MM-dd HH:mm") + "&lastplayed=" + player.PlayerCharacter.LastPlayed.ToString("yyyy-MM-dd HH:mm") + "&playedtime=" + player.PlayedTime +
-				"&serializedcraftingskills=" + player.PlayerCharacter.SerializedCraftingSkills + "&killsdragon=" + player.KillsDragon +
+				"&creationdate=" + player.CreationDate.ToString("yyyy-MM-dd HH:mm") + "&lastplayed=" + player.LastPlayed.ToString("yyyy-MM-dd HH:mm") + "&playedtime=" + player.PlayedTime +
+				"&serializedcraftingskills=" + player.SerializedCraftingSkills + "&killsdragon=" + player.KillsDragon +
 				"&killsalbionplayers=" + player.KillsAlbionPlayers + "&killsmidgardplayers=" + player.KillsMidgardPlayers + "&killshiberniaplayers=" + player.KillsHiberniaPlayers +
 				"&killsalbiondeathblows=" + player.KillsAlbionDeathBlows + "&killsmidgarddeathblows=" + player.KillsMidgardDeathBlows + "&killshiberniadeathblows=" + player.KillsHiberniaDeathBlows +
 				"&killsalbionsolo=" + player.KillsAlbionSolo + "&killsmidgardsolo=" + player.KillsMidgardSolo + "&killshiberniasolo=" + player.KillsHiberniaSolo +
@@ -250,6 +288,8 @@ namespace DOL.GS.GameEvents
 				if (log.IsErrorEnabled)
 					log.Error("HeraldExport: error during character export - char:" + player.Name);
 			}
+			if (m_players.Count > 0)
+				m_timerPlayers.Change(INTERVAL_PLAYERS_QUEUE, 0);
 		}
 
 		/// <summary>
