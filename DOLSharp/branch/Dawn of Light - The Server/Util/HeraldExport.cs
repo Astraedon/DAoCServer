@@ -31,23 +31,23 @@ namespace DOL.GS.GameEvents
 		/// <summary>
 		/// First run tick interval
 		/// </summary>
-		private static readonly long FIRSTRUN = 15 * 1000;
+		private static readonly long FIRSTRUN = 15000; // 15 * 1000
 		/// <summary>
 		/// Export tick interval
 		/// </summary>
-		private static readonly long INTERVAL = 3 * 60 * 60 * 1000;
+		private static readonly long INTERVAL = 10800000; // 3 * 60 * 60 * 1000;
 		/// <summary>
 		/// Retry interval if too many clients are connected
 		/// </summary>
-		private static readonly long INTERVAL_RETRY = 5 * 60 * 1000;
+		private static readonly long INTERVAL_RETRY = 300000; // 5 * 60 * 1000;
 		/// <summary>
 		/// Export player queue tick interval
 		/// </summary>
-		private static readonly long INTERVAL_PLAYERS_QUEUE = 1000;
+		private static readonly long INTERVAL_PLAYERS_QUEUE = 60000;
 		/// <summary>
 		/// Max amount of connected clients to begin export
 		/// </summary>
-		private static readonly byte MAX_CLIENTS_TO_EXPORT = 5;
+		private static readonly byte MAX_CLIENTS_TO_EXPORT = 15;
 		/// <summary>
 		/// Max amount of retries before forcing the export
 		/// </summary>
@@ -75,7 +75,7 @@ namespace DOL.GS.GameEvents
 		protected static Thread m_thread;
 
 		private static volatile Timer m_timerPlayers = null;
-		protected static Thread m_threadPlayers;
+		private static readonly object m_timerSync = new object();
 		protected static Queue<Character> m_players = new Queue<Character>();
 		
 		protected static Character m_player = null;
@@ -95,7 +95,7 @@ namespace DOL.GS.GameEvents
 			else
 			{
 				log.Info("HeraldExport initialized");
-				m_timerPlayers = new Timer(new TimerCallback(StartPlayersExportThread), null, 1000, 0);
+				m_timerPlayers = new Timer(new TimerCallback(StartPlayersExportThread), null, INTERVAL_PLAYERS_QUEUE, 0);
 				GameEventMgr.AddHandler(GamePlayerEvent.Quit, new DOLEventHandler(PlayerQuit));
 			}
 		}
@@ -129,10 +129,13 @@ namespace DOL.GS.GameEvents
 			}
 			try
 			{
-				if (m_threadPlayers != null)
+				lock (m_timerSync)
 				{
-					m_threadPlayers.Abort();
-					m_threadPlayers = null;
+					if (m_timerPlayers != null)
+					{
+						m_timerPlayers.Dispose();
+						m_timerPlayers = null;
+					}
 				}
 			}
 			catch (Exception ex)
@@ -243,9 +246,10 @@ namespace DOL.GS.GameEvents
 		{
 			GamePlayer player = sender as GamePlayer;
 			if (player == null) return;
-			m_players.Enqueue(player.PlayerCharacter);
-			if (m_players.Count == 1)
-				m_timerPlayers.Change(INTERVAL_PLAYERS_QUEUE, 0);
+			lock (m_players)
+			{
+				m_players.Enqueue(player.PlayerCharacter);
+			}
 		}
 
 		/// <summary>
@@ -254,10 +258,39 @@ namespace DOL.GS.GameEvents
 		/// <param name="timer"></param>
 		private static void StartPlayersExportThread(object timer)
 		{
-			if (m_players.Count == 0)
-				return;
-			m_threadPlayers = new Thread(new ThreadStart(ExportNextPlayer));
-			m_threadPlayers.Start();
+			try
+			{
+				bool loop = false;
+				do
+				{
+					Character playerChar = null;
+					lock (m_players)
+					{
+						if (m_players.Count > 0)
+							playerChar = m_players.Dequeue();
+						loop = (m_players.Count > 0);
+					}
+					if (playerChar != null)
+					{
+						ExportPlayer(playerChar);
+					}
+				}
+				while (loop);
+			}
+			catch (Exception e)
+			{
+				log.Error("Error exporting player", e);
+			}
+			finally
+			{
+				lock (m_timerSync)
+				{
+					if (m_timerPlayers != null)
+					{
+						m_timerPlayers.Change(INTERVAL_PLAYERS_QUEUE, 0);
+					}
+				}
+			}
 		}
 		
 		/// <summary>
@@ -265,10 +298,8 @@ namespace DOL.GS.GameEvents
 		/// </summary>
 		/// <param name="player">The player to export</param>
 		/// <returns></returns>
-		private static void ExportNextPlayer()
+		private static void ExportPlayer(Character player)
 		{
-			m_player = m_players.Dequeue();
-			Character player = m_player;
 			//Set up our URI to be passed to the WebClient.
 			string Updater = UrlEncode(URL_PAGE +
 				"?dolcharacters_id=" + player.ObjectId + "&charname=" + player.Name + "&lastname=" + player.LastName +
@@ -286,10 +317,8 @@ namespace DOL.GS.GameEvents
 			if (!HeraldUpdater(Updater))
 			{
 				if (log.IsErrorEnabled)
-					log.Error("HeraldExport: error during character export - char:" + player.Name);
+					log.Error("HeraldExport: error during character export of " + player.Name + ": " + Updater);
 			}
-			if (m_players.Count > 0)
-				m_timerPlayers.Change(INTERVAL_PLAYERS_QUEUE, 0);
 		}
 
 		/// <summary>
