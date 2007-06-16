@@ -24,7 +24,7 @@ namespace DOL.GS.Scripts
 		private static List<BaseBehaviour> behaviours = new List<BaseBehaviour>();
 
 		private const int SPEED = 50;
-		private const int SHOUT_INTERVAL = 10000;
+		private const int SHOUT_INTERVAL = 20000;
 
 		private const string TIP_PROPERTY = "TIP_PROPERTY";
 
@@ -41,7 +41,7 @@ namespace DOL.GS.Scripts
 	"You are allowed to create characters in all realms using the same account!",
 	"You can change the client language with /language command!",
 	"Hackers are automatically banned!",
-	"Every " + ServerProperties.Properties.FREELEVEL_DAYS + " provided you have gained a normal level, you can gain a free level !",
+	"Every " + ServerProperties.Properties.FREELEVEL_DAYS + " days, provided you have gained a normal level, you can gain a free level !",
 	"All damage vs NPC's is increased by " + ServerProperties.Properties.PVE_DAMAGE + "x of standard!",
 	"All new players have 2 free full respecs and realm respecs credited to their account!",
 	"A Unique Object Generator (ROG) is applied to all mobs across the server, this gives the chance for any mob to drop randomly generated equipment!",
