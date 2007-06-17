@@ -123,6 +123,8 @@ namespace DOL.GS.Scripts
 			//newItem.Condition = item.Condition;
 			//newItem.Durability = item.Durability;
 			newItem.Extension = item.Extension;
+			if (item.Color != 0)
+				newItem.Color = item.Color;
 			player.Inventory.RemoveItem(item);
 			player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, newItem);
 			SayTo(player, "There you go, " + item.Name + " is updated to the latest version");
