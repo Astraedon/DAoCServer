@@ -88,8 +88,8 @@ namespace DOL.GS.Scripts
 		{
 			if (m_counter <= 0)
 			{
-				new Thread(new ThreadStart(ShutDownServer)).Start();
 				m_timer.Dispose();
+				new Thread(new ThreadStart(ShutDownServer)).Start();
 				return;
 			}
 			else
