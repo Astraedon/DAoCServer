@@ -26,7 +26,7 @@ namespace DOL.GS.Scripts
 			list.Add(GenerateKeepLine(thidranki));
 			list.Add(GetPlayersLine(thidranki.Region));
 			list.Add("");
-			list.Add("Darkness Falls: " + GlobalConstants.RealmToName(ServerRules.DFEnterJumpPoint.DarknessFallOwner));
+			list.Add("Darkness Falls: All");
 			list.Add(GetPlayersLine(249));
 
 			client.Out.SendCustomTextWindow("Realm Status", list);

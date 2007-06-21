@@ -2456,8 +2456,8 @@ namespace DOL.GS
 					}
 				case eObjectType.Staff:
 					{
-						// i dont know
-						return Util.Random(40, 60);
+						// i dont know - edit: suncheck (friar staffs are fast)
+						return Util.Random(30, 60);
 					}
 				case eObjectType.Longbow:
 					{

@@ -44,6 +44,7 @@ namespace DOL.GS.Scripts
 		public static void OnScriptUnloaded(DOLEvent e, object sender, EventArgs args)
 		{
 			m_collecttimer.Change(Timeout.Infinite, Timeout.Infinite);
+			Start();
 		}
 
 		[ScriptLoadedEvent]
@@ -51,13 +52,13 @@ namespace DOL.GS.Scripts
 		{
 			m_collecttimer = new Timer(new TimerCallback(CollectData), null, UPDATEINTERVAL * 1000, UPDATEINTERVAL * 1000);
 			m_checktimer = new Timer(new TimerCallback(Check), null, Timeout.Infinite, Timeout.Infinite);
-			Start();
 		}
 
 		public static void CollectData(object state)
 		{
 			int callbackStart = Environment.TickCount;
-			fillRegionData(REGIONID);
+			foreach (Zone z in WorldMgr.GetRegion(REGIONID).Zones)
+				fillZoneData(z);
 			if (Environment.TickCount - callbackStart > 100)
 			{
 				if (log.IsWarnEnabled)
@@ -71,7 +72,8 @@ namespace DOL.GS.Scripts
 		public static void Check(object state)
 		{
 			int callbackStart = Environment.TickCount;
-			scanRegion();
+			foreach (Zone z in WorldMgr.GetRegion(REGIONID).Zones)
+				scanZone(z);
 			if (Environment.TickCount - callbackStart > 500)
 			{
 				if (log.IsWarnEnabled)
@@ -96,10 +98,11 @@ namespace DOL.GS.Scripts
 		/// get data from one zoneid 
 		/// </summary>
 		/// <param name="zoneid"></param>
-		public static void fillRegionData(ushort regionID)
+		public static void fillZoneData(Zone zone)
 		{
 			try
 			{
+
 				int xdiff = (492000 - 420000) / 4;
 				int ydiff = (556000 - 492000) / 4;
 
@@ -108,19 +111,22 @@ namespace DOL.GS.Scripts
 
 				foreach (GameClient client in WorldMgr.GetClientsOfRegion(REGIONID))
 				{
-					byte index_x = (byte)Math.Max(0, Math.Min(3, (client.Player.X - 420000) / xdiff));
-					byte index_y = (byte)Math.Max(0, Math.Min(3, (client.Player.Y - 492000) / ydiff));
-
-					if ((client.Account.PrivLevel >= 1) &&
-						(client.Player.Realm <= (byte)eRealm._LastPlayerRealm) &&
-						(client.Player.Realm >= (byte)eRealm._FirstPlayerRealm))
+					if (client.Player.CurrentZone == zone)
 					{
-						if (client.Player.LastAttackTick + 30000 >= client.Player.CurrentRegion.Time ||
-							client.Player.LastAttackedByEnemyTick + 30000 >= client.Player.CurrentRegion.Time)
+						byte index_x = (byte)Math.Max(0, Math.Min(3, (client.Player.X - 420000) / xdiff));
+						byte index_y = (byte)Math.Max(0, Math.Min(3, (client.Player.Y - 492000) / ydiff));
+
+						if ((client.Account.PrivLevel >= 1) &&
+							(client.Player.Realm <= (byte)eRealm._LastPlayerRealm) &&
+							(client.Player.Realm >= (byte)eRealm._FirstPlayerRealm))
 						{
-							fight[index_x, index_y, client.Player.Realm] += 1;
+							if (client.Player.LastAttackTick + 30000 >= client.Player.CurrentRegion.Time ||
+								client.Player.LastAttackedByEnemyTick + 30000 >= client.Player.CurrentRegion.Time)
+							{
+								fight[index_x, index_y, client.Player.Realm] += 1;
+							}
+							group[index_x, index_y, client.Player.Realm] += 1;
 						}
-						group[index_x, index_y, client.Player.Realm] += 1;
 					}
 				}
 
@@ -175,7 +181,7 @@ namespace DOL.GS.Scripts
 			return -1;
 		}
 
-		private static List<List<byte>> getFightList(ushort zoneid)
+		private static List<List<byte>> getFightList(ushort zoneID)
 		{
 			List<List<byte>> list = new List<List<byte>>();
 
@@ -189,7 +195,7 @@ namespace DOL.GS.Scripts
 					if (status != -1)
 					{
 						List<byte> sector = new List<byte>();
-						sector.Add((byte)zoneid);
+						sector.Add((byte)zoneID);
 						sector.Add(x);
 						sector.Add(y);
 						sector.Add((byte)status);
@@ -342,12 +348,13 @@ namespace DOL.GS.Scripts
 		/// <summary>
 		/// Testmethod for collect warmapdata
 		/// </summary>
-		public static void scanRegion()
+		public static void scanZone(Zone zone)
 		{
-			List<List<byte>> fights = getFightList(REGIONID);
+			//fillZoneData(ZONEID);
+
+			List<List<byte>> fights = getFightList(zone.ID);
 			foreach (GameClient client in WorldMgr.GetClientsOfRegion(REGIONID))
 			{
-
 				switch (DisplayMap(client))
 				{
 					case 0x00:
@@ -357,10 +364,10 @@ namespace DOL.GS.Scripts
 						client.Out.SendWarmapDetailUpdate(fights, new List<List<byte>>());
 						break;
 					case 0x02:
-						client.Out.SendWarmapDetailUpdate(new List<List<byte>>(), getGroupList(REGIONID, client));
+						client.Out.SendWarmapDetailUpdate(new List<List<byte>>(), getGroupList(zone.ID, client));
 						break;
 					case 0x03:
-						client.Out.SendWarmapDetailUpdate(fights, getGroupList(REGIONID, client));
+						client.Out.SendWarmapDetailUpdate(fights, getGroupList(zone.ID, client));
 						break;
 				}
 			}
