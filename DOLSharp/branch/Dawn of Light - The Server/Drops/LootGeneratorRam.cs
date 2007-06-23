@@ -17,9 +17,9 @@ namespace DOL.GS
 		[ScriptLoadedEvent]
 		public static void OnScriptLoaded(DOLEvent e, object sender, EventArgs args)
 		{
-			//Spell load = RamSpell;
-			//LootMgr.RegisterLootGenerator(new LootGeneratorRam(), "", "", "", 165);
-			//log.Info("Ram Drop System Loaded!");
+			Spell load = RamSpell;
+			LootMgr.RegisterLootGenerator(new LootGeneratorRam(), "", "", "", 165);
+			log.Info("Ram Drop System Loaded!");
 		}
 
 		protected static Spell m_ramSpell;
@@ -87,8 +87,11 @@ namespace DOL.GS
 		{
 			Spell load = RamSpell;
 			LootList loot = base.GenerateLoot(mob, killer);
-			if (mob is GameKeepGuard && Util.Chance(10))
-				loot.AddFixed(Ram);
+			if (mob is GameKeepGuard)
+			{
+				if (mob is GuardLord || Util.Chance(10))
+					loot.AddFixed(Ram);
+			}
 			return loot;
 		}
 	}

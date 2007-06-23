@@ -103,7 +103,7 @@ namespace DOL.GS.Scripts
 			template.AddNPCEquipment(eInventorySlot.HandsArmor, 2492);
 			template.AddNPCEquipment(eInventorySlot.FeetArmor, 2875);
 			Inventory = template.CloseTemplate();
-			GuildName = "Aftermath Buffer";
+			GuildName = "Buffer";
 			Level = 50;
 			return base.AddToWorld();
 		}

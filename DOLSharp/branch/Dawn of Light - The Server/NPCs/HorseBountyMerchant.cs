@@ -9,7 +9,19 @@ namespace DOL.GS.Scripts
 	/// Represents an in-game merchant
 	/// </summary>
 	public class GameBountyHorseMerchant : GameBountyMerchant
-	{	
+	{
+		public override bool AddToWorld()
+		{
+			GameNpcInventoryTemplate template = new GameNpcInventoryTemplate();
+			template.AddNPCEquipment(eInventorySlot.Cloak, 1727);
+			template.AddNPCEquipment(eInventorySlot.TorsoArmor, 2121);
+			template.AddNPCEquipment(eInventorySlot.LegsArmor, 2158);
+			template.AddNPCEquipment(eInventorySlot.ArmsArmor, 2873);
+			template.AddNPCEquipment(eInventorySlot.HandsArmor, 2492);
+			template.AddNPCEquipment(eInventorySlot.FeetArmor, 2875);
+			Inventory = template.CloseTemplate();
+			return base.AddToWorld();
+		}
 		private static ArrayList m_items = new ArrayList();
 
 		[ScriptLoadedEvent]
