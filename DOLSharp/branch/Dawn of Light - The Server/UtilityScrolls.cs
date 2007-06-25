@@ -26,16 +26,6 @@ namespace DOL.GS.GameEvents
 		/// </summary>
 		public static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-		/*
-		 * TODO: add loot generator for dropping scrolls
-		 * add loot generator for dropping seals
-		 * change merchant types in df to seal merchant
-		 * hasteners
-		 * vault keepers
-		 * teleporter
-		 * recharger
-		 * smith
-		 */
 		[ScriptLoadedEvent]
 		public static void OnScriptLoaded(DOLEvent e, object sender, EventArgs args)
 		{
@@ -714,6 +704,7 @@ namespace DOL.GS.Spells
 				{
 					GamePlayer player = Caster as GamePlayer;
 					player.Out.SendMessage("After a short blaze up the flames expire. This spell does not work in RvR areas.", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
+					player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(UtilityScrollsEvent.Tinderbox));
 				}
 				return;
 			}

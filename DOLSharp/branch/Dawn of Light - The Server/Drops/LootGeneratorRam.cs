@@ -18,7 +18,7 @@ namespace DOL.GS
 		public static void OnScriptLoaded(DOLEvent e, object sender, EventArgs args)
 		{
 			Spell load = RamSpell;
-			LootMgr.RegisterLootGenerator(new LootGeneratorRam(), "", "", "", 165);
+			LootMgr.RegisterLootGenerator(new LootGeneratorRam(), "", "", "", 163);
 			log.Info("Ram Drop System Loaded!");
 		}
 
@@ -109,6 +109,14 @@ namespace DOL.GS.Spells
 		public override void ApplyEffectOnTarget(GameLiving target, double effectiveness)
 		{
 			base.ApplyEffectOnTarget(target, effectiveness);
+
+			//check distance from door
+			foreach (IDoor door in target.GetDoorsInRadius(500))
+			{
+				MessageToLiving(target, "You cannot create a ram within 500 units of a door!", DOL.GS.PacketHandler.eChatType.CT_SpellResisted);
+				target.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, new InventoryItem(LootGeneratorRam.Ram));
+				return;
+			}
 
 			int x, y;
 			m_caster.GetSpotFromHeading(64, out x, out y);
