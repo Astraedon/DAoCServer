@@ -110,7 +110,10 @@ namespace DOL.GS.Scripts
 
 		public override bool Interact(GamePlayer player)
 		{
-			if (!base.Interact(player)) return false;
+			if (!base.Interact(player))
+				return false;
+			if (player.Level < 40)
+				return false;
 			TurnTo(player, 3000);
 			lock (m_buffs.SyncRoot)
 			{

@@ -55,6 +55,7 @@ namespace DOL.GS.Scripts
 	"Extension NPC's are availiable in the border keeps of each realm, for bounty points they will add armor extensions to your equipment!",
 	"A Horse Merchant is availiable in the border keeps of each realm, for bounty points players can buy a player controlled horse and armor!",
 	"A special Keep Balance System is in effect for the frontiers, this means that the more you expand your realms keeps, the weaker they will get, and the stronger the enemies will get!",
+	"You can use /ircon to set your in game IRC status to on, to allow you to send and receive IRC messages from the servers channel!",
 	"Keep an eye on our forums and herald on http://www.dolserver.net!",
 
 };
