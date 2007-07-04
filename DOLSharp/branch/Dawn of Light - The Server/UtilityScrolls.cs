@@ -57,13 +57,14 @@ namespace DOL.GS.GameEvents
 					spell.Target = "Self";
 					spell.Type = "ComfortingFlames";
 					spell.Value = 0;
+					spell.Frequency = 50;
 					m_CampfireSpell = new Spell(spell, 1);
 					SkillBase.GetSpellList(GlobalSpellsLines.Item_Effects).Add(m_CampfireSpell);
 				}
 				return m_CampfireSpell;
 			}
 		}
-		#endregion 
+		#endregion
 		#region Trainer
 		protected static Spell m_trainerSpell;
 		public static Spell TrainerSpell
@@ -501,7 +502,7 @@ namespace DOL.GS
 	{
 		public override LootList GenerateLoot(GameNPC mob, GameObject killer)
 		{
-			LootList list = base.GenerateLoot(mob, killer); 
+			LootList list = base.GenerateLoot(mob, killer);
 			#region Campfire
             if (Util.Chance(5))
                 list.AddFixed(UtilityScrollsEvent.Tinderbox);
@@ -635,13 +636,18 @@ namespace DOL.GS.Spells
 	}
 
 	[SpellHandlerAttribute("ComfortingFlames")]
-	public class CampfireSpellHandler : DoTSpellHandler
+	public class CampfireSpellHandler : SpellHandler
 	{
 		private GameObject m_campfire;
 
 		public CampfireSpellHandler(GameLiving caster, Spell spell, SpellLine line)
 			: base(caster, spell, line)
 		{ }
+
+		protected override GameSpellEffect CreateSpellEffect(GameLiving target, double effectiveness)
+		{
+			return new GameSpellEffect(this, m_spell.Duration, m_spell.Frequency, 1);
+		}
 
 		public override void OnEffectPulse(GameSpellEffect effect)
 		{
@@ -652,7 +658,7 @@ namespace DOL.GS.Spells
 			{
 				if (player.IsAlive == false) continue;
 
-				if ((GameServer.ServerRules.IsSameRealm(Caster, player, true)) && (player.InCombat == false))
+				if ((!GameServer.ServerRules.IsAllowedToAttack(Caster, player, true)) && (player.InCombat == false))
 				{
 					int mr = player.MaxMana / 20;
 					int hr = player.MaxHealth / 20;
@@ -682,7 +688,7 @@ namespace DOL.GS.Spells
 						player.Health += hr;
 						player.Out.SendMessage("You regain " + hr.ToString() + " hit points from the campfire!", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);
 					}
-					if (mr > 0)
+					if (mr > 0 && player.CharacterClass.ID != (int)eCharacterClass.Vampiir)
 					{
 						player.Mana += mr;
 						player.Out.SendMessage("You regain " + mr.ToString() + " power from the campfire!", eChatType.CT_Spell, eChatLoc.CL_SystemWindow);

@@ -1,3 +1,7 @@
+/*
+ * Originally created by Etaew.
+ * Updated by Timx for performance optimisations.
+ */
 using System;
 using System.Collections;
 using DOL.Database;
@@ -48,20 +52,21 @@ namespace DOL.GS.Scripts
 				return 1;
 			}
 			target = target - current;
+			ushort skillspecialtypoints = 0;
+			int speclevel = 0;
+			bool changed = false;
 			for (int i = 0; i < target; i++)
 			{
-				if (spec.Level >= client.Player.Level)
+				if (spec.Level + speclevel >= client.Player.Level)
 				{
 					client.Out.SendMessage("You can't train in this specialization again this level!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 					break;
 				}
-				if (client.Player.SkillSpecialtyPoints >= spec.Level + 1)
+				if (client.Player.SkillSpecialtyPoints - skillspecialtypoints >= (spec.Level + speclevel) + 1)
 				{
-					client.Player.SkillSpecialtyPoints -= (ushort)(spec.Level + 1);
-					spec.Level++;
-					client.Player.OnSkillTrained(spec);
-					client.Out.SendUpdatePoints();
-					client.Out.SendTrainerWindow();
+					changed = true;
+					skillspecialtypoints += (ushort)((spec.Level + speclevel) + 1);
+					speclevel++;
 				}
 				else
 				{
@@ -70,7 +75,15 @@ namespace DOL.GS.Scripts
 					break;
 				}
 			}
-			client.Out.SendMessage("Training complete!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+			if (changed)
+			{
+				client.Player.SkillSpecialtyPoints -= skillspecialtypoints;
+				spec.Level += speclevel;
+				client.Player.OnSkillTrained(spec);
+				client.Out.SendUpdatePoints();
+				client.Out.SendTrainerWindow();
+				client.Out.SendMessage("Training complete!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+			}
 			return 1;
 		}
 	}
