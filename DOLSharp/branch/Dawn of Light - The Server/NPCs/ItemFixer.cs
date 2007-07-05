@@ -113,7 +113,7 @@ namespace DOL.GS.Scripts
 			}
 
 			string id = item.Id_nb;
-			ItemTemplate template = (ItemTemplate) GameServer.Database.FindObjectByKey(typeof (ItemTemplate), GameServer.Database.Escape(id));
+			ItemTemplate template = (ItemTemplate) GameServer.Database.FindObjectByKey(typeof (ItemTemplate), id);
 			if (template == null)
 			{
 				SayTo(player, "Unfortunately I can't find a template for " + id);
