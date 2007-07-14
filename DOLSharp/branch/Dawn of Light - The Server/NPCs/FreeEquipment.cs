@@ -787,6 +787,7 @@ namespace DOL.GS.Scripts
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TorsoArmor, eObjectType.Chain, chosenlevel, player, eDamageType.Natural));
 									//weapons
 									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Spear, chosenlevel, player, eDamageType.Thrust));
+									player.Inventory.AddItem(eInventorySlot.FirstEmptyBackpack, LootGeneratorUniqueObject.GenerateFreeEquipment(eInventorySlot.TwoHandWeapon, eObjectType.Sword, chosenlevel, player, eDamageType.Slash));
 									break;
 								}
 							case eCharacterClass.Vampiir:
