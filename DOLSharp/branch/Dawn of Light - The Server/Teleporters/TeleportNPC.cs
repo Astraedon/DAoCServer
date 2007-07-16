@@ -123,7 +123,15 @@ namespace DOL.GS.GameEvents
 			{
 				if (m_locs.IndexOf(location) == m_index)
 					continue;
-				message += "[" + location.Name + "]\n";
+				message += "[" + location.Name + "]";
+				if (location is LocationExpansion)
+				{
+					if (((uint)(location as LocationExpansion).Expansions & (uint)GameClient.eClientAddons.Foundations) != 0)
+						message += " (Housing)";
+					if ((location as LocationExpansion).MinLevel > 0)
+						message += " (Levels " + (location as LocationExpansion).MinLevel + " - " + (location as LocationExpansion).MaxLevel + ")";
+				}
+				message += "\n";
 			}
 
 			SayTo(player, message);
