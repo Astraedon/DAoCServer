@@ -1,5 +1,0 @@
-
-
-GameLiving.ReceiveItem:					{0} doesn't want this item!
-GameLiving.ReceiveMoney:				{0} doesn't want your money!
-
