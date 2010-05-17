@@ -32,6 +32,7 @@ using DOL.GS.Quests;
 using DOL.GS.Spells;
 using DOL.GS.Utils;
 using DOL.Language;
+using DOL.Movement;
 using log4net;
 
 namespace DOL.GS
@@ -110,6 +111,28 @@ namespace DOL.GS
 			get { return m_formation; }
 			set { m_formation = value; }
 		}
+
+		#region NEW FORMATIONS
+
+		private eFormationMemberRole m_formationRole = eFormationMemberRole.None;
+		/// <summary>
+		/// Specifies NPC role in the formation
+		/// </summary>
+		public eFormationMemberRole FormationRole
+		{
+			get { return this.m_formationRole; }
+			set { this.m_formationRole = value; }
+		}
+
+		private Point3D m_formationPosition;
+
+		public Point3D FormationPosition
+		{
+			get { return this.m_formationPosition; }
+			set { this.m_formationPosition = value; }
+		}
+
+		#endregion
 
 		#endregion
 		#region Sizes/Properties
