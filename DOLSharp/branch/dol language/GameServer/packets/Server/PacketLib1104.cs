@@ -152,23 +152,15 @@ namespace DOL.GS.PacketHandler
                             else
                             {
                                 if (characters[j].Gender > 0)
-                                {
                                     pak.FillString(LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.SystemText, ((eCharacterClass)characters[j].Class).ToString(), "PlayerClass" + ((eCharacterClass)characters[j].Class).ToString().Trim()) + "Female", 24); //Class name
-                                }
                                 else
-                                {
                                     pak.FillString(LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.SystemText, ((eCharacterClass)characters[j].Class).ToString(), "PlayerClass" + ((eCharacterClass)characters[j].Class).ToString().Trim()) + "Male", 24); //Class name
-                                }
                             }
                             //pak.FillString(GamePlayer.RACENAMES[characters[j].Race], 24);
                             if(characters[j].Gender > 0)
-                            {
                                 pak.FillString(LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.SystemText, GamePlayer.RACENAMES[characters[j].Race], "PlayerRace" + GamePlayer.RACENAMES[characters[j].Race].Trim() + "Female"), 24);
-                            }
                             else
-                            {
                                 pak.FillString(LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.SystemText, GamePlayer.RACENAMES[characters[j].Race], "PlayerRace" + GamePlayer.RACENAMES[characters[j].Race].Trim() + "Male"), 24);
-                            }
                             pak.WriteByte((byte)characters[j].Level);
                             pak.WriteByte((byte)characters[j].Class);
                             pak.WriteByte((byte)characters[j].Realm);

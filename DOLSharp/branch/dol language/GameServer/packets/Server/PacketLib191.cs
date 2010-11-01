@@ -19,6 +19,7 @@
 #define NOENCRYPTION
 using System;
 using System.Reflection;
+using DOL.Language;
 using DOL.GS.Effects;
 using DOL.GS.Spells;
 using log4net;
@@ -122,10 +123,15 @@ namespace DOL.GS.PacketHandler
 					pak.WriteByte(0); // unknown
 					pak.WriteByte(effect.Concentration);
 					pak.WriteShort(effect.Icon);
-					if (effect.Name.Length > 14)
-						pak.WritePascalString(effect.Name.Substring(1, 11) + "...");
-					else
-						pak.WritePascalString(effect.Name);
+                    string effectName = LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.Spell_Name, effect.Name, "");
+                    //if (effect.Name.Length > 14)
+                    //    pak.WritePascalString(effect.Name.Substring(1, 11) + "...");
+                    //else
+                    //    pak.WritePascalString(effect.Name);
+                    if(effectName.Length > 14)
+                        pak.WritePascalString(effectName.Substring(1, 11) + "...");
+                    else
+                        pak.WritePascalString(effectName);
 					if (/*effect.Concentration > 0 && */effect.OwnerName.Length > 14)
 						pak.WritePascalString(effect.OwnerName.Substring(1, 11) + "...");
 					else

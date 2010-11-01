@@ -38,6 +38,7 @@ namespace DOL.Language
         GameObject_Name,
         Item_ExamineArticle,
         Item_Name,
+        MasterLevelStep,
         NPC_ExamineArticle,
         NPC_GuildName,
         NPC_MessageArticleFemale,
@@ -830,6 +831,20 @@ namespace DOL.Language
                             //Lets check if we have text
                             if (dbo.Name.Trim().Length > 0)
                                 translation = dbo.Name;
+                            else
+                                translation = translationID;
+                        }
+                        else
+                            translation = translationID;
+                    } break;
+                case eTranslationKey.MasterLevelStep:
+                    {
+                        var dbo = GameServer.Database.SelectObject<DBLanguageMasterLevelStep>("TranslationId='" + translationID + "' AND Language='" + language + "'");
+                        if (dbo != null)
+                        {
+                            //Lets check if we have text
+                            if (dbo.Text.Trim().Length > 0)
+                                translation = dbo.Text;
                             else
                                 translation = translationID;
                         }

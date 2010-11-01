@@ -21,6 +21,7 @@ using System;
 using System.Reflection;
 using log4net;
 using DOL.Database;
+using DOL.Language;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -124,13 +125,13 @@ namespace DOL.GS.PacketHandler
 								{
 									if (!area.DisplayMessage)
 										continue;
-									description = area.Description;
+									description = LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.Area_Description, area.Description, "");
 									break;
 								}
 
 								if (description == "")
 								{
-									description = zon.Description;
+									description = LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.Zone_Description, zon.Description, "");
 								}
 								pak.FillString(description, 24);
 							}
@@ -144,10 +145,17 @@ namespace DOL.GS.PacketHandler
 							}
 							else
 							{
+                                if (characters[j].Gender > 0)
+                                    pak.FillString(LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.SystemText, ((eCharacterClass)characters[j].Class).ToString(), "PlayerClass" + ((eCharacterClass)characters[j].Class).ToString().Trim()) + "Female", 24); //Class name
+                                else
+                                    pak.FillString(LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.SystemText, ((eCharacterClass)characters[j].Class).ToString(), "PlayerClass" + ((eCharacterClass)characters[j].Class).ToString().Trim()) + "Male", 24); //Class name
 								pak.FillString(((eCharacterClass)characters[j].Class).ToString(), 24); //Class name
 							}
 							//pak.FillString(GamePlayer.RACENAMES[characters[j].Race], 24);
-                            pak.FillString(GamePlayer.RACENAMES(m_gameClient, characters[j].Race, characters[j].Gender), 24);
+                            if (characters[j].Gender > 0)
+                                pak.FillString(LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.SystemText, GamePlayer.RACENAMES[characters[j].Race], "PlayerRace" + GamePlayer.RACENAMES[characters[j].Race].Trim() + "Female"), 24);
+                            else
+                                pak.FillString(LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.SystemText, GamePlayer.RACENAMES[characters[j].Race], "PlayerRace" + GamePlayer.RACENAMES[characters[j].Race].Trim() + "Male"), 24);
 							pak.WriteByte((byte)characters[j].Level);
 							pak.WriteByte((byte)characters[j].Class);
 							pak.WriteByte((byte)characters[j].Realm);

@@ -140,7 +140,7 @@ namespace DOL.GS.PacketHandler
 								flagNegativeEffect = 1;
 						}
 						pak.WriteByte(flagNegativeEffect);
-						pak.WritePascalString(effect.Name);
+						pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.Spell_Name, effect.Name, ""));
 						entriesCount++;
 					}
 				}
@@ -195,10 +195,12 @@ namespace DOL.GS.PacketHandler
 				// ML level completition is displayed client side (Step 11)
 				for (int i = 1; i < 11; i++)
 				{
-					if (!m_gameClient.Player.HasFinishedMLStep((int)mlrequired, i))
-						description = i.ToString() + ". " + LanguageMgr.GetTranslation(m_gameClient, String.Format("SendMasterLevelWindow.Uncomplete.ML{0}.Step{1}", mlrequired, i));
-					else
-						description = i.ToString() + ". " + LanguageMgr.GetTranslation(m_gameClient, String.Format("SendMasterLevelWindow.Complete.ML{0}.Step{1}", mlrequired, i));
+                    if (!m_gameClient.Player.HasFinishedMLStep((int)mlrequired, i))
+                        description = i.ToString() + ". " +
+                            LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.MasterLevelStep, LanguageMgr.MasterLevelStepsUncomplete[mlrequired - 1, i - 1], "");
+                    else
+                        description = i.ToString() + ". " +
+                            LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.QuestText, LanguageMgr.MasterLevelStepsComplete[mlrequired - 1, i - 1], "");
 					pak.WritePascalString(description);
 				}
 			}

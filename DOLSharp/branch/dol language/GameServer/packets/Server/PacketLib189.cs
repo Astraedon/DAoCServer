@@ -26,6 +26,7 @@ using DOL.Database;
 using System.Collections;
 using DOL.GS.Housing;
 using System.Collections.Generic;
+using DOL.Language;
 
 namespace DOL.GS.PacketHandler
 {
@@ -312,7 +313,7 @@ namespace DOL.GS.PacketHandler
 						{
 							flag |= 0x08;
 							icon1 = spell.Icon;
-							spell_name1 = spell.Name; // or best spl.Name ?
+							spell_name1 = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Spell_Name, spell.Name, ""); // or best spl.Name ?
 						}
 					}
 					if (item.SpellID1 > 0/* && item.Charges > 0*/)
@@ -322,7 +323,7 @@ namespace DOL.GS.PacketHandler
 						{
 							flag |= 0x10;
 							icon2 = spell.Icon;
-							spell_name2 = spell.Name; // or best spl.Name ?
+							spell_name2 = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Spell_Name, spell.Name, ""); // or best spl.Name ?
 						}
 					}
 				}
@@ -339,7 +340,7 @@ namespace DOL.GS.PacketHandler
 				pak.WritePascalString(spell_name2);
 			}
 			pak.WriteByte((byte)item.Effect);
-			string name = item.Name;
+			string name = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, "");
 			if (item.Count > 1)
 				name = item.Count + " " + name;
             if (item.SellPrice > 0)
@@ -385,7 +386,7 @@ namespace DOL.GS.PacketHandler
 			pak.WriteByte((byte)house.WindowMaterial);
 			pak.WriteByte(0);
 			pak.WriteShort(0); // new in 1.89b+
-			pak.WritePascalString(house.Name);
+			pak.WritePascalString(house.Name); //Apo: is this the owners name or the house name?
 
 			SendTCP(pak);
 		}
