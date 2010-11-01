@@ -18,9 +18,10 @@
  */
 #define NOENCRYPTION
 using System;
-using log4net;
-using DOL.GS.Quests;
 using System.Reflection;
+
+using DOL.GS.Quests;
+using log4net;
 
 namespace DOL.GS.PacketHandler
 {

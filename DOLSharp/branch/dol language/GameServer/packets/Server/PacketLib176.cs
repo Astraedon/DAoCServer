@@ -20,10 +20,12 @@
 using System;
 using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
+
 using DOL.Database;
+using DOL.Language;
 using DOL.GS.Housing;
 using log4net;
-using System.Collections.Generic;
 
 namespace DOL.GS.PacketHandler
 {
@@ -64,7 +66,8 @@ namespace DOL.GS.PacketHandler
 					}
 					pak.WriteByte(player.Level);
 					pak.WritePascalString(player.Name);
-					pak.WriteString(player.CharacterClass.Name, 4);
+                    pak.WriteString(LanguageMgr.GetTranslation(player.Client, eTranslationKey.SystemText, player.CharacterClass.Name,
+                        "PlayerClass" + player.CharacterClass.Name.Trim() + "Male"), 4); // Apo: Well, the strings max length is 4 and so there is no need to check for female/male
                     //Dinberg:Instances - We use ZoneSkinID to bluff our way to victory and
                     //trick the client for positioning objects (as IDs are hard coded).
 					if(player.CurrentZone != null)
@@ -124,7 +127,8 @@ namespace DOL.GS.PacketHandler
 				pak.WriteInt((uint)newEmblemBitMask);//TODO other bits
 			}
 			else pak.WriteInt(0);
-			pak.WritePascalString(obj.Name.Length > 48 ? obj.Name.Substring(0,48) : obj.Name);
+            string objName = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.GameObject_Name, obj.Name, "");
+            pak.WritePascalString(objName.Length > 48 ? objName.Substring(0, 48) : objName);
 			if (obj is IDoor)
 			{
 				pak.WriteByte(4);
@@ -236,7 +240,7 @@ namespace DOL.GS.PacketHandler
 					else
 						pak.WriteShort((ushort)item.Color);
 					pak.WriteShort((ushort)effect);
-					string name = item.Name;
+					string name = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, "");
 					if (item.Count > 1)
 						name = item.Count + " " + name;
                     if (item.SellPrice > 0)
@@ -349,7 +353,7 @@ namespace DOL.GS.PacketHandler
 			pak.WriteByte((byte)house.PorchMaterial);
 			pak.WriteByte((byte)house.WindowMaterial);
 			pak.WriteByte(0x03);
-			pak.WritePascalString(house.Name);
+			pak.WritePascalString(house.Name); // Apo: Is it the owners name or the house name?
 
 			SendTCP(pak);
 		}

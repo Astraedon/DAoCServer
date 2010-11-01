@@ -22,6 +22,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
+using DOL.Language;
 using DOL.GS.RealmAbilities;
 using DOL.GS.Styles;
 using DOL.GS.Effects;
@@ -74,14 +75,14 @@ namespace DOL.GS.PacketHandler
 						pak.WriteByte(linenumber); //number of line
 						pak.WriteByte(0); // level, not used when spell line
 						pak.WriteShort(0); // icon, not used when spell line
-						pak.WritePascalString(line.Name);
+						pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SpellLine_Name, line.Name, ""));
 						foreach (Spell spell in spells)
 						{
 							if (spell.Level <= line.Level)
 							{
 								pak.WriteByte((byte)spell.Level);
 								pak.WriteShort(spell.Icon);
-								pak.WritePascalString(spell.Name);
+								pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Spell_Name, spell.Name, ""));
 							}
 						}
 						SendTCP(pak);
@@ -229,7 +230,12 @@ namespace DOL.GS.PacketHandler
 			pak.WritePascalString(GameServer.ServerRules.GetPlayerLastName(m_gameClient.Player, playerToCreate));
 			//RR 12 / 13
 			pak.WritePascalString(GameServer.ServerRules.GetPlayerPrefixName(m_gameClient.Player, playerToCreate));
-			pak.WritePascalString(playerToCreate.CurrentTitle.GetValue(playerToCreate)); // new in 1.74, NewTitle
+            if(playerToCreate.Gender > 0)
+                pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, playerToCreate.CurrentTitle.GetValue(playerToCreate),
+                    "PlayerTitle" + playerToCreate.CurrentTitle.GetDescription(playerToCreate).Trim() + "Female")); // new in 1.74, NewTitle
+            else
+                pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, playerToCreate.CurrentTitle.GetValue(playerToCreate),
+                    "PlayerTitle" + playerToCreate.CurrentTitle.GetDescription(playerToCreate).Trim() + "Male")); // new in 1.74, NewTitle
 			if (playerToCreate.IsOnHorse)
 			{
 				pak.WriteByte(playerToCreate.ActiveHorse.ID);
@@ -322,7 +328,7 @@ namespace DOL.GS.PacketHandler
 								pak.WriteShort(0);
 								pak.WriteByte((byte)(m_gameClient.Player.GetModifiedSpecLevel(spec.KeyName) - spec.Level)); // bonus
 								pak.WriteShort(spec.ID);
-								pak.WritePascalString(spec.Name);
+								pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Specialization_Name, spec.Name, ""));
 							}
 
 							int i = 0;
@@ -350,7 +356,7 @@ namespace DOL.GS.PacketHandler
 									else if (skill.Name == Abilities.VampiirQuickness)
 										str = " +" + ((m_gameClient.Player.Level - 5) * 2).ToString();
 								}
-								pak.WritePascalString(skill.Name + str);
+								pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Ability_Name, skill.Name, "") + str);
 							}
 
 							foreach (Style style in styles)
@@ -388,7 +394,7 @@ namespace DOL.GS.PacketHandler
 								pak.WriteShort((ushort)pre);
 								pak.WriteByte(GlobalConstants.GetSpecToInternalIndex(style.Spec)); // index specialization
 								pak.WriteShort((ushort)style.Icon);
-								pak.WritePascalString(style.Name);
+								pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Style_Name, style.Name, ""));
 							}
 							if (flagSendHybrid)
 							{
@@ -417,7 +423,7 @@ namespace DOL.GS.PacketHandler
 									}
 									pak.WriteByte(0);
 									pak.WriteShort(spell.Value.Key.Icon);
-									pak.WritePascalString(spell.Value.Key.Name);
+									pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Spell_Name, spell.Value.Key.Name, ""));
 								}
 								//Added by stexx78 - Add ML and CL lines and spells.
 								SendToHybridMLandCL(m_gameClient.Player);

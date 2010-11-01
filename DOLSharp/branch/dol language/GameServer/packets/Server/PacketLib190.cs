@@ -21,10 +21,11 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Reflection;
-using log4net;
+
 using DOL.Language;
 using DOL.GS.Effects;
 using DOL.GS.Quests;
+using log4net;
 
 namespace DOL.GS.PacketHandler
 {
@@ -140,7 +141,7 @@ namespace DOL.GS.PacketHandler
 								flagNegativeEffect = 1;
 						}
 						pak.WriteByte(flagNegativeEffect);
-						pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.Spell_Name, effect.Name, ""));
+						pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Spell_Name, effect.Name, ""));
 						entriesCount++;
 					}
 				}

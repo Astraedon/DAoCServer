@@ -18,15 +18,16 @@
  */
 #define NOENCRYPTION
 using System;
-using System.Linq;
-using log4net;
-using DOL.GS.Quests;
-using System.Reflection;
-using DOL.Database;
 using System.Collections;
-using DOL.GS.Housing;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+using DOL.Database;
 using DOL.Language;
+using DOL.GS.Housing;
+using DOL.GS.Quests;
+using log4net;
 
 namespace DOL.GS.PacketHandler
 {

@@ -19,12 +19,14 @@
 #define NOENCRYPTION
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
+
+using DOL.Language;
 using DOL.AI.Brain;
 using DOL.GS.Effects;
 using DOL.GS.PlayerTitles;
 using log4net;
-using System.Collections.Generic;
 
 namespace DOL.GS.PacketHandler
 {
@@ -86,7 +88,7 @@ namespace DOL.GS.PacketHandler
 
 			pak.WriteByte(1); // new in 1.75
 			pak.WriteByte(0); // new in 1.81
-			pak.WritePascalString("Player Statistics"); //window caption
+			pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, "Player Statistics", "")); //window caption
 
 			byte line = 1;
 			foreach (string str in m_gameClient.Player.FormatStatistics())
@@ -103,7 +105,7 @@ namespace DOL.GS.PacketHandler
 			foreach (IPlayerTitle title in titles)
 			{
 				pak.WriteByte(line++);
-				pak.WritePascalString(title.GetDescription(m_gameClient.Player));
+				pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, title.GetDescription(m_gameClient.Player), "PlayerTitle" + title.GetDescription(m_gameClient.Player).Trim()));
 			}
 			long titlesLen = (pak.Position - titlesCountPos - 1); // include titles count
 			if (titlesLen > byte.MaxValue)

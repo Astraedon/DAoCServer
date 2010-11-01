@@ -137,8 +137,10 @@
     <Compile Include="Tables\CharacterXDataQuest.cs" />
     <Compile Include="Tables\LanguageAbility.cs" />
     <Compile Include="Tables\LanguageArea.cs" />
+    <Compile Include="Tables\LanguageDataQuest.cs" />
     <Compile Include="Tables\LanguageGameObject.cs" />
     <Compile Include="Tables\LanguageItem.cs" />
+    <Compile Include="Tables\LanguageMasterLevelStep.cs" />
     <Compile Include="Tables\LanguageNPC.cs" />
     <Compile Include="Tables\LanguageQuest.cs" />
     <Compile Include="Tables\LanguageSpecialization.cs" />
