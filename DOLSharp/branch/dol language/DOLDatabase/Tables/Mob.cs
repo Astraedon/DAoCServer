@@ -31,6 +31,10 @@ namespace DOL.Database
 	public class Mob : DataObject
 	{
 		private string m_type;
+        private string m_translationUnique;
+        private string m_examineArticle;
+        private string m_messageArticleFemale;
+        private string m_messageArticleMale;
 		private string m_name;
 		private string m_guild;
 		private int m_x;
@@ -119,6 +123,62 @@ namespace DOL.Database
 				m_type = value;
 			}
 		}
+
+        /// <summary>
+        /// The translation unique to get the correct translation
+        /// </summary>
+        [DataElement(AllowDbNull = true)]
+        public string TranslationUnique
+        {
+            get { return m_translationUnique; }
+            set
+            {
+                Dirty = true;
+                m_translationUnique = value;
+            }
+        }
+
+        /// <summary>
+        /// The npc examine article
+        /// </summary>
+        [DataElement(AllowDbNull = true)]
+        public string ExamineArticle
+        {
+            get { return m_examineArticle; }
+            set
+            {
+                Dirty = true;
+                m_examineArticle = value;
+            }
+        }
+
+        /// <summary>
+        /// The npc female message article
+        /// </summary>
+        [DataElement(AllowDbNull = true)]
+        public string MessageArticleFemale
+        {
+            get { return m_messageArticleFemale; }
+            set
+            {
+                Dirty = true;
+                m_messageArticleFemale = value;
+            }
+        }
+
+        /// <summary>
+        /// The npc male message article
+        /// </summary>
+        [DataElement(AllowDbNull = true)]
+        public string MessageArticleMale
+        {
+            get { return m_messageArticleMale; }
+            set
+            {
+                Dirty = true;
+                m_messageArticleMale = value;
+            }
+        }
 
 		/// <summary>
 		/// The Mob's Name

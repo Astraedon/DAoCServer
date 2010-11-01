@@ -111,6 +111,46 @@ namespace DOL.GS
 		#endregion
 		
 		#region Sizes/Properties
+
+        /// <summary>
+        /// Holds the translationUnique for the npc
+        /// </summary>
+        protected string m_translationUnique;
+        /// <summary>
+        /// Holds the translation unique for the npc
+        /// </summary>
+        public string TranslationUnique
+        {
+            get { return m_translationUnique; }
+            set { m_translationUnique = value; }
+        }
+
+        /// <summary>
+        /// Holds the female message article of the npc
+        /// </summary>
+        protected string m_messageArticleFemale;
+        /// <summary>
+        /// Gets or sets the female message article of the npc
+        /// </summary>
+        public string MessageArticleFemale
+        {
+            get { return m_messageArticleFemale; }
+            set { m_messageArticleFemale = value; }
+        }
+
+        /// <summary>
+        /// Holds the male message article of the npc
+        /// </summary>
+        protected string m_messageArticleMale;
+        /// <summary>
+        /// Gets or sets the male message article of the npc
+        /// </summary>
+        public string MessageArticleMale
+        {
+            get { return m_messageArticleMale; }
+            set { m_messageArticleMale = value; }
+        }
+
 		/// <summary>
 		/// Holds the size of the NPC
 		/// </summary>
@@ -1842,7 +1882,11 @@ namespace DOL.GS
 			{
 				LoadTemplate(npcTemplate);
 			}
-			
+
+            TranslationUnique = dbMob.TranslationUnique;
+            ExamineArticle = dbMob.ExamineArticle;
+            MessageArticleFemale = dbMob.MessageArticleFemale;
+            MessageArticleMale = dbMob.MessageArticleMale;
 			Name = dbMob.Name;
 			GuildName = dbMob.Guild;
 			m_x = dbMob.X;
@@ -2023,6 +2067,10 @@ namespace DOL.GS
 				}
 			}
 
+            mob.TranslationUnique = TranslationUnique;
+            mob.ExamineArticle = ExamineArticle;
+            mob.MessageArticleFemale = MessageArticleFemale;
+            mob.MessageArticleMale = MessageArticleMale;
 			mob.Name = Name;
 			mob.Guild = GuildName;
 			mob.X = X;
@@ -2103,6 +2151,10 @@ namespace DOL.GS
 			IList m_equipLoc = new ArrayList();
 			Hashtable m_equipModel = new Hashtable();
 
+            this.TranslationUnique = template.TranslationUnique;
+            this.ExamineArticle = template.ExamineArticle;
+            this.MessageArticleFemale = template.MessageArticleFemale;
+            this.MessageArticleMale = template.MessageArticleMale;
 			this.Name = template.Name;
 			this.GuildName = template.GuildName;
 
@@ -4796,6 +4848,10 @@ namespace DOL.GS
 			if ( copyTarget == null )
 				copyTarget = new GameNPC();
 
+            copyTarget.TranslationUnique = TranslationUnique;
+            copyTarget.ExamineArticle = ExamineArticle;
+            copyTarget.MessageArticleFemale = MessageArticleFemale;
+            copyTarget.MessageArticleMale = MessageArticleMale;
 			copyTarget.BlockChance = BlockChance;
 			copyTarget.BodyType = BodyType;
 			copyTarget.CanUseLefthandedWeapon = CanUseLefthandedWeapon;
@@ -4903,6 +4959,10 @@ namespace DOL.GS
 		public GameNPC()
 			: base()
 		{
+            TranslationUnique = "";
+            ExamineArticle = "";
+            MessageArticleMale = "";
+            MessageArticleFemale = "";
 			Level = 1; // health changes when GameNPC.Level changes
 			m_Realm = 0;
 			m_name = "new mob";

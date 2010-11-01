@@ -391,6 +391,8 @@ namespace DOL.GS
 
 		#region Level/Name/Model/GetName/GetPronoun/GetExamineMessage
 
+        protected string m_examineArticle;
+
 		/// <summary>
 		/// The level of the Object
 		/// </summary>
@@ -410,8 +412,16 @@ namespace DOL.GS
 		/// The model of the Object
 		/// </summary>
 		protected ushort m_model;
-		
-		
+
+        /// <summary>
+        /// Gets or sets the examine article of the object
+        /// </summary>
+        public virtual string ExamineArticle
+        {
+            get { return m_examineArticle; }
+            set { m_examineArticle = value; }
+        }
+
 		/// <summary>
 		/// Gets or Sets the current level of the Object
 		/// </summary>

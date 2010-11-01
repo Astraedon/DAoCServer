@@ -30,6 +30,7 @@ namespace DOL.Database
 	public class WorldObject : DataObject
 	{
 		private string		m_type;
+        private string      m_examineArticle;
 		private string		m_name;
 		private int			m_x;
 		private int			m_y;
@@ -59,6 +60,20 @@ namespace DOL.Database
 				m_type = value;
 			}
 		}
+
+        /// <summary>
+        /// The translated game object examine article
+        /// </summary>
+        [DataElement(AllowDbNull = true)]
+        public string ExamineArticle
+        {
+            get { return m_examineArticle; }
+            set
+            {
+                Dirty = true;
+                m_examineArticle = value;
+            }
+        }
 
 		[DataElement(AllowDbNull=false)]
 		public string Name

@@ -30,6 +30,26 @@ namespace DOL.GS
 		/// </summary>
 		int TemplateId { get; }
 
+        /// <summary>
+        /// Gets the translation unique
+        /// </summary>
+        string TranslationUnique { get; }
+
+        /// <summary>
+        /// Gets the examine article
+        /// </summary>
+        string ExamineArticle { get; }
+
+        /// <summary>
+        /// Gets the female message article
+        /// </summary>
+        string MessageArticleFemale { get; }
+
+        /// <summary>
+        /// Gets the male message article
+        /// </summary>
+        string MessageArticleMale { get; }
+
 		/// <summary>
 		/// Gets the template npc name
 		/// </summary>

@@ -152,6 +152,7 @@ namespace DOL.GS
 			
 			m_loadedFromScript = false;
 			CurrentRegionID = item.Region;
+            ExamineArticle = item.ExamineArticle;
 			Name = item.Name;
 			Model = item.Model;
 			Emblem = item.Emblem;
@@ -229,6 +230,7 @@ namespace DOL.GS
 					return;
 				}
 			}
+            obj.ExamineArticle = ExamineArticle;
 			obj.Name = Name;
 			obj.Model = Model;
 			obj.Emblem = Emblem;

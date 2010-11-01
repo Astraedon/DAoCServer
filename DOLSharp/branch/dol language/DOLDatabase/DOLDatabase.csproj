@@ -135,6 +135,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tables\CharacterXDataQuest.cs" />
+    <Compile Include="Tables\LanguageAbility.cs" />
+    <Compile Include="Tables\LanguageArea.cs" />
+    <Compile Include="Tables\LanguageGameObject.cs" />
+    <Compile Include="Tables\LanguageItem.cs" />
+    <Compile Include="Tables\LanguageNPC.cs" />
+    <Compile Include="Tables\LanguageQuest.cs" />
+    <Compile Include="Tables\LanguageSpecialization.cs" />
+    <Compile Include="Tables\LanguageSpell.cs" />
+    <Compile Include="Tables\LanguageSpellLine.cs" />
+    <Compile Include="Tables\LanguageStyle.cs" />
+    <Compile Include="Tables\LanguageSystem.cs" />
+    <Compile Include="Tables\LanguageZone.cs" />
     <Compile Include="Tables\StartupLocation.cs" />
     <Compile Include="Tables\DataQuest.cs" />
     <Compile Include="Tables\Zones.cs" />
