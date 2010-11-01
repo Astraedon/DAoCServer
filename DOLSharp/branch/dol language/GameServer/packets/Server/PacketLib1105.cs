@@ -21,6 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using DOL.Language;
 using DOL.GS.Commands;
 using DOL.GS.Effects;
 using DOL.Database;
@@ -70,7 +71,7 @@ namespace DOL.GS.PacketHandler
 					pak.WriteByte((byte)i++);
 					pak.WriteByte((byte)Math.Min(50, spec.Level));
 					pak.WriteByte((byte)(Math.Min(50, spec.Level) + 1)); 
-					pak.WritePascalString(spec.Name);
+					pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.Specialization_Name, spec.Name, ""));
 				}
 				SendTCP(pak);
 			}
@@ -121,7 +122,7 @@ namespace DOL.GS.PacketHandler
 						pak.WriteByte((byte)ra.Level);
 						pak.WriteByte((byte)ra.CostForUpgrade(ra.Level - 1));
 						bool canBeUsed = ra.CheckRequirement(m_gameClient.Player);
-						pak.WritePascalString((canBeUsed ? "" : "[") + ra.Name + (canBeUsed ? "" : "]"));
+						pak.WritePascalString((canBeUsed ? "" : "[") + LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.Ability_Name, ra.Name, "") + (canBeUsed ? "" : "]"));
 					}
 
 					m_gameClient.Player.TempProperties.setProperty("OFFERED_RA", offeredRA);
@@ -205,7 +206,7 @@ namespace DOL.GS.PacketHandler
 
 						foreach (Spell sp in lss)
 						{
-							pak.WritePascalString(sp.Name);
+							pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.Spell_Name, sp.Name, ""));
 							paksub.WriteByte((byte)Math.Min(50, sp.Level));
 							paksub.WriteShort((ushort)sp.Icon);
 							paksub.WriteByte((byte)sp.SkillType);
@@ -240,7 +241,7 @@ namespace DOL.GS.PacketHandler
 
 							foreach (var st in lst)
 							{
-								pak.WritePascalString(st.Name);
+								pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.Style_Name, st.Name, ""));
 								paksub.WriteByte((byte)Math.Min(50, st.Level));
 								paksub.WriteShort((ushort)st.Icon);
 								paksub.WriteByte((byte)st.SkillType);
@@ -306,7 +307,7 @@ namespace DOL.GS.PacketHandler
 					if (ra.CheckRequirement(m_gameClient.Player))
 						pak.WritePascalString(ra.KeyName);
 					else
-						pak.WritePascalString("[" + ra.Name + "]");
+						pak.WritePascalString("[" + LanguageMgr.GetTranslation(m_gameClient.Player.Client, eTranslationKey.Ability_Name, ra.Name, "") + "]");
 				}
 				SendTCP(pak);
 			}

@@ -44,6 +44,7 @@ namespace DOL.Language
         NPC_MessageArticleMale,
         NPC_Name,
         QuestText,
+        Specialization_Name,
         Spell_Description,
         Spell_Name,
         SpellLine_Name,
@@ -990,6 +991,20 @@ namespace DOL.Language
                             //Lets check if we have text
                             if (dbo.Text.Trim().Length > 0)
                                 translation = dbo.Text;
+                            else
+                                translation = translationID;
+                        }
+                        else
+                            translation = translationID;
+                    } break;
+                case eTranslationKey.Specialization_Name:
+                    {
+                        var dbo = GameServer.Database.SelectObject<DBLanguageSpecialization>("TranslationId='" + translationID + "' AND Language='" + language + "'");
+                        if (dbo != null)
+                        {
+                            //Lets check if we have text
+                            if (dbo.Name.Trim().Length > 0)
+                                translation = dbo.Name;
                             else
                                 translation = translationID;
                         }
