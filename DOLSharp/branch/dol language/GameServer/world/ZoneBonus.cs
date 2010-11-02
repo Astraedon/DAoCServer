@@ -64,13 +64,16 @@ namespace DOL.GS
             switch (type)
             {
                 case eZoneBonusType.XP:
-                    return LanguageMgr.GetTranslation(player.Client.Account.Language, "ZoneBonus.AdditionalXP", bonusAmount);
+                    return LanguageMgr.GetTranslation(player.Client, eTranslationKey.SystemText, "You gain an additional {points} experience for adventuring in this zone!",
+                        "").Replace("{points}", bonusAmount.ToString());
                 case eZoneBonusType.RP:
-                    return LanguageMgr.GetTranslation(player.Client.Account.Language, "ZoneBonus.AdditionalRP", bonusAmount);
+                    return LanguageMgr.GetTranslation(player.Client, eTranslationKey.SystemText, "You gain an additional {points} realmpoints for adventuring in this zone!",
+                        "").Replace("{points}", bonusAmount.ToString());
                 case eZoneBonusType.BP:
-                    return LanguageMgr.GetTranslation(player.Client.Account.Language, "ZoneBonus.AdditionalBP", bonusAmount);
+                    return LanguageMgr.GetTranslation(player.Client, eTranslationKey.SystemText, "You gain an additional {points} bountypoints for adventuring in this zone!",
+                        "").Replace("{points}", bonusAmount.ToString());
                 case eZoneBonusType.COIN:
-                    return LanguageMgr.GetTranslation(player.Client.Account.Language, "ZoneBonus.AdditionalCoin");
+                    return LanguageMgr.GetTranslation(player.Client, eTranslationKey.SystemText, "You gain additional coins for adventuring in this zone!", "");
                 default: return "No Bonus Type Found";
             }
         } 

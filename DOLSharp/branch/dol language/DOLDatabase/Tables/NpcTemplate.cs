@@ -41,6 +41,7 @@ namespace DOL.Database
         private string m_messageArticleFemale;
         private string m_messageArticleMale;
 		private string m_name = "";
+        private string m_suffix = "";
 		private string m_classType = "";
 		private string m_guildName = "";
 		private string m_model;
@@ -164,6 +165,26 @@ namespace DOL.Database
 				m_name = value;
 			}
 		}
+
+        /// <summary>
+        /// The suffix to add at the end of the npcs name:
+        /// 
+        /// The {spellname} spell is no longer in your {sourcename}{suffix} queue.
+        /// With suffix: The blabla spell is no longer in your minor zombie servant's queue.
+        /// Without suffix: The blabla spell is no longer in your minor zombie servant queue.
+        /// 
+        /// Used by necromancer pets, only.
+        /// </summary>
+        [DataElement(AllowDbNull = true)]
+        public string Suffix
+        {
+            get { return m_suffix; }
+            set
+            {
+                Dirty = true;
+                m_suffix = value;
+            }
+        }
 
 		/// <summary>
 		/// Class Type

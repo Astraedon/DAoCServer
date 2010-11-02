@@ -55,6 +55,11 @@ namespace DOL.GS
 		/// </summary>
 		string Name { get; }
 
+        /// <summary>
+        /// Gets the suffix
+        /// </summary>
+        string Suffix { get; }
+
 		/// <summary>
 		/// Gets the template npc guild name
 		/// </summary>

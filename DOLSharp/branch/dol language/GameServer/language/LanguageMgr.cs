@@ -44,6 +44,7 @@ namespace DOL.Language
         NPC_MessageArticleFemale,
         NPC_MessageArticleMale,
         NPC_Name,
+        Pet_Suffix,
         QuestText,
         Specialization_Name,
         Spell_Description,
@@ -859,13 +860,13 @@ namespace DOL.Language
                             if (dbo != null)
                             {
                                 //Lets check if we have text
-                                if (dbo.ExamineArticle.Trim().Length > 0)
+                                if (dbo.ExamineArticle != null)
                                     translation = dbo.ExamineArticle;
                                 else
-                                    translation = translationID;
+                                    translation = "";
                             }
                             else
-                                translation = translationID;
+                                translation = "";
                         }
                         else
                         {
@@ -873,13 +874,13 @@ namespace DOL.Language
                             if (dbo != null)
                             {
                                 //Lets check if we have text
-                                if (dbo.ExamineArticle.Trim().Length > 0)
+                                if (dbo.ExamineArticle != null)
                                     translation = dbo.ExamineArticle;
                                 else
-                                    translation = translationID;
+                                    translation = "";
                             }
                             else
-                                translation = translationID;
+                                translation = "";
                         }
                     } break;
                 case eTranslationKey.NPC_GuildName:
@@ -921,10 +922,10 @@ namespace DOL.Language
                             if (dbo != null)
                             {
                                 //Lets check if we have text
-                                if (dbo.MessageArticleFemale.Trim().Length > 0)
+                                if (dbo.MessageArticleFemale != null)
                                     translation = dbo.MessageArticleFemale;
                                 else
-                                    translation = translationID;
+                                    translation = "";
                             }
                         }
                         else
@@ -933,10 +934,10 @@ namespace DOL.Language
                             if (dbo != null)
                             {
                                 //Lets check if we have text
-                                if (dbo.MessageArticleFemale.Trim().Length > 0)
+                                if (dbo.MessageArticleFemale != null)
                                     translation = dbo.MessageArticleFemale;
                                 else
-                                    translation = translationID;
+                                    translation = "";
                             }
                         }
                     } break;
@@ -948,10 +949,10 @@ namespace DOL.Language
                             if (dbo != null)
                             {
                                 //Lets check if we have text
-                                if (dbo.MessageArticleMale.Trim().Length > 0)
+                                if (dbo.MessageArticleMale != null)
                                     translation = dbo.MessageArticleMale;
                                 else
-                                    translation = translationID;
+                                    translation = "";
                             }
                         }
                         else
@@ -960,10 +961,10 @@ namespace DOL.Language
                             if (dbo != null)
                             {
                                 //Lets check if we have text
-                                if (dbo.MessageArticleMale.Trim().Length > 0)
+                                if (dbo.MessageArticleMale != null)
                                     translation = dbo.MessageArticleMale;
                                 else
-                                    translation = translationID;
+                                    translation = "";
                             }
                         }
                     } break;
@@ -997,6 +998,19 @@ namespace DOL.Language
                             else
                                 translation = translationID;
                         }
+                    } break;
+                case eTranslationKey.Pet_Suffix:
+                    {
+                        var dbo = GameServer.Database.SelectObject<DBLanguageNPC>("TranslationId='" + translationID + "'AND Language='" + language + "'");
+                        if (dbo != null)
+                        {
+                            if (dbo.Suffix != null)
+                                translation = dbo.Suffix;
+                            else
+                                translation = "";
+                        }
+                        else
+                            translation = translationID;
                     } break;
                 case eTranslationKey.QuestText:
                     {

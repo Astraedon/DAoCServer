@@ -129,7 +129,10 @@ namespace DOL.AI.Brain
 
 				if (SpellsQueued)
 				{
-					MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, "AI.Brain.Necromancer.CastSpellAfterAction", Body.Name), eChatType.CT_System);
+                    MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.SystemText,
+                        "{examinearticle} {sourcename} will begin casting this spell after its current action is finished.", "").Replace("{examinearticle}", 
+                        LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.NPC_ExamineArticle, Body.Name, "")).Replace("{sourcename}",
+                        LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.NPC_Name, Body.Name, "")), eChatType.CT_System);
 					hadQueuedSpells = true;
 				}
 
@@ -174,21 +177,22 @@ namespace DOL.AI.Brain
                 {
                     case CastFailedEventArgs.Reasons.TargetTooFarAway:
 
-                        MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, 
-                            "AI.Brain.Necromancer.ServantFarAwayToCast"), eChatType.CT_SpellResisted);
+                        MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.SystemText,
+                            "Your servant is too far away from your target to cast that spell!", ""), eChatType.CT_SpellResisted);
                         break;
 
                     case CastFailedEventArgs.Reasons.TargetNotInView:
 
-                        MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, 
-                            "AI.Brain.Necromancer.PetCantSeeTarget", Body.Name), eChatType.CT_SpellResisted);
+                        MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.SystemText,
+                            "Your controlled {sourcename} can't see its target!", "").Replace("{sourcename}", LanguageMgr.GetTranslation((Owner as GamePlayer).Client,
+                            eTranslationKey.NPC_Name, Body.Name, "")), eChatType.CT_SpellResisted);
                         break;
 
 					case CastFailedEventArgs.Reasons.NotEnoughPower:
 
 						RemoveSpellFromQueue();
-						MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client,
-							"AI.Brain.Necromancer.NoPower", Body.Name), eChatType.CT_SpellResisted);
+						MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.SystemText,
+							"You have exhausted all of your power and cannot cast spells!", ""), eChatType.CT_SpellResisted);
 
 						break;
                 }
@@ -211,7 +215,9 @@ namespace DOL.AI.Brain
                 if (spellLine.Name != (Body as NecromancerPet).PetInstaSpellLine)
                 {
                     Owner.Notify(GameLivingEvent.CastStarting, Body, new CastingEventArgs(Body.CurrentSpellHandler));
-                    MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, "AI.Brain.Necromancer.PetCastingSpell", Body.Name), eChatType.CT_System);
+                    MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.SystemText, "{examinearticle} {sourcename} begins casting the spell!",
+                        "").Replace("{examinearticle}", LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.NPC_ExamineArticle, Body.Name, "")).Replace("{sourcename}",
+                        LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.NPC_Name, Body.Name, "")), eChatType.CT_System);
                 }
 
                 // If pet is casting an offensive spell and is not set to
@@ -252,18 +258,20 @@ namespace DOL.AI.Brain
                 SetTetherTimer(secondsRemaining);
 
                 if (secondsRemaining == 10)
-                    MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client,
-                        "AI.Brain.Necromancer.PetTooFarBeLostSecIm", secondsRemaining), eChatType.CT_System);
+                    MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.SystemText,
+                        "Your servant is too far from you and will be lost in {seconds} seconds or immediately if you move further away.",
+                        "").Replace("{seconds}", secondsRemaining.ToString()), eChatType.CT_System);
                 else if (secondsRemaining == 5)
-                    MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client,
-                        "AI.Brain.Necromancer.PetTooFarBeLostSec", secondsRemaining), eChatType.CT_System);
+                    MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.SystemText,
+                        "Your servant is too far from you and will be lost in {seconds} seconds.",
+                        "").Replace("{seconds}", secondsRemaining.ToString()), eChatType.CT_System);
             }
             else if (e == GameNPCEvent.PetLost)
             {
                 // Pet despawn is imminent, notify owner.
 
-                MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client,
-                    "AI.Brain.Necromancer.HaveLostBondToPet"), eChatType.CT_System);
+                MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.SystemText,
+                    "You have lost your bond to your servant.", ""), eChatType.CT_System);
             }
 		}
 
@@ -428,10 +436,10 @@ namespace DOL.AI.Brain
 			lock (m_spellQueue)
 			{
 				if (m_spellQueue.Count >= 2)
-                    MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, 
-                        "AI.Brain.Necromancer.SpellNoLongerInQueue", 
-                        (m_spellQueue.Dequeue()).Spell.Name, Body.Name), 
-                        eChatType.CT_Spell);
+                    MessageToOwner(LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.SystemText, "The {spellname} spell is no longer in your {sourcename}{suffix} queue.",
+                        "").Replace("{spellname}", LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.Spell_Name, (m_spellQueue.Dequeue()).Spell.Name, "")).Replace("{sourcename}",
+                        LanguageMgr.GetTranslation((Owner as GamePlayer).Client, eTranslationKey.NPC_Name, Body.Name, "")).Replace("{suffix}", LanguageMgr.GetTranslation((Owner as GamePlayer).Client,
+                        eTranslationKey.Pet_Suffix, Body.Name, "")), eChatType.CT_Spell);
 
                 DebugMessageToOwner(String.Format("Adding spell '{0}' to the end of the queue", spell.Name));
 				m_spellQueue.Enqueue(new SpellQueueEntry(spell, spellLine, target));

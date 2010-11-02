@@ -485,7 +485,9 @@ namespace DOL.AI.Brain
 					if (protectAmount > 0)
 					{
 						aggroamount -= protectAmount;
-						protect.ProtectSource.Out.SendMessage(LanguageMgr.GetTranslation(protect.ProtectSource.Client, "AI.Brain.StandardMobBrain.YouProtDist", player.GetName(0, false), Body.GetName(0, false)), eChatType.CT_System, eChatLoc.CL_SystemWindow);
+						protect.ProtectSource.Out.SendMessage(LanguageMgr.GetTranslation(protect.ProtectSource.Client, eTranslationKey.SystemText,
+                        "You are protecting {sourcename} and distract {targetname}.", "").Replace("{sourcename}", player.Name).Replace("{targetname}", Body.Name), 
+                            eChatType.CT_System, eChatLoc.CL_SystemWindow);
 						//player.Out.SendMessage("You are protected by " + protect.ProtectSource.GetName(0, false) + " from " + Body.GetName(0, false) + ".", eChatType.CT_System, eChatLoc.CL_SystemWindow);
 
 						lock (m_aggroTable.SyncRoot)

@@ -329,6 +329,19 @@ namespace DOL.GS
 			}
 		}
 
+        /// <summary>
+        /// Holds the suffix
+        /// </summary>
+        private string m_suffix;
+        /// <summary>
+        /// Gets or sets the suffix (necromancer pets only!)
+        /// </summary>
+        public string Suffix
+        {
+            get { return m_suffix; }
+            set { m_suffix = value; }
+        }
+
 		/// <summary>
 		/// Gets or sets the guild name
 		/// </summary>
@@ -1882,7 +1895,6 @@ namespace DOL.GS
 			{
 				LoadTemplate(npcTemplate);
 			}
-
             TranslationUnique = dbMob.TranslationUnique;
             ExamineArticle = dbMob.ExamineArticle;
             MessageArticleFemale = dbMob.MessageArticleFemale;
@@ -2156,6 +2168,7 @@ namespace DOL.GS
             this.MessageArticleFemale = template.MessageArticleFemale;
             this.MessageArticleMale = template.MessageArticleMale;
 			this.Name = template.Name;
+            this.Suffix = template.Suffix;
 			this.GuildName = template.GuildName;
 
 			#region Models

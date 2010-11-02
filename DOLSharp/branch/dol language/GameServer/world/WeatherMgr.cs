@@ -20,6 +20,8 @@ using System;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Threading;
+
+using DOL.Language;
 using DOL.GS.PacketHandler;
 using log4net;
 
@@ -266,7 +268,7 @@ namespace DOL.GS
 			{
 				cl.Out.SendWeather(0, 0, 0, 0, 0);
 				if (cl.Player.X > (currentLine - m_width) && cl.Player.X < (currentLine + m_width))
-					cl.Out.SendMessage("The sky clears up again as the storm clouds disperse!", eChatType.CT_Important, eChatLoc.CL_SystemWindow);
+					cl.Out.SendMessage(LanguageMgr.GetTranslation(cl, eTranslationKey.SystemText, "The sky clears up again as the storm clouds disperse!", ""), eChatType.CT_Important, eChatLoc.CL_SystemWindow);
 			}
 			m_weatherTimer.Change(ServerProperties.Properties.WEATHER_CHECK_INTERVAL, ServerProperties.Properties.WEATHER_CHECK_INTERVAL);
             if (log.IsInfoEnabled && ServerProperties.Properties.WEATHER_LOG_EVENTS)
