@@ -21,6 +21,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+
+using DOL.Language;
 using DOL.Database;
 using DOL.GS.Quests;
 using log4net;
@@ -201,7 +203,7 @@ namespace DOL.GS.PacketHandler
 					else
 						pak.WriteShort((ushort)item.Color);
 					pak.WriteShort((ushort)item.Effect);
-					string name = item.Name;
+					string name = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, "");
 					if (item.Count > 1)
 						name = item.Count + " " + name;
                     if (item.SellPrice > 0)
@@ -336,15 +338,19 @@ namespace DOL.GS.PacketHandler
 						pak.WriteShort((ushort)item.Color); //color
 						pak.WriteShort((ushort)item.Effect); //weaponproc
 						if (item.Count > 1)
-							pak.WritePascalString(item.Count + " " + item.Name);
+							pak.WritePascalString(item.Count + " " + LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, ""));
 						else
-							pak.WritePascalString(item.Name); //size and name item
+							pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, "")); //size and name item
 					}
 				}
-				if (m_gameClient.Player.TradeWindow.Partner != null)
-					pak.WritePascalString("Trading with " + m_gameClient.Player.GetName(m_gameClient.Player.TradeWindow.Partner)); // transaction with ...
-				else
-					pak.WritePascalString("Selfcrafting"); // transaction with ...
+                if (m_gameClient.Player.TradeWindow.Partner != null)
+                {
+                    string translation = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText,
+                        "Trading with {sourcetarget}", "TradingWith").Replace("{sourcetarget}", m_gameClient.Player.GetName(m_gameClient.Player.TradeWindow.Partner));
+                    pak.WritePascalString(translation); // transaction with ...
+                }
+                else
+                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, "Selfcrafting", "TradingWithSelfcrafting")); // transaction with ...
 				SendTCP(pak);
 			}
 		}

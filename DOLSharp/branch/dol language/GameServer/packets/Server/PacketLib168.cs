@@ -24,8 +24,10 @@ using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 using System.Linq;
-using DOL.AI.Brain;
+
 using DOL.Database;
+using DOL.Language;
+using DOL.AI.Brain;
 using DOL.GS.Effects;
 using DOL.GS.Housing;
 using DOL.GS.Keeps;
@@ -34,7 +36,6 @@ using DOL.GS.Quests;
 using DOL.GS.RealmAbilities;
 using DOL.GS.Spells;
 using DOL.GS.Styles;
-using DOL.Language;
 using log4net;
 
 namespace DOL.GS.PacketHandler
@@ -229,21 +230,30 @@ namespace DOL.GS.PacketHandler
 								foreach (AbstractArea area in areas)
 								{
 									if (!area.DisplayMessage) continue;
-									description = area.Description;
+									description = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Area_Description, area.Description, "");
 									break;
 								}
 
 								if (description == "")
-									description = zon.Description;
+									description = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Zone_Description, zon.Description, "");
 								pak.FillString(description, 24);
 							}
 							else
 								pak.Fill(0x0, 24); //No known location
-
-							pak.FillString("", 24); //Class name
-
+                            if (characters[j].Class == 0)
+                                pak.FillString("", 24); //Class name
+                            else
+                            {
+                                if (characters[j].Gender > 0)
+                                    pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, ((eCharacterClass)characters[j].Class).ToString(), "PlayerClass" + ((eCharacterClass)characters[j].Class).ToString().Trim()) + "Female", 24); //Class name
+                                else
+                                    pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, ((eCharacterClass)characters[j].Class).ToString(), "PlayerClass" + ((eCharacterClass)characters[j].Class).ToString().Trim()) + "Male", 24); //Class name
+                            }
 							//pak.FillString(GamePlayer.RACENAMES[characters[j].Race], 24);
-							pak.FillString(GamePlayer.RACENAMES(m_gameClient, characters[j].Race, characters[j].Gender), 24);
+                            if (characters[j].Gender > 0)
+                                pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, GamePlayer.RACENAMES[characters[j].Race], "PlayerRace" + GamePlayer.RACENAMES[characters[j].Race].Trim() + "Female"), 24);
+                            else
+                                pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, GamePlayer.RACENAMES[characters[j].Race], "PlayerRace" + GamePlayer.RACENAMES[characters[j].Race].Trim() + "Male"), 24);
 							pak.WriteByte((byte) characters[j].Level);
 							pak.WriteByte((byte) characters[j].Class);
 							pak.WriteByte((byte) characters[j].Realm);
@@ -920,7 +930,7 @@ namespace DOL.GS.PacketHandler
 				    (obj as GameStaticItemTimed).IsOwner(m_gameClient.Player))
 					flag |= 0x04;
 				pak.WriteShort((ushort) flag);
-				pak.WritePascalString(obj.Name);
+				pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.GameObject_Name, obj.Name, ""));
 				if (obj is IDoor)
 				{
 					pak.WriteByte(4);
@@ -1033,7 +1043,7 @@ namespace DOL.GS.PacketHandler
 					if ((npc.Flags & GameNPC.eFlags.DONTSHOWNAME) != 0)
 						add += "-NON"; // indicates NON flag for GMs
 				}
-				string name = npc.Name;
+				string name = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.NPC_Name, npc.Name, "");
 				if (name.Length + add.Length + 2 > 47) // clients crash with too long names
 					name = name.Substring(0, 47 - add.Length - 2);
 				if (add.Length > 0)
@@ -1041,9 +1051,11 @@ namespace DOL.GS.PacketHandler
 
 				pak.WritePascalString(name);
 
-				if (npc.GuildName.Length > 47)
-					pak.WritePascalString(npc.GuildName.Substring(0, 47));
-				else pak.WritePascalString(npc.GuildName);
+                string guildName = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.NPC_GuildName, npc.GuildName, "");
+                if (guildName.Length > 47)
+                    pak.WritePascalString(guildName.Substring(0, 47));
+				else
+                    pak.WritePascalString(guildName);
 
 				pak.WriteByte(0x00);
 				SendTCP(pak);
@@ -1285,7 +1297,8 @@ namespace DOL.GS.PacketHandler
 						}
 						pak.WriteByte(player.Level);
 						pak.WritePascalString(player.Name);
-						pak.WriteString(player.CharacterClass.Name, 4);
+                        pak.WriteString(LanguageMgr.GetTranslation(player.Client, eTranslationKey.SystemText, player.CharacterClass.Name,
+                        "PlayerClass" + player.CharacterClass.Name.Trim() + "Male"), 4); // Apo: Well, the strings max length is 4 and so there is no need to check for female/male
 						//Dinberg:Instances - have to write zoneskinID, it uses this to display the text 'x is in y'.
 						if (player.CurrentZone != null)
 							pak.WriteByte((byte) player.CurrentZone.ZoneSkinID);
@@ -1821,7 +1834,7 @@ namespace DOL.GS.PacketHandler
 								//Item Price
 								pak.WriteInt((uint) item.Price);
 								pak.WriteShort((ushort) item.Model);
-								pak.WritePascalString(item.Name);
+								pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, ""));
 							}
 							else
 							{
@@ -1909,15 +1922,24 @@ namespace DOL.GS.PacketHandler
 							pak.WriteShort((ushort) item.Color); //color
 							pak.WriteShort((ushort) item.Effect); //weaponproc
 							if (item.Count > 1)
-								pak.WritePascalString(item.Count + " " + item.Name);
+								pak.WritePascalString(item.Count + " " + LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, ""));
 							else
-								pak.WritePascalString(item.Name); //size and name item
+                                pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, "")); //size and name item
 						}
 					}
-					if (m_gameClient.Player.TradeWindow is SelfCraftWindow)
-						pak.WritePascalString("Combining for " + m_gameClient.Player.Name);
-					else
-						pak.WritePascalString("Trading with " + m_gameClient.Player.TradeWindow.Partner.Name); // transaction with ...
+                    string translation = "";
+                    if (m_gameClient.Player.TradeWindow is SelfCraftWindow)
+                    {
+                        translation = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText,
+                        "Combining for {sourcetarget}", "TradingWithCombine").Replace("{sourcetarget}", m_gameClient.Player.Name);
+                        pak.WritePascalString(translation);
+                    }
+                    else
+                    {
+                        translation = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText,
+                        "Trading with {sourcetarget}", "TradingWith").Replace("{sourcetarget}", m_gameClient.Player.TradeWindow.Partner.Name);
+                        pak.WritePascalString(translation); // transaction with ...
+                    }
 					SendTCP(pak);
 				}
 			}
@@ -1973,25 +1995,49 @@ namespace DOL.GS.PacketHandler
 				pak.WriteByte(player.GetDisplayLevel(m_gameClient.Player)); //level
 				pak.WritePascalString(player.Name); // player name
 				pak.WriteByte((byte) (player.MaxHealth >> 8)); // maxhealth high byte ?
-				pak.WritePascalString(player.CharacterClass.Name); // class name
+                if (player.Gender > 0)
+                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.CharacterClass.Name,
+                        "PlayerClass" + player.CharacterClass.Name.Trim() + "Female")); // class name
+                else
+                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.CharacterClass.Name,
+                        "PlayerClass" + player.CharacterClass.Name.Trim() + "Male")); // class name
 				pak.WriteByte((byte) (player.MaxHealth & 0xFF)); // maxhealth low byte ?
-				pak.WritePascalString( /*"The "+*/player.CharacterClass.Profession); // Profession
+				pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, /*"The "+*/player.CharacterClass.Profession, "")); // Profession
 				pak.WriteByte(0x00); //unk
-				pak.WritePascalString(player.CharacterClass.GetTitle(player.Level)); // player level
-
+                if (player.Gender > 0)
+                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.CharacterClass.GetTitle(player.Level),
+                        "ClassLevelTitle" + player.CharacterClass.GetTitle(player.Level).Trim() + "Female"));
+                else
+                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.CharacterClass.GetTitle(player.Level),
+                        "ClassLevelTitle" + player.CharacterClass.GetTitle(player.Level).Trim() + "Male"));
 				//todo make function to calcule realm rank
 				//client.Player.RealmPoints
 				//todo i think it s realmpoint percent not realrank
 				pak.WriteByte((byte) player.RealmLevel); //urealm rank
-				pak.WritePascalString(player.RealmTitle); // Realm title
+                if (player.Gender > 0)
+                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.RealmTitle,
+                        "RealmTitle" + player.RealmTitle.Trim() + "Female")); // Realm title
+                else
+                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.RealmTitle,
+                        "RealmTitle" + player.RealmTitle.Trim() + "Male")); // Realm title
 				pak.WriteByte((byte) player.RealmSpecialtyPoints); // realm skill points
-				pak.WritePascalString(player.CharacterClass.BaseName); // base class
+                if (player.Gender > 0)
+                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.CharacterClass.BaseName,
+                        "BaseClass" + player.CharacterClass.BaseName.Trim() + "Female")); // base class
+                else
+                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.CharacterClass.BaseName,
+                        "BaseClass" + player.CharacterClass.BaseName.Trim() + "Male")); // base class
 				pak.WriteByte((byte) (HouseMgr.GetHouseNumberByPlayer(player) >> 8)); // personal house high byte
 				pak.WritePascalString(player.GuildName); // Guild name
 				pak.WriteByte((byte) (HouseMgr.GetHouseNumberByPlayer(player) & 0xFF)); // personal house low byte
 				pak.WritePascalString(player.LastName); // Last name
 				pak.WriteByte((byte) (player.MLLevel + 1)); // ML Level (+1)
-				pak.WritePascalString(player.RaceName); // Race name
+                if (player.Gender > 0)
+                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.RaceName,
+                        "PlayerRace" + player.RaceName.Trim() + "Female")); // Race name
+                else
+                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.RaceName,
+                        "PlayerRace" + player.RaceName.Trim() + "Male")); // Race name
 				pak.WriteByte(0x0);
 
 				if (player.GuildRank != null)
@@ -2001,15 +2047,20 @@ namespace DOL.GS.PacketHandler
 				pak.WriteByte(0x0);
 
 				AbstractCraftingSkill skill = CraftingMgr.getSkillbyEnum(player.CraftingPrimarySkill);
-				if (skill != null)
-					pak.WritePascalString(skill.Name); //crafter guilde: alchemist
-				else
-					pak.WritePascalString("None"); //no craft skill at start
+                if (skill != null)
+                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, skill.Name,
+                            "CrafterGuild" + skill.Name.Trim())); //crafter guilde: alchemist
+                else
+                    pak.WritePascalString(""); //no craft skill at start
 
 				pak.WriteByte(0x0);
-				pak.WritePascalString(player.CraftTitle); //crafter title: legendary alchemist
+				pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.CraftTitle, "CrafterTitle" + player.CraftTitle.Trim())); //crafter title: legendary alchemist
 				pak.WriteByte(0x0);
-				pak.WritePascalString(player.MLTitle); //ML title
+                if (player.ML > 0)
+                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.MLTitle,
+                    "MasterTitle" + player.MLTitle.Trim())); //ML title || Apo: No Female/Male translations for this.
+                else
+                    pak.WritePascalString("");
 				SendTCP(pak);
 			}
 		}
@@ -2064,7 +2115,7 @@ namespace DOL.GS.PacketHandler
 									pak.WriteShort(0);
 									pak.WriteByte((byte) (m_gameClient.Player.GetModifiedSpecLevel(spec.KeyName) - spec.Level)); // bonus
 									pak.WriteShort(spec.ID);
-									pak.WritePascalString(spec.Name);
+									pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Specialization_Name, spec.Name, ""));
 								}
 
 								int i = 0;
@@ -2092,7 +2143,7 @@ namespace DOL.GS.PacketHandler
 										else if (skill.Name == Abilities.VampiirQuickness)
 											str = " +" + ((m_gameClient.Player.Level - 5)*2);
 									}
-									pak.WritePascalString(skill.Name + str);
+									pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Ability_Name, skill.Name, "") + str);
 								}
 
 								foreach (Style style in styles)
@@ -2130,7 +2181,7 @@ namespace DOL.GS.PacketHandler
 									pak.WriteShort((ushort) pre);
 									pak.WriteByte(0); // bonus
 									pak.WriteShort((ushort) style.Icon);
-									pak.WritePascalString(style.Name);
+									pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Style_Name, style.Name, ""));
 								}
 								if (flagSendHybrid)
 								{
@@ -2160,7 +2211,7 @@ namespace DOL.GS.PacketHandler
 										}
 										pak.WriteByte(0);
 										pak.WriteShort(spell.Value.Key.Icon);
-										pak.WritePascalString(spell.Value.Key.Name);
+										pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Spell_Name, spell.Value.Key.Name, ""));
 									}
 								}
 							}
@@ -2228,7 +2279,7 @@ namespace DOL.GS.PacketHandler
 						pak.WriteByte(linenumber++); //number of line
 						pak.WriteByte(0); // level, not used when spell line
 						pak.WriteShort(0); // icon, not used when spell line
-						pak.WritePascalString(line.Name);
+						pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SpellLine_Name, line.Name, ""));
 
 						foreach (Spell spell in spells)
 						{
@@ -2236,7 +2287,7 @@ namespace DOL.GS.PacketHandler
 							{
 								pak.WriteByte((byte) spell.Level);
 								pak.WriteShort(spell.Icon);
-								pak.WritePascalString(spell.Name);
+								pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Spell_Name, spell.Name, ""));
 							}
 						}
 
@@ -2346,12 +2397,13 @@ namespace DOL.GS.PacketHandler
 			IList<string> text = m_gameClient.Player.FormatStatistics();
 
 			text.Add(" ");
-			text.Add("Titles:");
+			text.Add(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, "Titles:", "TitleWindowTitles"));
 
 			foreach (IPlayerTitle title in m_gameClient.Player.Titles)
-				text.Add("- " + title.GetDescription(m_gameClient.Player));
+				text.Add("- " + LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, title.GetDescription(m_gameClient.Player),
+                    "PlayerTitle" + title.GetDescription(m_gameClient.Player).Trim()));
 
-			SendCustomTextWindow("Player Statistics", text);
+			SendCustomTextWindow(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, "Player Statistics", ""), text);
 		}
 
 		public virtual void SendPlayerTitleUpdate(GamePlayer player)
@@ -2436,8 +2488,9 @@ namespace DOL.GS.PacketHandler
 						{
 							pak.WriteShortLowEndian((ushort) (spell.Value + 3352));
 						}
-						else pak.WriteShortLowEndian(spell.Icon);
-						pak.WritePascalString(spell.Name);
+						else
+                            pak.WriteShortLowEndian(spell.Icon);
+						pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Spell_Name, spell.Name, ""));
 						if (m_gameClient.Player.HaveChampionSpell(spec.SpellID))
 							pak.WriteByte(1);
 						else if (m_gameClient.Player.IsCSAvailable(type, skillindex, spec.Index))
@@ -2467,7 +2520,7 @@ namespace DOL.GS.PacketHandler
 					pak.WriteByte((byte) i++);
 					pak.WriteByte((byte) spec.Level);
 					pak.WriteByte((byte) (spec.Level + 1));
-					pak.WritePascalString(spec.Name);
+					pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Specialization_Name, spec.Name, ""));
 				}
 				SendTCP(pak);
 			}
@@ -2518,7 +2571,7 @@ namespace DOL.GS.PacketHandler
 						pak.WriteByte((byte) ra.Level);
 						pak.WriteByte((byte) ra.CostForUpgrade(ra.Level - 1));
 						bool canBeUsed = ra.CheckRequirement(m_gameClient.Player);
-						pak.WritePascalString((canBeUsed ? "" : "[") + ra.Name + (canBeUsed ? "" : "]"));
+						pak.WritePascalString((canBeUsed ? "" : "[") + LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Ability_Name, ra.Name, "") + (canBeUsed ? "" : "]"));
 					}
 
 					m_gameClient.Player.TempProperties.setProperty("OFFERED_RA", offeredRA);
@@ -2674,7 +2727,7 @@ namespace DOL.GS.PacketHandler
 							pak.WriteShort(effect.Icon);
 							pak.WriteShort((ushort) (effect.RemainingTime/1000));
 							pak.WriteShort(effect.InternalID); // reference for shift+i or cancel spell
-							pak.WritePascalString(effect.Name);
+							pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Spell_Name, effect.Name, ""));
 						}
 					}
 				}
@@ -2783,7 +2836,7 @@ namespace DOL.GS.PacketHandler
 						pak.WriteByte(0); // unknown
 						pak.WriteByte(effect.Concentration);
 						pak.WriteShort(effect.Icon);
-						pak.WritePascalString(effect.Name);
+						pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Spell_Name, effect.Name, ""));
 						pak.WritePascalString(effect.OwnerName);
 					}
 				}
@@ -2941,7 +2994,7 @@ namespace DOL.GS.PacketHandler
 				pak.WriteByte((byte) house.PorchMaterial);
 				pak.WriteByte((byte) house.WindowMaterial);
 				pak.WriteByte(0x03);
-				pak.WritePascalString(house.Name);
+                pak.WritePascalString(house.Name);  //Apo: is this the owners name or the house name?
 
 				SendTCP(pak);
 			}
@@ -3210,7 +3263,7 @@ namespace DOL.GS.PacketHandler
 				pak.WriteShort(obj.Emblem); //emblem
 				pak.WriteShort(0);
 				pak.WriteInt(0);
-				pak.WritePascalString(obj.Name);
+				pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.GameObject_Name, obj.Name, ""));
 				pak.WriteByte(0); // trailing ?
 				SendTCP(pak);
 			}
@@ -3232,7 +3285,9 @@ namespace DOL.GS.PacketHandler
 				pak.WriteShort((ushort) time); // time (?)
 				pak.WriteInt((uint) siegeWeapon.ObjectID);
 
-				pak.WritePascalString(siegeWeapon.Name + " (" + siegeWeapon.CurrentState + ")");
+                string name = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.GameObject_Name, siegeWeapon.Name, "");
+                string state = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, siegeWeapon.CurrentState.ToString(), "SiegeWeaponState" + siegeWeapon.CurrentState.ToString());
+                pak.WritePascalString(name + " (" + state + ")");
 				foreach (InventoryItem item in siegeWeapon.Ammo)
 				{
 					pak.WriteByte((byte) item.SlotPosition);
@@ -3253,9 +3308,9 @@ namespace DOL.GS.PacketHandler
 						pak.WriteShort((ushort) item.Color);
 					pak.WriteShort((ushort) item.Effect);
 					if (item.Count > 1)
-						pak.WritePascalString(item.Count + " " + item.Name);
+						pak.WritePascalString(item.Count + " " + LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, ""));
 					else
-						pak.WritePascalString(item.Name);
+						pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, ""));
 				}
 				SendTCP(pak);
 			}
@@ -3499,16 +3554,16 @@ namespace DOL.GS.PacketHandler
 							if (item.SellPrice > 0)
 								bpPrice = "[" + item.SellPrice + " BP";
 							if (item.PackSize > 1)
-								pak.WritePascalString(item.PackSize + " " + item.Name + bpPrice);
+								pak.WritePascalString(item.PackSize + " " + LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, "") + bpPrice);
 							else
-								pak.WritePascalString(item.Name + bpPrice);
+                                pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, "") + bpPrice);
 						}
 						else
 						{
 							if (item.PackSize > 1)
-								pak.WritePascalString(item.PackSize + " " + item.Name);
+                                pak.WritePascalString(item.PackSize + " " + LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, ""));
 							else
-								pak.WritePascalString(item.Name);
+                                pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, ""));
 						}
 					}
 				}
@@ -3553,16 +3608,12 @@ namespace DOL.GS.PacketHandler
 						if (!m_gameClient.Player.HasFinishedMLStep(mlrequired, i))
 						{
 							description = i + ". " +
-								LanguageMgr.GetTranslation(m_gameClient,
-								                           String.Format("SendMasterLevelWindow.Uncomplete.ML{0}.Step{1}",
-								                                         mlrequired, i));
+                                LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.MasterLevelStep, LanguageMgr.MasterLevelStepsUncomplete[mlrequired - 1, i - 1], "");
 						}
 						else
 						{
 							description = i + ". " +
-								LanguageMgr.GetTranslation(m_gameClient,
-								                           String.Format("SendMasterLevelWindow.Complete.ML{0}.Step{1}", mlrequired,
-								                                         i));
+                                LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.QuestText, LanguageMgr.MasterLevelStepsComplete[mlrequired - 1, i - 1], "");
 						}
 
 						pak.WritePascalString(description);
@@ -3877,7 +3928,7 @@ namespace DOL.GS.PacketHandler
 						else
 							pak.WriteShort((ushort) item.Color);
 						pak.WriteShort((ushort) item.Effect);
-						string name = item.Name;
+						string name = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, "");
 						if (item.Count > 1)
 							name = item.Count + " " + name;
 						if (item.SellPrice > 0)

@@ -21,10 +21,10 @@
 using System;
 using System.Reflection;
 
+using DOL.Language;
 using DOL.AI.Brain;
 using DOL.GS.Keeps;
 using DOL.GS.Quests;
-
 using log4net;
 
 namespace DOL.GS.PacketHandler
@@ -106,7 +106,7 @@ namespace DOL.GS.PacketHandler
 				flag |= 0x04;
 			pak.WriteShort((ushort)flag);
 			pak.WriteInt(0x0); //TODO: unknown, new in 1.71
-			pak.WritePascalString(obj.Name);
+			pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.GameObject_Name, obj.Name, ""));
 			if (obj is IDoor)
 			{
 				pak.WriteByte(4);
@@ -199,7 +199,12 @@ namespace DOL.GS.PacketHandler
 			pak.WriteShort(0x00); // new in 1.71
 			pak.WriteByte(0x00); // new in 1.71 (region instance ID from StoC_0x20)
 
-			string name = GameServer.ServerRules.GetNPCName(m_gameClient.Player, npc);
+			//string name = GameServer.ServerRules.GetNPCName(m_gameClient.Player, npc);
+            string name = "";
+            if(npc is GameMovingObject)
+                name = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.GameObject_Name, GameServer.ServerRules.GetNPCName(m_gameClient.Player, npc), "");
+            else
+                name = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.NPC_Name, GameServer.ServerRules.GetNPCName(m_gameClient.Player, npc), "");
 			if (name.Length + add.Length + 2 > 47) // clients crash with too long names
 				name = name.Substring(0, 47 - add.Length - 2);
 			if (add.Length > 0)
@@ -207,10 +212,15 @@ namespace DOL.GS.PacketHandler
 
 			pak.WritePascalString(name);
 
-			string l_npcGuildname = GameServer.ServerRules.GetNPCGuildName(m_gameClient.Player, npc);;
-			if (l_npcGuildname.Length > 47)
-				pak.WritePascalString(l_npcGuildname.Substring(0, 47));
-			else pak.WritePascalString(l_npcGuildname);
+            string guildName;
+            if (npc is GameMovingObject)
+                guildName = "";
+            else
+                guildName = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.NPC_GuildName, GameServer.ServerRules.GetNPCGuildName(m_gameClient.Player, npc), "");
+            if (guildName.Length > 47)
+                pak.WritePascalString(guildName.Substring(0, 47));
+            else
+                pak.WritePascalString(guildName);
 
 			pak.WriteByte(0x00);
 			SendTCP(pak);
@@ -237,7 +247,8 @@ namespace DOL.GS.PacketHandler
 					}
 					pak.WriteByte(player.Level);
 					pak.WritePascalString(player.Name);
-					pak.WriteString(player.CharacterClass.Name, 4);
+                    pak.WriteString(LanguageMgr.GetTranslation(player.Client, eTranslationKey.SystemText, player.CharacterClass.Name,
+                        "PlayerClass" + player.CharacterClass.Name.Trim() + "Male"), 4);// Apo: Well, the strings max length is 4 and so there is no need to check for female/male
 					//Dinberg:Instances - you know the score by now ;)
 					//ZoneSkinID for clientside positioning of objects.
 					if (player.CurrentZone != null)
@@ -316,6 +327,7 @@ namespace DOL.GS.PacketHandler
 			}
 			else
 			{
+                //Apo: NPC?
 				pak.WritePascalString(living.GuildName);
 				pak.WritePascalString(living.Name);
 			}

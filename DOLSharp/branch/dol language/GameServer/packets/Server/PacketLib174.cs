@@ -19,17 +19,17 @@
 #define NOENCRYPTION
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 
-using DOL.GS.Effects;
+using DOL.Language;
 using DOL.Database;
+using DOL.GS.Effects;
 using DOL.GS.Keeps;
+using DOL.GS.PlayerTitles;
 using DOL.GS.Spells;
 using DOL.GS.Styles;
-using DOL.GS.PlayerTitles;
-
 using log4net;
-using System.Collections.Generic;
 
 namespace DOL.GS.PacketHandler
 {
@@ -125,24 +125,32 @@ namespace DOL.GS.PacketHandler
 								foreach (AbstractArea area in areas)
 								{
 									if (!area.DisplayMessage) continue;
-									description = area.Description;
+									description = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Area_Description, area.Description, "");
 									break;
 								}
 
 								if (description == "")
-									description = zon.Description;
+									description = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Zone_Description, zon.Description, "");
 								pak.FillString(description, 24);
 							}
 							else
 								pak.Fill(0x0, 24); //No known location
 
-							if (characters[j].Class == 0)
-								pak.FillString("", 24); //Class name
-							else
-								pak.FillString(((eCharacterClass)characters[j].Class).ToString(), 24); //Class name
+                            if (characters[j].Class == 0)
+                                pak.FillString("", 24); //Class name
+                            else
+                            {
+                                if (characters[j].Gender > 0)
+                                    pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, ((eCharacterClass)characters[j].Class).ToString(), "PlayerClass" + ((eCharacterClass)characters[j].Class).ToString().Trim()) + "Female", 24); //Class name
+                                else
+                                    pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, ((eCharacterClass)characters[j].Class).ToString(), "PlayerClass" + ((eCharacterClass)characters[j].Class).ToString().Trim()) + "Male", 24); //Class name
+                            }
 
 							//pak.FillString(GamePlayer.RACENAMES[characters[j].Race], 24);
-                            pak.FillString(GamePlayer.RACENAMES(m_gameClient, characters[j].Race, characters[j].Gender), 24);
+                            if (characters[j].Gender > 0)
+                                pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, GamePlayer.RACENAMES[characters[j].Race], "PlayerRace" + GamePlayer.RACENAMES[characters[j].Race].Trim() + "Female"), 24);
+                            else
+                                pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, GamePlayer.RACENAMES[characters[j].Race], "PlayerRace" + GamePlayer.RACENAMES[characters[j].Race].Trim() + "Male"), 24);
 							pak.WriteByte((byte)characters[j].Level);
 							pak.WriteByte((byte)characters[j].Class);
 							pak.WriteByte((byte)characters[j].Realm);
@@ -326,7 +334,12 @@ namespace DOL.GS.PacketHandler
 			pak.WritePascalString(GameServer.ServerRules.GetPlayerLastName(m_gameClient.Player, playerToCreate));
             //RR 12 / 13
             pak.WritePascalString(GameServer.ServerRules.GetPlayerPrefixName(m_gameClient.Player, playerToCreate));
-            pak.WritePascalString(playerToCreate.CurrentTitle.GetValue(playerToCreate)); // new in 1.74, NewTitle
+            if (playerToCreate.Gender > 0)
+                pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, playerToCreate.CurrentTitle.GetValue(playerToCreate),
+                    "PlayerTitle" + playerToCreate.CurrentTitle.GetDescription(playerToCreate).Trim() + "Female")); // new in 1.74, NewTitle
+            else
+                pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, playerToCreate.CurrentTitle.GetValue(playerToCreate),
+                    "PlayerTitle" + playerToCreate.CurrentTitle.GetDescription(playerToCreate).Trim() + "Male")); // new in 1.74, NewTitle
 			SendTCP(pak);
 
 			//if (GameServer.ServerRules.GetColorHandling(m_gameClient) == 1) // PvP

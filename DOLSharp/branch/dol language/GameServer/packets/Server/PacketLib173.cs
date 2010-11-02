@@ -20,17 +20,19 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
+
+using DOL.Language;
 using DOL.Database;
+using DOL.GS.Effects;
+using DOL.GS.Keeps;
+using DOL.GS.Quests;
 using DOL.GS.Spells;
 using DOL.GS.Styles;
-using DOL.GS.Effects;
-using DOL.GS.Quests;
-using DOL.GS.Keeps;
 using log4net;
-using System.Collections.Generic;
 
 namespace DOL.GS.PacketHandler
 {
@@ -162,7 +164,7 @@ namespace DOL.GS.PacketHandler
 						pak.WriteShort(effect.Icon);
 						pak.WriteShort((ushort)(effect.RemainingTime / 1000));
 						pak.WriteShort(effect.InternalID);      // reference for shift+i or cancel spell
-						pak.WritePascalString(effect.Name);
+						pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Spell_Name, effect.Name, ""));
 						entriesCount++;
 					}
 				}
@@ -334,24 +336,32 @@ namespace DOL.GS.PacketHandler
 								foreach (AbstractArea area in areas)
 								{
 									if (!area.DisplayMessage) continue;
-									description = area.Description;
+									description = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Area_Description, area.Description, "");
 									break;
 								}
 
 								if (description == "")
-									description = zon.Description;
+									description = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Zone_Description, zon.Description, "");
 								pak.FillString(description, 24);
 							}
 							else
 								pak.Fill(0x0, 24); //No known location
 
-							if (characters[j].Class == 0)
-								pak.FillString("", 24); //Class name
-							else
-								pak.FillString(((eCharacterClass)characters[j].Class).ToString(), 24); //Class name
+                            if (characters[j].Class == 0)
+                                pak.FillString("", 24); //Class name
+                            else
+                            {
+                                if (characters[j].Gender > 0)
+                                    pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, ((eCharacterClass)characters[j].Class).ToString(), "PlayerClass" + ((eCharacterClass)characters[j].Class).ToString().Trim()) + "Female", 24); //Class name
+                                else
+                                    pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, ((eCharacterClass)characters[j].Class).ToString(), "PlayerClass" + ((eCharacterClass)characters[j].Class).ToString().Trim()) + "Male", 24); //Class name
+                            }
 
 							//pak.FillString(GamePlayer.RACENAMES[characters[j].Race], 24);
-                            pak.FillString(GamePlayer.RACENAMES(m_gameClient, characters[j].Race, characters[j].Gender), 24);
+                            if (characters[j].Gender > 0)
+                                pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, GamePlayer.RACENAMES[characters[j].Race], "PlayerRace" + GamePlayer.RACENAMES[characters[j].Race].Trim() + "Female"), 24);
+                            else
+                                pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, GamePlayer.RACENAMES[characters[j].Race], "PlayerRace" + GamePlayer.RACENAMES[characters[j].Race].Trim() + "Male"), 24);
 							pak.WriteByte((byte)characters[j].Level);
 							pak.WriteByte((byte)characters[j].Class);
 							pak.WriteByte((byte)characters[j].Realm);
@@ -677,7 +687,9 @@ namespace DOL.GS.PacketHandler
 			pak.WriteShort(0); // SiegeHelperTimer ?
 			pak.WriteShort(0); // SiegeTimer ?
 			pak.WriteShort((ushort)siegeWeapon.ObjectID);
-			pak.WritePascalString(siegeWeapon.Name + " (" + siegeWeapon.CurrentState.ToString() + ")");
+            string name = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.GameObject_Name, siegeWeapon.Name, "");
+            string state = LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, siegeWeapon.CurrentState.ToString(), "SiegeWeaponState" + siegeWeapon.CurrentState.ToString());
+            pak.WritePascalString(name + " (" + state + ")");
 			foreach (InventoryItem item in siegeWeapon.Ammo)
 			{
 				pak.WriteByte((byte)item.SlotPosition);
@@ -703,9 +715,9 @@ namespace DOL.GS.PacketHandler
 					pak.WriteShort((ushort)item.Color);
 				pak.WriteShort((ushort)item.Effect);
 				if (item.Count > 1)
-					pak.WritePascalString(item.Count + " " + item.Name);
+					pak.WritePascalString(item.Count + " " + LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, ""));
 				else
-					pak.WritePascalString(item.Name);
+					pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, ""));
 			}
 			SendTCP(pak);
 		}

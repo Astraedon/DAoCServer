@@ -112,27 +112,19 @@ namespace DOL.GS.PacketHandler
 
 			AbstractCraftingSkill skill = CraftingMgr.getSkillbyEnum(player.CraftingPrimarySkill);
             if (skill != null)
-            {
-                if(player.Gender > 0)
-                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, skill.Name,
-                        "CrafterGuild" + skill.Name.Trim() + "Female")); //crafter guilde: alchemist
-                else
-                    pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, skill.Name,
-                        "CrafterGuild" + skill.Name.Trim() + "Male")); //crafter guilde: alchemist
-            }
+                pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, skill.Name,
+                        "CrafterGuild" + skill.Name.Trim())); //crafter guilde: alchemist
             else
-                pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, "None" , "None")); //no craft skill at start
+                pak.WritePascalString(""); //no craft skill at start
 
 			pak.WriteByte(0x0);
-            if (player.Gender > 0)
-                pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.CraftTitle,
-                    "CrafterTitle" + player.CraftTitle.Trim() + "Female")); //crafter title: legendary alchemist
-            else
-                pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.CraftTitle,
-                    "CrafterTitle" + player.CraftTitle.Trim() + "Male")); //crafter title: legendary alchemist
+            pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.CraftTitle, "CrafterTitle" + player.CraftTitle.Trim())); //crafter title: legendary alchemist
 			pak.WriteByte(0x0);
-			pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.MLTitle,
+            if(player.ML > 0)
+                pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, player.MLTitle,
                 "MasterTitle" + player.MLTitle.Trim())); //ML title || Apo: No Female/Male translations for this.
+            else
+                pak.WritePascalString("");
 
 			// new in 1.75
 			pak.WriteByte(0x0);

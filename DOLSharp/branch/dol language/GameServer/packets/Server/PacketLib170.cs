@@ -22,9 +22,9 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
+using DOL.Language;
 using DOL.GS.Keeps;
 using DOL.GS.Quests;
-
 using log4net;
 
 
@@ -242,7 +242,7 @@ namespace DOL.GS.PacketHandler
 				pak.WriteShort(0);
 				pak.WriteInt((uint)item.Gold);
 				pak.WriteShort(item.Icon);
-				pak.WritePascalString(item.Name);//item sell
+				pak.WritePascalString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.Item_Name, item.Name, ""));//item sell
 			}
 			SendTCP(pak);
 		}

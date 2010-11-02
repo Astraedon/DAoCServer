@@ -150,7 +150,6 @@ namespace DOL.GS.PacketHandler
                                     pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, ((eCharacterClass)characters[j].Class).ToString(), "PlayerClass" + ((eCharacterClass)characters[j].Class).ToString().Trim()) + "Female", 24); //Class name
                                 else
                                     pak.FillString(LanguageMgr.GetTranslation(m_gameClient, eTranslationKey.SystemText, ((eCharacterClass)characters[j].Class).ToString(), "PlayerClass" + ((eCharacterClass)characters[j].Class).ToString().Trim()) + "Male", 24); //Class name
-								pak.FillString(((eCharacterClass)characters[j].Class).ToString(), 24); //Class name
 							}
 							//pak.FillString(GamePlayer.RACENAMES[characters[j].Race], 24);
                             if (characters[j].Gender > 0)
