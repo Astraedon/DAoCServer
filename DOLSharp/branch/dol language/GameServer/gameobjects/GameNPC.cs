@@ -2355,6 +2355,16 @@ namespace DOL.GS
 			return 0;
 		}
 
+		protected GameNPC m_teleporterIndicator = null;
+
+		/// <summary>
+		/// Should this NPC have an associated teleporter indicator
+		/// </summary>
+		public virtual bool ShowTeleporterIndicator
+		{
+			get { return false; }
+		}
+
 		/// <summary>
 		/// Should the NPC show a quest indicator, this can be overriden for custom handling
 		/// Checks both scripted and data quests
@@ -2721,6 +2731,27 @@ namespace DOL.GS
 			BuildAmbientTexts();
 			if (GameServer.Instance.ServerStatus == eGameServerStatus.GSS_Open)
 				FireAmbientSentence(eAmbientTrigger.spawning);
+
+
+			if (ShowTeleporterIndicator)
+			{
+				if (m_teleporterIndicator == null)
+				{
+					m_teleporterIndicator = new GameNPC();
+					m_teleporterIndicator.Name = "";
+					m_teleporterIndicator.Model = 1923;
+					m_teleporterIndicator.Flags ^= eFlags.PEACE;
+					m_teleporterIndicator.Flags ^= eFlags.CANTTARGET;
+					m_teleporterIndicator.Flags ^= eFlags.DONTSHOWNAME;
+					m_teleporterIndicator.Flags ^= eFlags.FLYING;
+					m_teleporterIndicator.X = X;
+					m_teleporterIndicator.Y = Y;
+					m_teleporterIndicator.Z = Z + 1;
+					m_teleporterIndicator.CurrentRegionID = CurrentRegionID;
+				}
+
+				m_teleporterIndicator.AddToWorld();
+			}
 			
 			return true;
 		}
@@ -2764,6 +2795,13 @@ namespace DOL.GS
 				brain.Stop();
 			}
 			EffectList.CancelAll();
+
+			if (ShowTeleporterIndicator && m_teleporterIndicator != null)
+			{
+				m_teleporterIndicator.RemoveFromWorld();
+				m_teleporterIndicator = null;
+			}
+
 			return true;
 		}
 
@@ -3181,6 +3219,7 @@ namespace DOL.GS
 			roaming,
 			killing,
 			moving,
+			interact,
 		}
 		
 		/// <summary>
@@ -3234,6 +3273,8 @@ namespace DOL.GS
 
 				player.MountSteed(this, true);
 			}
+
+			FireAmbientSentence(eAmbientTrigger.interact, player);
 			return true;
 		}
 
@@ -4616,12 +4657,13 @@ namespace DOL.GS
 		{
 			if (ambientTexts == null) return;
 			if (ambientTexts.Count == 0) return;
+			if (trigger == eAmbientTrigger.interact && living == null) return;
 			List<MobXAmbientBehaviour> mxa = (from i in ambientTexts where i.Trigger == trigger.ToString() select i).ToList();
 			if (mxa.Count==0) return;
-			
+
 			// grab random sentence
-			var choosen = mxa[Util.Random(mxa.Count-1)];
-			if (!Util.Chance(choosen.Chance)) return;
+			var chosen = mxa[Util.Random(mxa.Count-1)];
+			if (!Util.Chance(chosen.Chance)) return;
 			
 			string controller = string.Empty;
 			if (Brain is IControlledBrain)
@@ -4630,18 +4672,29 @@ namespace DOL.GS
 				if (playerOwner != null)
 					controller = playerOwner.Name;
 			}
-			string text = choosen.Text.Replace("{sourcename}",Name).Replace("{targetname}",living==null?string.Empty:living.Name).Replace("{controller}", controller);
 
-			Emote((eEmote)choosen.Emote);
+			string text = chosen.Text.Replace("{sourcename}",Name).Replace("{targetname}",living==null?string.Empty:living.Name).Replace("{controller}", controller);
+
+			if (chosen.Emote != 0)
+			{
+				Emote((eEmote)chosen.Emote);
+			}
 			
 			// issuing text
 			if (living is GamePlayer)
 				text = text.Replace("{class}",(living as GamePlayer).CharacterClass.Name).Replace("{race}",(living as GamePlayer).RaceName);
 			if (living is GameNPC)
 				text = text.Replace("{class}","NPC").Replace("{race}","NPC");
-			
+
+			// for interact text we pop up a window
+			if (trigger == eAmbientTrigger.interact)
+			{
+				(living as GamePlayer).Out.SendMessage(text, eChatType.CT_System, eChatLoc.CL_PopupWindow);
+				return;
+			}
+
 			// broadcasted , yelled or talked ?
-			if (choosen.Voice.StartsWith("b"))
+			if (chosen.Voice.StartsWith("b"))
 			{
 				foreach (GamePlayer player in CurrentRegion.GetPlayersInRadius(X, Y, Z, 25000, false, false))
 				{
@@ -4649,7 +4702,7 @@ namespace DOL.GS
 				}
 				return;
 			}
-			if (choosen.Voice.StartsWith("y"))
+			if (chosen.Voice.StartsWith("y"))
 			{
 				Yell(text);
 				return;

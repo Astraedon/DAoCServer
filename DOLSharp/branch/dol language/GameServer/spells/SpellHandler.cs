@@ -595,6 +595,23 @@ namespace DOL.GS.Spells
 				return false;
 			}
 
+
+            if (m_caster is GamePlayer)
+            {
+                long nextSpellAvailTime = m_caster.TempProperties.getProperty<long>(GamePlayer.NEXT_SPELL_AVAIL_TIME_BECAUSE_USE_POTION);
+
+                if (nextSpellAvailTime > m_caster.CurrentRegion.Time)
+                {
+                    ((GamePlayer)m_caster).Out.SendMessage(LanguageMgr.GetTranslation(((GamePlayer)m_caster).Client, "GamePlayer.CastSpell.MustWaitBeforeCast", (nextSpellAvailTime - m_caster.CurrentRegion.Time) / 1000), eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                    return false;
+                }
+                if (((GamePlayer)m_caster).Steed != null && ((GamePlayer)m_caster).Steed is GameSiegeRam)
+                {
+                    if (!quiet) MessageToCaster("You can't cast in a siegeram!.", eChatType.CT_System);
+                    return false;
+                }
+            }
+
 			GameSpellEffect Phaseshift = FindEffectOnTarget(Caster, "Phaseshift");
 			if (Phaseshift != null && (Spell.InstrumentRequirement == 0 || Spell.SpellType == "Mesmerize"))
 			{
@@ -777,7 +794,7 @@ namespace DOL.GS.Spells
 						break;
 
 					case "realm":
-						if (!GameServer.ServerRules.IsSameRealm(Caster, selectedTarget, false))
+						if (GameServer.ServerRules.IsAllowedToAttack(Caster, selectedTarget, false))
 						{
 							return false;
 						}
@@ -1012,7 +1029,7 @@ namespace DOL.GS.Spells
 						break;
 
 					case "Realm":
-						if (!GameServer.ServerRules.IsSameRealm(Caster, target, false))
+						if (GameServer.ServerRules.IsAllowedToAttack(Caster, target, false))
 						{
 							return false;
 						}
@@ -1214,7 +1231,7 @@ namespace DOL.GS.Spells
 						break;
 
 					case "realm":
-						if (!GameServer.ServerRules.IsSameRealm(Caster, target, quiet))
+						if (GameServer.ServerRules.IsAllowedToAttack(Caster, target, quiet))
 						{
 							return false;
 						}
@@ -1382,14 +1399,13 @@ namespace DOL.GS.Spells
 					case "Corpse":
 						if (target.IsAlive || !GameServer.ServerRules.IsSameRealm(Caster, target, quiet))
 						{
-							if (!quiet) MessageToCaster("This spell only works on dead members of your realm!",
-							                            eChatType.CT_SpellResisted);
+							if (!quiet) MessageToCaster("This spell only works on dead members of your realm!", eChatType.CT_SpellResisted);
 							return false;
 						}
 						break;
 
 					case "Realm":
-						if (!GameServer.ServerRules.IsSameRealm(Caster, target, quiet))
+						if (GameServer.ServerRules.IsAllowedToAttack(Caster, target, quiet))
 						{
 							return false;
 						}
@@ -1813,6 +1829,14 @@ return false;
 			if (Caster is GamePlayer)
 				((GamePlayer)Caster).Stealth(false);
 
+            if (Caster is GamePlayer && !HasPositiveEffect)
+            {
+                if (Caster.AttackWeapon != null && Caster.AttackWeapon is GameInventoryItem)
+                {
+                    (Caster.AttackWeapon as GameInventoryItem).OnStrikeTargetSpell(Caster, target);
+                }
+            }
+
 			// messages
 			if (Spell.InstrumentRequirement == 0 && Spell.ClientEffect != 0 && Spell.CastTime > 0)
 			{
@@ -2150,16 +2174,17 @@ return false;
 					{
 						if (target == null || Spell.Range == 0)
 							target = Caster;
+
 						foreach (GamePlayer player in target.GetPlayersInRadius(NewRadius))
 						{
-							if (GameServer.ServerRules.IsSameRealm(Caster, player, true))
+							if (GameServer.ServerRules.IsAllowedToAttack(Caster, player, true) == false)
 							{
 								list.Add(player);
 							}
 						}
 						foreach (GameNPC npc in target.GetNPCsInRadius(NewRadius))
 						{
-							if (GameServer.ServerRules.IsSameRealm(Caster, npc, true))
+							if (GameServer.ServerRules.IsAllowedToAttack(Caster, npc, true) == false)
 							{
 								list.Add(npc);
 							}
@@ -2167,7 +2192,7 @@ return false;
 					}
 					else
 					{
-						if (target != null && GameServer.ServerRules.IsSameRealm(Caster, target, true))
+						if (target != null && GameServer.ServerRules.IsAllowedToAttack(Caster, target, true) == false)
 							list.Add(target);
 					}
 					break;
@@ -2181,14 +2206,14 @@ return false;
 								target = Caster;
 							foreach (GamePlayer player in target.GetPlayersInRadius(NewRadius))
 							{
-								if (GameServer.ServerRules.IsSameRealm(Caster, player, true))
+								if (GameServer.ServerRules.IsAllowedToAttack(Caster, player, true) == false)
 								{
 									list.Add(player);
 								}
 							}
 							foreach (GameNPC npc in target.GetNPCsInRadius(NewRadius))
 							{
-								if (GameServer.ServerRules.IsSameRealm(Caster, npc, true))
+								if (GameServer.ServerRules.IsAllowedToAttack(Caster, npc, true) == false)
 								{
 									list.Add(npc);
 								}

@@ -175,6 +175,7 @@ namespace DOL.AI.Brain
 			if( !Body.InCombat && !Body.AttackState && !Body.IsCasting && !Body.IsMoving && Body.IsWithinRadius( Body.SpawnPoint, 500 ) == false )
 			{
 				Body.WalkToSpawn(); // Mobs do not walk back at 2x their speed..
+				Body.IsReturningHome = false; // We are returning to spawn but not the long walk home, so aggro still possible
 			}
 
 			if (Body.IsReturningHome == false)
@@ -687,7 +688,8 @@ namespace DOL.AI.Brain
 		/// <returns></returns>
 		public virtual int CalculateAggroLevelToTarget(GameLiving target)
 		{
-			if (GameServer.ServerRules.IsSameRealm(Body, target, true)) return 0;
+			if (GameServer.ServerRules.IsAllowedToAttack(Body, target, true) == false)
+				return 0;
 
 			// related to the pet owner if applicable
 			if (target is GamePet)

@@ -32,7 +32,7 @@ namespace DOL.Database
 		protected string m_classType;
 		protected int m_X, m_Y, m_Z;
 		protected ushort m_Heading;
-		protected int m_NPCTemplate;
+		protected string m_NPCTemplate;
 
 		public DBInstanceXElement()
 		{
@@ -86,11 +86,29 @@ namespace DOL.Database
 		/// <summary>
 		/// Where applicable, the npc template to create this mob from.
 		/// </summary>
-		[DataElement(AllowDbNull = false)]
-		public int NPCTemplate
+		[DataElement(AllowDbNull = false, Varchar = 255)]
+		public string NPCTemplate
 		{
 			get { return m_NPCTemplate; }
 			set { m_NPCTemplate = value; }
+		}
+
+		/// <summary>
+		/// Convert the NPCTemplate to/from int, assuming a single ID
+		/// </summary>
+		public int NPCTemplateID
+		{
+			get
+			{
+				int i = 0;
+				int.TryParse(NPCTemplate, out i);
+				return i;
+			}
+
+			set
+			{
+				NPCTemplate = value.ToString();
+			}
 		}
 
 	}
