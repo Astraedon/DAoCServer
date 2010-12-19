@@ -53,6 +53,179 @@ namespace DOL.GS
 		/// </remarks>
 		public const int CONST_WALKTOTOLERANCE = 25;
 
+        #region New language system implementation
+        /// <summary>
+        /// Holds the translation id of the GameNPC.
+        /// </summary>
+        protected string m_translationId;
+        /// <summary>
+        /// Gets or sets the translation id of the GameNPC.
+        /// </summary>
+        public virtual string TranslationId
+        {
+            get { return m_translationId; }
+            set { m_translationId = value; }
+        }
+
+        /// <summary>
+        /// Holds the name suffix that is used by the GameNPC (currently used by necromancer pets).
+        /// </summary>
+        protected string m_suffix;
+        /// <summary>
+        /// Gets or sets the name suffix that is used by the GameNPC (currently used by necromancer pets).
+        /// </summary>
+        public virtual string Suffix
+        {
+            get { return m_suffix; }
+            set { m_suffix = value; }
+        }
+
+        /// <summary>
+        /// Holds the examine article of the GameNPC.
+        /// </summary>
+        protected string m_examineArticle;
+        /// <summary>
+        /// Gets or sets the examine article of the GameNPC.
+        /// </summary>
+        public virtual string ExamineArticle
+        {
+            get { return m_examineArticle; }
+            set { m_examineArticle = value; }
+        }
+
+        /// <summary>
+        /// Holds the message article of the GameNPC.
+        /// </summary>
+        protected string m_messageArticle;
+        /// <summary>
+        /// Gets or sets the message article of the GameNPC.
+        /// </summary>
+        public virtual string MessageArticle
+        {
+            get { return m_messageArticle; }
+            set { m_messageArticle = value; }
+        }
+
+        /// <summary>
+        /// Holds the translation data for all GameNPCs.
+        /// </summary>
+        protected static Dictionary<string, List<DBLanguageNPC>> m_translationData = new Dictionary<string, List<DBLanguageNPC>>();
+
+        /// <summary>
+        /// Refreshs the GameNPC's translation data. If the given language is null or empty, all translations will be
+        /// refreshed. This method is a part of the new language system, be sure that you give a allowed language key
+        /// (use LanguageMgr.GetAllowedLangKeys() to get a list with all allowed language keys).
+        /// </summary>
+        /// <param name="language">The language</param>
+        public void RefreshTranslationData(string language)
+        {
+            if (language == "EN") // Do not add any data of the default language into the translation data
+                return;
+
+            if (!Util.IsEmpty(m_translationId))
+            {
+                bool refreshAll = (Util.IsEmpty(language) ? true : false);
+
+                List<DBLanguageNPC> translationData = new List<DBLanguageNPC>();
+                if (refreshAll) // Refresh all translation data
+                {
+                    foreach (string lang in LanguageMgr.GetAllowedLangKeys())
+                    {
+                        DBLanguageNPC data = LanguageMgr.GetTranslation(lang, this);
+                        if (data != null)
+                            translationData.Add(data);
+                    }
+                }
+                else
+                {
+                    if (LanguageMgr.GetAllowedLangKeys().Contains(language))
+                    {
+                        DBLanguageNPC data = LanguageMgr.GetTranslation(language, this);
+                        if (data != null)
+                            translationData.Add(data);
+                    }
+                }
+
+                lock (m_translationData)
+                {
+                    if (!m_translationData.Keys.Contains(m_translationId))
+                    {
+                        if (translationData.Count == 0)
+                            return;
+
+                        m_translationData.Add(m_translationId, translationData);
+                        return;
+                    }
+                    else
+                    {
+                        if (!refreshAll)
+                        {
+                            foreach (DBLanguageNPC data in m_translationData[m_translationId])
+                            {
+                                if (data.Language != language)
+                                    continue;
+
+                                m_translationData[m_translationId].Remove(data);
+                                break;
+                            }
+
+                            if (translationData.Count > 0)
+                                m_translationData[m_translationId].Add(translationData[0]);
+                        }
+                        else
+                        {
+                            if (translationData.Count == 0) // Save memory and remove the data
+                                m_translationData.Remove(m_translationId);
+                            else
+                            {
+                                m_translationData[m_translationId].Clear();
+                                m_translationData[m_translationId].AddRange(translationData);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a copy of the npc's translation data for the given language.
+        /// If the given language is null or empty, the base data will be returned.
+        /// </summary>
+        /// <param name="language">The language</param>
+        /// <returns>DBLanguageNPC</returns>
+        public virtual DBLanguageNPC GetTranslationData(string language)
+        {
+            if (!Util.IsEmpty(language))
+            {
+                if (m_translationData.Keys.Contains(m_translationId) && m_translationData[m_translationId].Count > 0)
+                {
+                    foreach (DBLanguageNPC translationData in m_translationData[m_translationId])
+                    {
+                        if (translationData.Language != language)
+                            continue;
+
+                        return translationData;
+                    }
+                }
+            }
+
+            // Return the base data of the npc if m_translationData doesn't contains the translation data of the npc's
+            // translation id, or no translation data was found for the given language, or no language was given.
+            //
+            // Note:
+            // m_translationData will NEVER contain the data of the default server language. The default strings are
+            // stored in the mob db table and will be automatically set if a new instance of the npc is created.
+            DBLanguageNPC data = new DBLanguageNPC();
+            data.Name = Name;
+            data.Suffix = Suffix;
+            data.GuildName = GuildName;
+            data.ExamineArticle = ExamineArticle;
+            data.MessageArticle = MessageArticle;
+
+            return data;
+        }
+        #endregion New language system implementation
+
 		#region Formations/Spacing
 
 		//Space/Offsets used in formations
@@ -1853,6 +2026,42 @@ namespace DOL.GS
 			Piety = (short)dbMob.Piety;
 			Charisma = (short)dbMob.Charisma;
 			Empathy = (short)dbMob.Empathy;
+
+            #region New language system implementation
+            if (ServerProperties.Properties.USE_NEW_LANGUAGE_SYSTEM)
+            {
+                TranslationId = dbMob.TranslationId;
+                Suffix = dbMob.Suffix;
+                ExamineArticle = dbMob.ExamineArticle;
+                MessageArticle = dbMob.MessageArticle;
+
+                if (!Util.IsEmpty(m_translationId))
+                {
+                    if (!m_translationData.Keys.Contains(m_translationId))
+                        m_translationData.Add(m_translationId, new List<DBLanguageNPC>());
+
+                    if (m_translationData[m_translationId].Count < LanguageMgr.GetAllowedLangKeys().Count)
+                    {
+                        List<string> storedLanguages = new List<string>();
+                        if (m_translationData[m_translationId].Count > 0)
+                        {
+                            foreach (DBLanguageNPC translation in m_translationData[m_translationId])
+                                storedLanguages.Add(translation.Language);
+                        }
+
+                        foreach (string language in LanguageMgr.GetAllowedLangKeys())
+                        {
+                            if (language == "EN" || storedLanguages.Contains(language))
+                                continue;
+
+                            DBLanguageNPC translationData = LanguageMgr.GetTranslation(language, this);
+                            if (translationData != null)
+                                m_translationData[m_translationId].Add(translationData);
+                        }
+                    }
+                }
+            }
+            #endregion New language system implementation
 
 			MeleeDamageType = (eDamageType)dbMob.MeleeDamageType;
 			if (MeleeDamageType == 0)
@@ -4852,6 +5061,10 @@ namespace DOL.GS
 			if ( copyTarget == null )
 				copyTarget = new GameNPC();
 
+            copyTarget.TranslationId = TranslationId;
+            copyTarget.Suffix = Suffix;
+            copyTarget.ExamineArticle = ExamineArticle;
+            copyTarget.MessageArticle = MessageArticle;
 			copyTarget.BlockChance = BlockChance;
 			copyTarget.BodyType = BodyType;
 			copyTarget.CanUseLefthandedWeapon = CanUseLefthandedWeapon;

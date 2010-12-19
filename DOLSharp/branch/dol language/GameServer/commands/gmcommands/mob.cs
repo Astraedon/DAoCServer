@@ -2139,6 +2139,10 @@ namespace DOL.GS.Commands
 			mob.Heading = client.Player.Heading;
 			mob.Level = targetMob.Level;
 			mob.Realm = targetMob.Realm;
+            mob.TranslationId = targetMob.TranslationId;
+            mob.ExamineArticle = targetMob.ExamineArticle;
+            mob.MessageArticle = targetMob.MessageArticle;
+            mob.Suffix = targetMob.Suffix;
 			mob.Name = targetMob.Name;
 			mob.Model = targetMob.Model;
 			mob.Flags = targetMob.Flags;

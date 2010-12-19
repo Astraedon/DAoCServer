@@ -289,8 +289,6 @@ namespace DOL.Language
         /// <returns></returns>
         public static List<string> GetAllowedLangKeys()
         {
-            log.Debug("Entering GetAllowedLangKeys");
-
             List<string> allowedKeys = new List<string>();
             string[] tmp = DOL.GS.ServerProperties.Properties.ALLOWED_CUSTOM_LANGUAGE_KEYS.Replace(" ", "").Split(';');
 
@@ -299,9 +297,6 @@ namespace DOL.Language
 
             if (!allowedKeys.Contains("EN"))
                 allowedKeys.Add("EN");
-
-            foreach(string str in allowedKeys)
-                log.Debug("GetAllowedLangKeys:" + str);
 
             return allowedKeys;
         }
@@ -313,7 +308,6 @@ namespace DOL.Language
         /// <returns></returns>
         public static bool IsLangKeyAllowedToUse(string langKey)
         {
-            log.Debug("Entering IsLangKeyAllowedToUse");
             return GetAllowedLangKeys().Contains(langKey) ? true : false;
         }
 
@@ -327,8 +321,6 @@ namespace DOL.Language
         /// <returns></returns>
         public static string GetTranslation(string language, eTranslationKey eKey, string translationID, string unique)
         {
-            log.Debug("Entering GetTranslation");
-
             if (Util.IsEmpty(translationID, true))
                 return "translate error";
 
@@ -344,7 +336,8 @@ namespace DOL.Language
                 #region Area_Description
                 case eTranslationKey.Area_Description:
                     {
-                        var dbo = GameServer.Database.SelectObject<DBLanguageArea>("TranslationId='" + GameServer.Database.Escape(translationID) + "' AND Language='" + GameServer.Database.Escape(language) + "'");
+                        var dbo = GameServer.Database.SelectObject<DBLanguageArea>("TranslationId='" + GameServer.Database.Escape(translationID) +
+                                                                                   "' AND Language='" + GameServer.Database.Escape(language) + "'");
                         if (dbo != null)
                         {
                             //Lets check if we have text
@@ -357,7 +350,8 @@ namespace DOL.Language
                 #region Area_ScreenDescription
                 case eTranslationKey.Area_ScreenDescription:
                     {
-                        var dbo = GameServer.Database.SelectObject<DBLanguageArea>("TranslationId='" + GameServer.Database.Escape(translationID) + "' AND Language='" + GameServer.Database.Escape(language) + "'");
+                        var dbo = GameServer.Database.SelectObject<DBLanguageArea>("TranslationId='" + GameServer.Database.Escape(translationID) +
+                                                                                   "' AND Language='" + GameServer.Database.Escape(language) + "'");
                         if (dbo != null)
                         {
                             //Lets check if we have text
@@ -369,7 +363,8 @@ namespace DOL.Language
                 #region MasterLevelStep
                 case eTranslationKey.MasterLevelStep:
                     {
-                        var dbo = GameServer.Database.SelectObject<DBLanguageMasterLevelStep>("TranslationId='" + GameServer.Database.Escape(translationID) + "' AND Language='" + GameServer.Database.Escape(language) + "'");
+                        var dbo = GameServer.Database.SelectObject<DBLanguageMasterLevelStep>("TranslationId='" + GameServer.Database.Escape(translationID) +
+                                                                                              "' AND Language='" + GameServer.Database.Escape(language) + "'");
                         if (dbo != null)
                         {
                             //Lets check if we have text
@@ -381,11 +376,11 @@ namespace DOL.Language
                 #region System_Text
                 case eTranslationKey.System_Text:
                     {
-                        log.Debug("Entering case");
-                        if (!string.IsNullOrWhiteSpace(unique))
+                        if (!Util.IsEmpty(unique))
                         {
-                            log.Debug("Entering case if block");
-                            var dbo = GameServer.Database.SelectObject<DBLanguageSystemText>("TranslationId='" + GameServer.Database.Escape(translationID) + "' AND TranslationUnique='" + GameServer.Database.Escape(unique) + "' AND Language='" + GameServer.Database.Escape(language) + "'");
+                            var dbo = GameServer.Database.SelectObject<DBLanguageSystemText>("TranslationId='" + GameServer.Database.Escape(translationID) +
+                                                                                             "' AND TranslationUnique='" + GameServer.Database.Escape(unique) +
+                                                                                             "' AND Language='" + GameServer.Database.Escape(language) + "'");
                             if (dbo != null)
                             {
                                 //Lets check if we have text
@@ -395,10 +390,10 @@ namespace DOL.Language
                         }
                         else
                         {
-                            var dbo = GameServer.Database.SelectObject<DBLanguageSystemText>("TranslationId='" + GameServer.Database.Escape(translationID) + "' AND Language='" + GameServer.Database.Escape(language) + "'");
+                            var dbo = GameServer.Database.SelectObject<DBLanguageSystemText>("TranslationId='" + GameServer.Database.Escape(translationID) +
+                                                                                             "' AND Language='" + GameServer.Database.Escape(language) + "'");
                             if (dbo != null)
                             {
-                                log.Debug("Entering case else block");
                                 //Lets check if we have text
                                 if (!Util.IsEmpty(dbo.Text, true))
                                     translation = dbo.Text;
@@ -409,7 +404,8 @@ namespace DOL.Language
                 #region Zone_Description
                 case eTranslationKey.Zone_Description:
                     {
-                        var dbo = GameServer.Database.SelectObject<DBLanguageZone>("TranslationId='" + GameServer.Database.Escape(translationID) + "' AND Language='" + GameServer.Database.Escape(language) + "'");
+                        var dbo = GameServer.Database.SelectObject<DBLanguageZone>("TranslationId='" + GameServer.Database.Escape(translationID) +
+                                                                                   "' AND Language='" + GameServer.Database.Escape(language) + "'");
                         if (dbo != null)
                         {
                             //Lets check if we have text
@@ -421,7 +417,8 @@ namespace DOL.Language
                 #region Zone_ScreenDescription
                 case eTranslationKey.Zone_ScreenDescription:
                     {
-                        var dbo = GameServer.Database.SelectObject<DBLanguageZone>("TranslationId='" + GameServer.Database.Escape(translationID) + "' AND Language='" + GameServer.Database.Escape(language) + "'");
+                        var dbo = GameServer.Database.SelectObject<DBLanguageZone>("TranslationId='" + GameServer.Database.Escape(translationID) +
+                                                                                   "' AND Language='" + GameServer.Database.Escape(language) + "'");
                         if (dbo != null)
                         {
                             //Lets check if we have text
@@ -434,8 +431,6 @@ namespace DOL.Language
 
             if (Util.IsEmpty(translation, true))
                 translation = translationID; //Will be changed after a little talk with Graveen/Tolakram -> http://www.dolserver.net/viewtopic.php?p=124343#p124343
-
-            log.Debug("Returning translation:" + translation);
 
             return translation;
         }
@@ -451,20 +446,51 @@ namespace DOL.Language
         public static string GetTranslation(GameClient client, eTranslationKey eKey, string translationID, string unique)
         {
             if (client == null || client.Account == null)
-                //return GetTranslation(DOL.GS.ServerProperties.Properties.SERV_LANGUAGE, eKey, translationID, unique);
                 return translationID;
-
-            //if (client.Player != null && client.Account.PrivLevel > 1)
-            //{
-            //    bool debug = client.Player.TempProperties.getProperty("LANGUAGEMGR-DEBUG", false);
-            //    if (debug && IDSentences.ContainsKey(TranslationID))
-            //        return "[" + TranslationID + "]=<" + IDSentences[TranslationID][client.Account.Language] + ">";
-            //}
 
             return GetTranslation(client.Account.Language, eKey, translationID, unique);
         }
 
-        #endregion
+        #region GetTranslation methods
+
+        #region NPC
+        /// <summary>
+        /// Returns an GameNPC translation based on the given GameClient and the given GameNPC. This is an method of the new language system.
+        /// </summary>
+        /// <param name="client">The client.</param>
+        /// <param name="npc">The npc.</param>
+        /// <returns>DBLanguageNPC</returns>
+        public static DBLanguageNPC GetTranslation(GameClient client, GameNPC npc)
+        {
+            if (client == null || client.Account == null || !GetAllowedLangKeys().Contains(client.Account.Language) || npc == null || Util.IsEmpty(npc.TranslationId))
+                return null;
+
+            return GetTranslation(client.Account.Language, npc);
+        }
+
+        /// <summary>
+        /// Returns an GameNPC translation by the given language and the given GameNPC. This is an method of the new language system.
+        /// </summary>
+        /// <param name="language">The language to return an translation for.</param>
+        /// <param name="npc">The GameNPC for that is an translation requested.</param>
+        /// <returns>DBLanguageNPC</returns>
+        public static DBLanguageNPC GetTranslation(string language, GameNPC npc)
+        {
+            if (Util.IsEmpty(language) || !GetAllowedLangKeys().Contains(language) || npc == null || Util.IsEmpty(npc.TranslationId))
+                return null;
+
+            var dbo = GameServer.Database.SelectObject<DBLanguageNPC>("TranslationId = '" + GameServer.Database.Escape(npc.TranslationId) +
+                                                                      "' AND Language = '" + GameServer.Database.Escape(language) + "'");
+            if (dbo != null) //
+                return dbo;  // Just a cosmetically construct so the code is easy to read.
+            // If you request an translation, you must(!) check for null.
+            return null;     //
+        }
+        #endregion NPC
+
+        #endregion GetTranslation
+
+        #endregion New language system experimental implementation
 
         /// <summary>
 		/// All the sentences [TranslationID] [Language] = [Sentence]

@@ -137,6 +137,7 @@
     <Compile Include="Tables\CharacterXDataQuest.cs" />
     <Compile Include="Tables\LanguageArea.cs" />
     <Compile Include="Tables\LanguageMasterLevelStep.cs" />
+    <Compile Include="Tables\LanguageNPC.cs" />
     <Compile Include="Tables\LanguageSystemText.cs" />
     <Compile Include="Tables\LanguageZone.cs" />
     <Compile Include="Tables\MobXLootTemplateNew.cs" />
