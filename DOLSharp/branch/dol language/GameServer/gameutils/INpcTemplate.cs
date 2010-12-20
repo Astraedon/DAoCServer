@@ -30,15 +30,35 @@ namespace DOL.GS
 		/// </summary>
 		int TemplateId { get; }
 
+        /// <summary>
+        /// Gets the template npc translation id
+        /// </summary>
+        string TranslationId { get; }
+
 		/// <summary>
 		/// Gets the template npc name
 		/// </summary>
 		string Name { get; }
 
+        /// <summary>
+        /// Gets the template npc suffix
+        /// </summary>
+        string Suffix { get; }
+
 		/// <summary>
 		/// Gets the template npc guild name
 		/// </summary>
 		string GuildName { get; }
+
+        /// <summary>
+        /// Gets the template npc examine article
+        /// </summary>
+        string ExamineArticle { get; }
+
+        /// <summary>
+        /// Gets the template npc message article
+        /// </summary>
+        string MessageArticle { get; }
 
 		/// <summary>
 		/// Gets the template npc model

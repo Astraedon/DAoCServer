@@ -37,9 +37,13 @@ namespace DOL.GS
 		private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
 		protected int m_templateId;
+        protected string m_translationId;
 		protected string m_name;
+        protected string m_suffix;
 		protected string m_classType;
 		protected string m_guildName;
+        protected string m_examineArticle;
+        protected string m_messageArticle;
 		protected string m_model;
 		protected string m_size;
 		protected string m_level;
@@ -83,9 +87,13 @@ namespace DOL.GS
 				throw new ArgumentNullException("data");
 
 			m_templateId = data.TemplateId;
+            m_translationId = data.TranslationId;
 			m_name = data.Name;
+            m_suffix = data.Suffix;
 			m_classType = data.ClassType;
 			m_guildName = data.GuildName;
+            m_examineArticle = data.ExamineArticle;
+            m_messageArticle = data.MessageArticle;
 			m_model = data.Model;
 			m_size = data.Size;
 			if (m_size == null)
@@ -187,6 +195,10 @@ namespace DOL.GS
 			if (mob == null)
 				throw new ArgumentNullException("data");
 
+            m_translationId = mob.TranslationId;
+            m_suffix = mob.Suffix;
+            m_examineArticle = mob.ExamineArticle;
+            m_messageArticle = mob.MessageArticle;
 			m_blockChance = mob.BlockChance;
 			m_bodyType = mob.BodyType;
 			m_charisma = mob.Charisma;
@@ -287,6 +299,15 @@ namespace DOL.GS
 			set { m_templateId = value; }
 		}
 
+        /// <summary>
+        /// Gets the template npc translation id
+        /// </summary>
+        public string TranslationId
+        {
+            get { return m_translationId; }
+            set { m_translationId = value; }
+        }
+
 		/// <summary>
 		/// Gets the template npc name
 		/// </summary>
@@ -295,6 +316,15 @@ namespace DOL.GS
 			get { return m_name; }
 			set { m_name = value; }
 		}
+
+        /// <summary>
+        /// Gets the template npc suffix
+        /// </summary>
+        public string Suffix
+        {
+            get { return m_suffix; }
+            set { m_suffix = value; }
+        }
 
 		/// <summary>
 		/// Gets the template npc class type
@@ -313,6 +343,25 @@ namespace DOL.GS
 			get { return m_guildName; }
 			set { m_guildName = value; }
 		}
+
+        /// <summary>
+        /// Gets the template npc examine article
+        /// </summary>
+        public string ExamineArticle
+        {
+            get { return m_examineArticle; }
+            set { m_examineArticle = value; }
+        }
+
+        /// <summary>
+        /// Gets the template npc message article
+        /// </summary>
+        public string MessageArticle
+        {
+            get { return m_messageArticle; }
+            set { m_messageArticle = value; }
+        }
+
 		/// <summary>
 		/// Gets the template npc model
 		/// </summary>
@@ -566,6 +615,10 @@ namespace DOL.GS
 			else
 				tmp.TemplateId = TemplateId;
 
+            tmp.TranslationId = TranslationId;
+            tmp.Suffix = Suffix;
+            tmp.ExamineArticle = ExamineArticle;
+            tmp.MessageArticle = MessageArticle;
 			tmp.AggroLevel = AggroLevel;
 			tmp.AggroRange = AggroRange;
 			tmp.BlockChance = BlockChance;

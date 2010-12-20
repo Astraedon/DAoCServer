@@ -57,7 +57,7 @@ namespace DOL.GS
         /// <summary>
         /// Holds the translation id of the GameNPC.
         /// </summary>
-        protected string m_translationId;
+        protected string m_translationId = "";
         /// <summary>
         /// Gets or sets the translation id of the GameNPC.
         /// </summary>
@@ -70,7 +70,7 @@ namespace DOL.GS
         /// <summary>
         /// Holds the name suffix that is used by the GameNPC (currently used by necromancer pets).
         /// </summary>
-        protected string m_suffix;
+        protected string m_suffix = "";
         /// <summary>
         /// Gets or sets the name suffix that is used by the GameNPC (currently used by necromancer pets).
         /// </summary>
@@ -83,7 +83,7 @@ namespace DOL.GS
         /// <summary>
         /// Holds the examine article of the GameNPC.
         /// </summary>
-        protected string m_examineArticle;
+        protected string m_examineArticle = "";
         /// <summary>
         /// Gets or sets the examine article of the GameNPC.
         /// </summary>
@@ -96,7 +96,7 @@ namespace DOL.GS
         /// <summary>
         /// Holds the message article of the GameNPC.
         /// </summary>
-        protected string m_messageArticle;
+        protected string m_messageArticle = "";
         /// <summary>
         /// Gets or sets the message article of the GameNPC.
         /// </summary>
@@ -2040,39 +2040,14 @@ namespace DOL.GS
             {
                 if (!Util.IsEmpty(m_translationId))
                 {
-                    lock (m_translationData)
-                    {
-                        if (!m_translationData.Keys.Contains(m_translationId))
-                            m_translationData.Add(m_translationId, new List<DBLanguageNPC>());
-
-                        // Try to reduce the server's initialization time and only enter the block, if no translation data is stored.
-                        // Because it can happen that this block is called more then thousand times for one npc, there is no need to
-                        // check it again if an translation already have been added. The first GameNPC instance that enters this code
-                        // block will add all required data of the npc's translation id into m_translationData. If no data was added
-                        // ... well, then we must call this block this 1.000+ times - shit happens.
-                        if (m_translationData[m_translationId].Count == 0)
-                        {
-                            List<string> storedLanguages = new List<string>();
-                            if (m_translationData[m_translationId].Count > 0)
-                            {
-                                foreach (DBLanguageNPC translation in m_translationData[m_translationId])
-                                    storedLanguages.Add(translation.Language);
-                            }
-
-                            foreach (string language in LanguageMgr.GetAllowedLangKeys())
-                            {
-                                if (language == "EN" || storedLanguages.Contains(language))
-                                    continue;
-
-                                DBLanguageNPC translationData = LanguageMgr.GetTranslation(language, this);
-                                if (translationData != null)
-                                    m_translationData[m_translationId].Add(translationData);
-                            }
-                        }
-
-                        if (m_translationData[m_translationId].Count == 0)
-                            m_translationData.Remove(m_translationId); // Save memory and remove the element.
-                    }
+                    // Try to reduce the server's initialization time and only enter the block, if no translation data is stored.
+                    // Because it can happen that this block is called more then thousand times for one npc, there is no need to
+                    // check it again if an translation already have been added. The first GameNPC instance that enters this code
+                    // block will add all available data of the npc's translation id into m_translationData. If no data was added
+                    // (because the npc is using an not defined (no entry in the DBLanguageNPC db table) translation id) ... well,
+                    // then we must call this block this 1.000+ times - shit happens.
+                    if (!m_translationData.Keys.Contains(m_translationId))
+                        RefreshTranslationData(null);
                 }
             }
             #endregion New language system implementation
@@ -2311,6 +2286,11 @@ namespace DOL.GS
 			IList m_levels = new ArrayList();
 			IList m_equipLoc = new ArrayList();
 			Hashtable m_equipModel = new Hashtable();
+
+            this.TranslationId = template.TranslationId;
+            this.Suffix = template.Suffix;
+            this.ExamineArticle = template.ExamineArticle;
+            this.MessageArticle = template.MessageArticle;
 
 			this.Name = template.Name;
 			this.GuildName = template.GuildName;

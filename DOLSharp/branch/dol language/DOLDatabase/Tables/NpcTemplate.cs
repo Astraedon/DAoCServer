@@ -36,9 +36,13 @@ namespace DOL.Database
 	public class DBNpcTemplate : DataObject
 	{
 		private int m_templateId;
+        private string m_translationId = string.Empty;
 		private string m_name = "";
+        private string m_suffix = string.Empty;
 		private string m_classType = "";
 		private string m_guildName = "";
+        private string m_examineArticle = string.Empty;
+        private string m_messageArticle = string.Empty;
 		private string m_model;
 		private string m_size = "50";
 		private string m_level = "0";
@@ -93,6 +97,16 @@ namespace DOL.Database
 			}
 		}
 
+        /// <summary>
+        /// Gets or sets the translation id
+        /// </summary>
+        [DataElement(AllowDbNull = true)]
+        public string TranslationId
+        {
+            get { return m_translationId; }
+            set { m_translationId = value; }
+        }
+
 		/// <summary>
 		/// Name
 		/// </summary>
@@ -106,6 +120,20 @@ namespace DOL.Database
 				m_name = value;
 			}
 		}
+
+        /// <summary>
+        /// Gets or sets the name suffix (currently used by necromancer pets).
+        /// 
+        /// The XYZ spell is no longer in the Death Servant's queue.
+        /// 
+        /// 's = the suffix.
+        /// </summary>
+        [DataElement(AllowDbNull = true)]
+        public string Suffix
+        {
+            get { return m_suffix; }
+            set { m_suffix = value; }
+        }
 
 		/// <summary>
 		/// Class Type
@@ -134,6 +162,34 @@ namespace DOL.Database
 				m_guildName = value;
 			}
 		}
+
+        /// <summary>
+        /// Gets or sets the examine article.
+        /// 
+        /// You examine the Tree.
+        /// 
+        /// the = the examine article.
+        /// </summary>
+        [DataElement(AllowDbNull = true)]
+        public string ExamineArticle
+        {
+            get { return m_examineArticle; }
+            set { m_examineArticle = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the message article.
+        /// 
+        /// GamePlayer has been killed by a Tree.
+        /// 
+        /// a = the message article.
+        /// </summary>
+        [DataElement(AllowDbNull = true)]
+        public string MessageArticle
+        {
+            get { return m_messageArticle; }
+            set { m_messageArticle = value; }
+        }
 
 		/// <summary>
 		/// Model
