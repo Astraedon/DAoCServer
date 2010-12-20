@@ -119,7 +119,7 @@ namespace DOL.GS
         /// <param name="language">The language</param>
         public void RefreshTranslationData(string language)
         {
-            if (language == "EN") // Do not add any data of the default language into the translation data
+            if (language == "EN") // Do not add any data of the default language into the translation data.
                 return;
 
             if (!Util.IsEmpty(m_translationId))
@@ -127,7 +127,7 @@ namespace DOL.GS
                 bool refreshAll = (Util.IsEmpty(language) ? true : false);
 
                 List<DBLanguageNPC> translationData = new List<DBLanguageNPC>();
-                if (refreshAll) // Refresh all translation data
+                if (refreshAll) // Refresh all translation data of the npc.
                 {
                     foreach (string lang in LanguageMgr.GetAllowedLangKeys())
                     {
@@ -174,14 +174,15 @@ namespace DOL.GS
                         }
                         else
                         {
-                            if (translationData.Count == 0) // Save memory and remove the data
-                                m_translationData.Remove(m_translationId);
-                            else
+                            if (translationData.Count > 0)
                             {
                                 m_translationData[m_translationId].Clear();
                                 m_translationData[m_translationId].AddRange(translationData);
                             }
                         }
+
+                        if (m_translationData[m_translationId].Count == 0)
+                            m_translationData.Remove(m_translationId); // Save memory and remove the element.
                     }
                 }
             }
@@ -207,9 +208,11 @@ namespace DOL.GS
                         return translationData;
                     }
                 }
+                else if (m_translationData.Keys.Contains(m_translationId) && m_translationData[m_translationId].Count == 0) // Should never happen, but it's better to have it.
+                    m_translationData.Remove(m_translationId); // Save memory and remove the element.
             }
 
-            // Return the base data of the npc if m_translationData doesn't contains the translation data of the npc's
+            // Return the npc's base data if m_translationData doesn't contains the translation data of the npc's
             // translation id, or no translation data was found for the given language, or no language was given.
             //
             // Note:
@@ -2042,11 +2045,11 @@ namespace DOL.GS
                         if (!m_translationData.Keys.Contains(m_translationId))
                             m_translationData.Add(m_translationId, new List<DBLanguageNPC>());
 
-                        // Try to reduce the server initialization time and only enter the block, if no translation data is stored.
-                        // Because this is called more then thousand times on server start, there is no need to check it again if an
-                        // translation already have been added. The first GameNPC instance that enters this code block will add all
-                        // required data into m_translationData. If no data was added ... well, then we must call this block this
-                        // 1.000+ times - shit happens.
+                        // Try to reduce the server's initialization time and only enter the block, if no translation data is stored.
+                        // Because it can happen that this block is called more then thousand times for one npc, there is no need to
+                        // check it again if an translation already have been added. The first GameNPC instance that enters this code
+                        // block will add all required data of the npc's translation id into m_translationData. If no data was added
+                        // ... well, then we must call this block this 1.000+ times - shit happens.
                         if (m_translationData[m_translationId].Count == 0)
                         {
                             List<string> storedLanguages = new List<string>();
@@ -2068,7 +2071,7 @@ namespace DOL.GS
                         }
 
                         if (m_translationData[m_translationId].Count == 0)
-                            m_translationData.Remove(m_translationId); // Save memory and remove it if no data was added
+                            m_translationData.Remove(m_translationId); // Save memory and remove the element.
                     }
                 }
             }
