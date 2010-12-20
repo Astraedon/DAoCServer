@@ -2028,36 +2028,47 @@ namespace DOL.GS
 			Empathy = (short)dbMob.Empathy;
 
             #region New language system implementation
+            TranslationId = dbMob.TranslationId;
+            Suffix = dbMob.Suffix;
+            ExamineArticle = dbMob.ExamineArticle;
+            MessageArticle = dbMob.MessageArticle;
+
             if (ServerProperties.Properties.USE_NEW_LANGUAGE_SYSTEM)
             {
-                TranslationId = dbMob.TranslationId;
-                Suffix = dbMob.Suffix;
-                ExamineArticle = dbMob.ExamineArticle;
-                MessageArticle = dbMob.MessageArticle;
-
                 if (!Util.IsEmpty(m_translationId))
                 {
-                    if (!m_translationData.Keys.Contains(m_translationId))
-                        m_translationData.Add(m_translationId, new List<DBLanguageNPC>());
-
-                    if (m_translationData[m_translationId].Count < LanguageMgr.GetAllowedLangKeys().Count)
+                    lock (m_translationData)
                     {
-                        List<string> storedLanguages = new List<string>();
-                        if (m_translationData[m_translationId].Count > 0)
+                        if (!m_translationData.Keys.Contains(m_translationId))
+                            m_translationData.Add(m_translationId, new List<DBLanguageNPC>());
+
+                        // Try to reduce the server initialization time and only enter the block, if no translation data is stored.
+                        // Because this is called more then thousand times on server start, there is no need to check it again if an
+                        // translation already have been added. The first GameNPC instance that enters this code block will add all
+                        // required data into m_translationData. If no data was added ... well, then we must call this block this
+                        // 1.000+ times - shit happens.
+                        if (m_translationData[m_translationId].Count == 0)
                         {
-                            foreach (DBLanguageNPC translation in m_translationData[m_translationId])
-                                storedLanguages.Add(translation.Language);
+                            List<string> storedLanguages = new List<string>();
+                            if (m_translationData[m_translationId].Count > 0)
+                            {
+                                foreach (DBLanguageNPC translation in m_translationData[m_translationId])
+                                    storedLanguages.Add(translation.Language);
+                            }
+
+                            foreach (string language in LanguageMgr.GetAllowedLangKeys())
+                            {
+                                if (language == "EN" || storedLanguages.Contains(language))
+                                    continue;
+
+                                DBLanguageNPC translationData = LanguageMgr.GetTranslation(language, this);
+                                if (translationData != null)
+                                    m_translationData[m_translationId].Add(translationData);
+                            }
                         }
 
-                        foreach (string language in LanguageMgr.GetAllowedLangKeys())
-                        {
-                            if (language == "EN" || storedLanguages.Contains(language))
-                                continue;
-
-                            DBLanguageNPC translationData = LanguageMgr.GetTranslation(language, this);
-                            if (translationData != null)
-                                m_translationData[m_translationId].Add(translationData);
-                        }
+                        if (m_translationData[m_translationId].Count == 0)
+                            m_translationData.Remove(m_translationId); // Save memory and remove it if no data was added
                     }
                 }
             }
