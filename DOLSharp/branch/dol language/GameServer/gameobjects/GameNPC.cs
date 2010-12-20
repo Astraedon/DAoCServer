@@ -2207,8 +2207,12 @@ namespace DOL.GS
 				}
 			}
 
+            mob.TranslationId = TranslationId;
 			mob.Name = Name;
+            mob.Suffix = Suffix;
 			mob.Guild = GuildName;
+            mob.ExamineArticle = ExamineArticle;
+            mob.MessageArticle = MessageArticle;
 			mob.X = X;
 			mob.Y = Y;
 			mob.Z = Z;
