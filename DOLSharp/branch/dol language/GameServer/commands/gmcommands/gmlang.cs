@@ -64,25 +64,23 @@ namespace DOL.GS.Commands
                 {
                     case "setexamine":
                         IncorrectFormat(client, "setexamine");
-                        break;
+                        return;
                     case "setguild":
                         IncorrectFormat(client, "setguild");
-                        break;
+                        return;
                     case "setmessage":
                         IncorrectFormat(client, "setmessage");
-                        break;
+                        return;
                     case "setname":
                         IncorrectFormat(client, "setname");
-                        break;
+                        return;
                     case "setsuffix":
                         IncorrectFormat(client, "setsuffix");
-                        break;
+                        return;
                     default:
                         DisplaySyntax(client);
-                        break;
+                        return;
                 }
-
-                return;
             }
 
             if ((client.Player.TargetObject is WorldInventoryItem)) // WorldInventoryItem translations are not supported (yet).
@@ -172,9 +170,7 @@ namespace DOL.GS.Commands
 
                 GameServer.Database.AddObject(row);
 
-                target.RemoveFromWorld();
                 target.RefreshTranslationData(client.Account.Language);
-                target.AddToWorld();
 
                 TranslationSetTo(client, "examine article", args[2]);
                 return;
@@ -304,9 +300,7 @@ namespace DOL.GS.Commands
 
                 GameServer.Database.AddObject(row);
 
-                target.RemoveFromWorld();
                 target.RefreshTranslationData(client.Account.Language);
-                target.AddToWorld();
 
                 TranslationSetTo(client, "message article", args[2]);
                 return;
@@ -436,9 +430,7 @@ namespace DOL.GS.Commands
 
                 GameServer.Database.AddObject(row);
 
-                target.RemoveFromWorld();
                 target.RefreshTranslationData(client.Account.Language);
-                target.AddToWorld();
 
                 TranslationSetTo(client, "name suffix", args[2]);
                 return;

@@ -119,7 +119,7 @@ namespace DOL.GS
         /// <param name="language">The language</param>
         public void RefreshTranslationData(string language)
         {
-            if (language == "EN") // Do not add any data of the default language into the translation data.
+            if (language == "EN") // Do not add any data of the default language into m_translationData.
                 return;
 
             if (!Util.IsEmpty(m_translationId))
@@ -127,7 +127,7 @@ namespace DOL.GS
                 bool refreshAll = (Util.IsEmpty(language) ? true : false);
 
                 List<DBLanguageNPC> translationData = new List<DBLanguageNPC>();
-                if (refreshAll) // Refresh all translation data of the npc.
+                if (refreshAll) // Refresh all translation data entries of the npc's translation id.
                 {
                     foreach (string lang in LanguageMgr.GetAllowedLangKeys())
                     {
@@ -206,21 +206,14 @@ namespace DOL.GS
                         if (translationData.Language != language)
                             continue;
 
-                        // Ever return the base data of an GameNPC if no translation was stored (maybe because no translation is required).
+                        // Always return the (important) base data of an GameNPC if no translation was stored (maybe
+                        // because no translation is required). ExamineArticle, MessageArticle and Suffix are no
+                        // important properties so it's not required to return the default language copy of them.
                         if (Util.IsEmpty(translationData.Name))
                             translationData.Name = Name;
 
-                        if (Util.IsEmpty(translationData.Suffix))
-                            translationData.Suffix = Suffix;
-
                         if (Util.IsEmpty(translationData.GuildName))
                             translationData.GuildName = GuildName;
-
-                        if (Util.IsEmpty(translationData.ExamineArticle))
-                            translationData.ExamineArticle = ExamineArticle;
-
-                        if (Util.IsEmpty(translationData.MessageArticle))
-                            translationData.MessageArticle = MessageArticle;
 
                         return translationData;
                     }
