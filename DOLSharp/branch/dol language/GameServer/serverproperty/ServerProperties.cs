@@ -1397,7 +1397,6 @@ namespace DOL.GS.ServerProperties
 		#endregion
 
         #region Language
-
         /// <summary>
         /// Holds all custom language keys that are allowed to use on the server, separated by semi-colon (DE; FR; IT etc.). There is no need to add english (EN), it's supported by default.
         /// </summary>
@@ -1409,7 +1408,6 @@ namespace DOL.GS.ServerProperties
         /// </summary>
         [ServerProperty("language", "use_new_language_system", "Should we use the new language system? True = yes, False = no", false)]
         public static bool USE_NEW_LANGUAGE_SYSTEM;
-
         #endregion
 
         /// <summary>

@@ -59,7 +59,7 @@ namespace DOL.Database
         /// <summary>
         /// Gets or sets the translated name.
         /// </summary>
-        [DataElement(AllowDbNull = false)]
+        [DataElement(AllowDbNull = true)]
         public string Name
         {
             get { return m_name; }

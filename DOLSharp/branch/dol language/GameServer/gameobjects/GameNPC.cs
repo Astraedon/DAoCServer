@@ -189,14 +189,15 @@ namespace DOL.GS
         }
 
         /// <summary>
-        /// Returns a copy of the npc's translation data for the given language.
-        /// If the given language is null or empty, the base data will be returned.
+        /// Returns a copy of the npc's translation data for the given language. Returns the base data if the given
+        /// language is null or empty. This method is a part of the new language system, be sure that you give a
+        /// allowed language key (use LanguageMgr.GetAllowedLangKeys() to get a list with all allowed language keys).
         /// </summary>
         /// <param name="language">The language</param>
         /// <returns>DBLanguageNPC</returns>
         public virtual DBLanguageNPC GetTranslationData(string language)
         {
-            if (!Util.IsEmpty(language))
+            if (!Util.IsEmpty(language) && LanguageMgr.GetAllowedLangKeys().Contains(language))
             {
                 if (m_translationData.Keys.Contains(m_translationId) && m_translationData[m_translationId].Count > 0)
                 {
@@ -205,11 +206,30 @@ namespace DOL.GS
                         if (translationData.Language != language)
                             continue;
 
+                        // Ever return the base data of an GameNPC if no translation was stored (maybe because no translation is required).
+                        if (Util.IsEmpty(translationData.Name))
+                            translationData.Name = Name;
+
+                        if (Util.IsEmpty(translationData.Suffix))
+                            translationData.Suffix = Suffix;
+
+                        if (Util.IsEmpty(translationData.GuildName))
+                            translationData.GuildName = GuildName;
+
+                        if (Util.IsEmpty(translationData.ExamineArticle))
+                            translationData.ExamineArticle = ExamineArticle;
+
+                        if (Util.IsEmpty(translationData.MessageArticle))
+                            translationData.MessageArticle = MessageArticle;
+
                         return translationData;
                     }
                 }
                 else if (m_translationData.Keys.Contains(m_translationId) && m_translationData[m_translationId].Count == 0) // Should never happen, but it's better to have it.
-                    m_translationData.Remove(m_translationId); // Save memory and remove the element.
+                {
+                    lock(m_translationData)
+                        m_translationData.Remove(m_translationId); // Save memory and remove the element.
+                }
             }
 
             // Return the npc's base data if m_translationData doesn't contains the translation data of the npc's
@@ -2040,12 +2060,11 @@ namespace DOL.GS
             {
                 if (!Util.IsEmpty(m_translationId))
                 {
-                    // Try to reduce the server's initialization time and only enter the block, if no translation data is stored.
-                    // Because it can happen that this block is called more then thousand times for one npc, there is no need to
-                    // check it again if an translation already have been added. The first GameNPC instance that enters this code
-                    // block will add all available data of the npc's translation id into m_translationData. If no data was added
-                    // (because the npc is using an not defined (no entry in the DBLanguageNPC db table) translation id) ... well,
-                    // then we must call this block this 1.000+ times - shit happens.
+                    // Try to reduce the server's initialization time and only enter the block, if no translation data of the npc's
+                    // translation id have been added into m_translationData. It can happen that this block is called more than thousand
+                    // times (for one translation id) and so there is no need to enter this block again if m_translationData already
+                    // contains the translation data for the npc's translation id. If the translation id is not defined in the
+                    // DBLanguageNPC database table ... well, then we must enter this block for this 1.000+ times - shit happens.
                     if (!m_translationData.Keys.Contains(m_translationId))
                         RefreshTranslationData(null);
                 }

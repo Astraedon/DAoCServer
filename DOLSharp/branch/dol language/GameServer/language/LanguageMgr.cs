@@ -290,10 +290,7 @@ namespace DOL.Language
         public static List<string> GetAllowedLangKeys()
         {
             List<string> allowedKeys = new List<string>();
-            string[] tmp = DOL.GS.ServerProperties.Properties.ALLOWED_CUSTOM_LANGUAGE_KEYS.Replace(" ", "").Split(';');
-
-            foreach (string allowedKey in tmp)
-                allowedKeys.Add(allowedKey);
+            allowedKeys.AddRange(DOL.GS.ServerProperties.Properties.ALLOWED_CUSTOM_LANGUAGE_KEYS.Replace(" ", "").Split(';'));
 
             if (!allowedKeys.Contains("EN"))
                 allowedKeys.Add("EN");

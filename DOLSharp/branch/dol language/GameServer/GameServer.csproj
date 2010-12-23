@@ -184,6 +184,7 @@
     <Compile Include="commands\GMcommands\blink.cs" />
     <Compile Include="commands\GMCommands\cast.cs" />
     <Compile Include="commands\GMCommands\ClientList.cs" />
+    <Compile Include="commands\GMCommands\gmlang.cs" />
     <Compile Include="commands\gmcommands\translate.cs" />
     <Compile Include="commands\GMCommands\zone.cs" />
     <Compile Include="commands\GMCommands\crafting.cs" />

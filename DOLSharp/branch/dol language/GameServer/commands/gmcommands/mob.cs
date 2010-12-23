@@ -116,6 +116,10 @@ namespace DOL.GS.Commands
 	     "'/mob trigger <type> <chance> <emote> <text>' adds a trigger to targeted mob class.  Use '/mob trigger help' for more info.",
          "'/mob trigger info' Give trigger informations",
          "'/mob trigger remove <id>' Remove a trigger",
+         "'/mob translationid <id>' to set an translation id.",
+         "'/mob examinearticle <article>' to set the examine article.",
+         "'/mob messagearticle <article>' to set the message article.",
+         "'/mob suffix <suffix>' to set the name suffix.",
 	     "'/mob ownerid <id>' Sets and saves the OwnerID for this mob."
 	    )]
 	public class MobCommandHandler : AbstractCommandHandler, ICommandHandler
@@ -247,6 +251,10 @@ namespace DOL.GS.Commands
 						case "reload": reload(client, targetMob, args); break;
 						case "findname": findname(client, args); break;
 						case "trigger": trigger(client, targetMob, args); break;
+                        case "translationid": translation_Id(client, targetMob, args); break;
+                        case "examinearticle": examine_article(client, targetMob, args); break;
+                        case "messagearticle": message_article(client, targetMob, args); break;
+                        case "suffix": suffix(client, targetMob, args); break;
 					default:
 						DisplaySyntax(client);
 						return;
@@ -1023,6 +1031,8 @@ namespace DOL.GS.Commands
 				info.Add(" + NPCTemplate: " + "[" + targetMob.NPCTemplate.TemplateId + "] " + targetMob.NPCTemplate.Name);
 			}
 
+            info.Add(" + TranslationId: " + targetMob.TranslationId);
+
 			IOldAggressiveBrain aggroBrain = targetMob.Brain as IOldAggressiveBrain;
 
 			if (aggroBrain != null)
@@ -1105,8 +1115,17 @@ namespace DOL.GS.Commands
 			         + " / " + targetMob.GetDamageResist(eProperty.Resist_Energy));
 			info.Add(" + Position (X, Y, Z, H):  " + targetMob.X + ", " + targetMob.Y + ", " + targetMob.Z + ", " + targetMob.Heading);
 
+            if (!Util.IsEmpty(targetMob.Suffix))
+                info.Add(" + Suffix: " + targetMob.Suffix);
+
 			if (targetMob.GuildName != null && targetMob.GuildName.Length > 0)
 				info.Add(" + Guild: " + targetMob.GuildName);
+
+            if (!Util.IsEmpty(targetMob.ExamineArticle))
+                info.Add(" + Examine article: " + targetMob.ExamineArticle);
+
+            if (!Util.IsEmpty(targetMob.MessageArticle))
+                info.Add(" + Message article: " + targetMob.MessageArticle);
 
 			if (targetMob.InHouse)
 			{
@@ -2006,6 +2025,10 @@ namespace DOL.GS.Commands
 			targetMob.StopAttack();
 			targetMob.StopCurrentSpellcast();
 
+            mob.TranslationId = targetMob.TranslationId;
+            mob.Suffix = targetMob.Suffix;
+            mob.ExamineArticle = targetMob.ExamineArticle;
+            mob.MessageArticle = targetMob.MessageArticle;
 			mob.X = targetMob.X;
 			mob.Y = targetMob.Y;
 			mob.Z = targetMob.Z;
@@ -2832,5 +2855,57 @@ namespace DOL.GS.Commands
 			client.Out.SendMessage("Usage: '/mob trigger info' Give trigger informations", eChatType.CT_System, eChatLoc.CL_PopupWindow);
 			client.Out.SendMessage("Usage: '/mob trigger remove <id>' Remove a trigger", eChatType.CT_System, eChatLoc.CL_PopupWindow);
 		}
+
+        private void translation_Id(GameClient client, GameNPC targetMob, string[] args)
+        {
+            if (args.Length < 3)
+            {
+                client.Out.SendMessage("Incorrect format. Use '/mob translationid <id>.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                return;
+            }
+
+            targetMob.TranslationId = (args[2].ToLower() == "random" ? Guid.NewGuid().ToString() : args[2]);
+            targetMob.SaveIntoDatabase();
+            client.Out.SendMessage("Translation id set to: " + targetMob.TranslationId, eChatType.CT_System, eChatLoc.CL_SystemWindow);
+        }
+
+        private void suffix(GameClient client, GameNPC targetMob, string[] args)
+        {
+            if (args.Length < 3)
+            {
+                client.Out.SendMessage("Incorrect format. Use '/mob suffix <suffix>.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                return;
+            }
+
+            targetMob.Suffix = args[2];
+            targetMob.SaveIntoDatabase();
+            client.Out.SendMessage("Name suffix set to: " + args[2], eChatType.CT_System, eChatLoc.CL_SystemWindow);
+        }
+
+        private void examine_article(GameClient client, GameNPC targetMob, string[] args)
+        {
+            if (args.Length < 3)
+            {
+                client.Out.SendMessage("Incorrect format. Use '/mob examinearticle <article>.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                return;
+            }
+
+            targetMob.ExamineArticle = args[2];
+            targetMob.SaveIntoDatabase();
+            client.Out.SendMessage("Examine article set to: " + args[2], eChatType.CT_System, eChatLoc.CL_SystemWindow);
+        }
+
+        private void message_article(GameClient client, GameNPC targetMob, string[] args)
+        {
+            if (args.Length < 3)
+            {
+                client.Out.SendMessage("Incorrect format. Use '/mob messagearticle <article>.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                return;
+            }
+
+            targetMob.MessageArticle = args[2];
+            targetMob.SaveIntoDatabase();
+            client.Out.SendMessage("Message article set to: " + args[2], eChatType.CT_System, eChatLoc.CL_SystemWindow);
+        }
 	}
 }
