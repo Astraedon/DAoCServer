@@ -24,6 +24,7 @@ using System.Threading;
 using DOL.Database;
 using DOL.Events;
 using DOL.GS.PacketHandler;
+using DOL.GS.Privilege;
 using DOL.GS.ServerProperties;
 using DOL.Network;
 using log4net;
@@ -152,10 +153,18 @@ namespace DOL.GS
 		/// </summary>
 		private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-		/// <summary>
+
+        #region Instance Variables
+
+        /// <summary>
 		/// This variable holds the accountdata
 		/// </summary>
 		protected Account m_account;
+
+        /// <summary>
+        /// Hold's the client's account privileges for easy access.
+        /// </summary>
+	    protected PrivilegeBinding m_accountPrivileges;
 
 		/// <summary>
 		/// This variable holds the active charindex
@@ -224,7 +233,9 @@ namespace DOL.GS
 		/// </summary>
 		protected long m_udpPingTime = DateTime.Now.Ticks;
 
-		/// <summary>
+        #endregion
+
+        /// <summary>
 		/// Constructor for a game client
 		/// </summary>
 		/// <param name="srvr">The server that's communicating with this client</param>
@@ -289,9 +300,33 @@ namespace DOL.GS
 			set
 			{
 				m_account = value;
+
+                /* Load DBPrivilegeBinding to PrivilegeBinding as account is set. - Ephemeral.
+                 * 
+                 * In addition set the PrivLevel Delegate up so that we can properly work with
+                 * the old system in place already in the server and still used by most other people.
+                */
+                if (Properties.USE_NEW_PRIVILEGE_SYSTEM)
+                {
+                    AccountPrivileges = new PrivilegeBinding(PrivilegeManager.GetBindingForAccount(value));
+
+                    Account.GetPLVL = account => this.AsPrivilegeLevel();
+                    Account.SetPLVL = (account, newValue) => { /* TODO: Write the Legacy PLVL Update Logic. */ };
+                }
+
 				GameEventMgr.Notify(GameClientEvent.AccountLoaded, this);
 			}
 		}
+
+	    public PrivilegeBinding AccountPrivileges
+	    {
+            get { return m_accountPrivileges; }
+            set 
+            { 
+                m_accountPrivileges = value;
+                GameEventMgr.Notify(GameClientEvent.PrivilegeLoaded, this);
+            }
+	    }
 
 		/// <summary>
 		/// Gets or sets the player this client is using

@@ -27,6 +27,7 @@ using System.Text;
 using DOL.AI.Brain;
 using DOL.Config;
 using DOL.GS.PacketHandler;
+using DOL.GS.Privilege;
 using DOL.GS.ServerRules;
 using DOL.GS.Spells;
 using DOL.GS.Commands;
@@ -280,21 +281,8 @@ namespace DOL.GS
 				//If there is no such command, return false
 				if (myCommand == null) return false;
 
-				if (client.Account.PrivLevel < myCommand.m_lvl)
-				{
-					if (!SinglePermission.HasPermission(client.Player, pars[0].Substring(1, pars[0].Length - 1)))
-					{
-						if (pars[0][0] == '&')
-							pars[0] = '/' + pars[0].Remove(0, 1);
-						//client.Out.SendMessage("You do not have enough priveleges to use " + pars[0], eChatType.CT_Important, eChatLoc.CL_SystemWindow);
-						//why should a player know the existing commands..
-						client.Out.SendMessage("No such command ("+pars[0]+")",eChatType.CT_System,eChatLoc.CL_SystemWindow);
-						return true;
-					}
-					//else execute the command
-				}
-
-				ExecuteCommand(client, myCommand, pars);
+                if(client.CanUseCommand(myCommand, pars))
+				    ExecuteCommand(client, myCommand, pars);
 			}
 			catch (Exception e)
 			{

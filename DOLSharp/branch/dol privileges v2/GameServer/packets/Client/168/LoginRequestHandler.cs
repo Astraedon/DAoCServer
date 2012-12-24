@@ -23,6 +23,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using DOL.Database;
+using DOL.GS.Privilege;
 using DOL.GS.ServerProperties;
 using log4net;
 
@@ -305,17 +306,23 @@ namespace DOL.GS.PacketHandler.Client.v168
 
 								m_lastAccountCreateTime = DateTime.Now;
 
-								playerAccount = new Account();
-								playerAccount.Name = userName;
-								playerAccount.Password = CryptPassword(password);
-								playerAccount.Realm = 0;
-								playerAccount.CreationDate = DateTime.Now;
-								playerAccount.LastLogin = DateTime.Now;
-								playerAccount.LastLoginIP = ipAddress;
-								playerAccount.LastClientVersion = ((int)client.Version).ToString();
-								playerAccount.Language = Properties.SERV_LANGUAGE;
-								playerAccount.PrivLevel = 1;
+								playerAccount = new Account
+								    {
+								        Name = userName,
+								        Password = CryptPassword(password),
+								        Realm = 0,
+								        CreationDate = DateTime.Now,
+								        LastLogin = DateTime.Now,
+								        LastLoginIP = ipAddress,
+								        LastClientVersion = ((int) client.Version).ToString(),
+								        Language = Properties.SERV_LANGUAGE,
+								        PrivLevel = (uint) ePrivLevel.Player
+								    };
 
+                                // Create new privilege binding for this account and add to DB.
+                                if (Properties.USE_NEW_PRIVILEGE_SYSTEM)
+                                    PrivilegeManager.GetBindingForAccount(playerAccount);
+                                
 								if (Log.IsInfoEnabled)
 									Log.Info("New account created: " + userName);
 
@@ -357,6 +364,12 @@ namespace DOL.GS.PacketHandler.Client.v168
 
 								return;
 							}
+
+                            /* Load privilege binding for this account into DB, if we're updating
+                             * to new system from a database of old we'll need this to properly update.
+                             */
+                            if (Properties.USE_NEW_PRIVILEGE_SYSTEM)
+                                PrivilegeManager.GetBindingForAccount(playerAccount);
 
 							// save player infos
 							playerAccount.LastLogin = DateTime.Now;

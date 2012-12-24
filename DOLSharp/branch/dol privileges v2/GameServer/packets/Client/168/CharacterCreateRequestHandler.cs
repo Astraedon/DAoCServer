@@ -25,6 +25,7 @@ using System.Linq;
 using DOL.Database;
 using DOL.Events;
 using DOL.GS;
+using DOL.GS.Privilege;
 using DOL.GS.ServerProperties;
 using log4net;
 
@@ -51,16 +52,18 @@ namespace DOL.GS.PacketHandler.Client.v168
 
 			if (!accountName.StartsWith(client.Account.Name))// TODO more correctly check, client send accountName as account-S, -N, -H (if it not fit in 20, then only account)
 			{
-				if (ServerProperties.Properties.BAN_HACKERS)
+				if (Properties.BAN_HACKERS)
 				{
-					DBBannedAccount b = new DBBannedAccount();
-					b.Author = "SERVER";
-					b.Ip = client.TcpEndpointAddress;
-					b.Account = client.Account.Name;
-					b.DateBan = DateTime.Now;
-					b.Type = "B";
-					b.Reason = String.Format("Autoban wrong Account '{0}'", GameServer.Database.Escape(accountName));
-					GameServer.Database.AddObject(b);
+					DBBannedAccount b = new DBBannedAccount
+					    {
+					        Author = "SERVER",
+					        Ip = client.TcpEndpointAddress,
+					        Account = client.Account.Name,
+					        DateBan = DateTime.Now,
+					        Type = "B",
+					        Reason = String.Format("Autoban wrong Account '{0}'", GameServer.Database.Escape(accountName))
+					    };
+				    GameServer.Database.AddObject(b);
 					GameServer.Database.SaveObject(b);
 					GameServer.Instance.LogCheatAction(b.Reason + ". Account: " + b.Account);
 				}
@@ -105,16 +108,18 @@ namespace DOL.GS.PacketHandler.Client.v168
 					{
 						if (client.Account.PrivLevel == 1)
 						{
-							if (ServerProperties.Properties.BAN_HACKERS)
+							if (Properties.BAN_HACKERS)
 							{
-								DBBannedAccount b = new DBBannedAccount();
-								b.Author = "SERVER";
-								b.Ip = client.TcpEndpointAddress;
-								b.Account = client.Account.Name;
-								b.DateBan = DateTime.Now;
-								b.Type = "B";
-								b.Reason = String.Format("Autoban bad CharName '{0}'", GameServer.Database.Escape(charName));
-								GameServer.Database.AddObject(b);
+								DBBannedAccount b = new DBBannedAccount
+								    {
+								        Author = "SERVER",
+								        Ip = client.TcpEndpointAddress,
+								        Account = client.Account.Name,
+								        DateBan = DateTime.Now,
+								        Type = "B",
+								        Reason = String.Format("Autoban bad CharName '{0}'", GameServer.Database.Escape(charName))
+								    };
+							    GameServer.Database.AddObject(b);
 								GameServer.Database.SaveObject(b);
 								GameServer.Instance.LogCheatAction(b.Reason + ". Account: " + b.Account);
 							}
@@ -132,14 +137,18 @@ namespace DOL.GS.PacketHandler.Client.v168
 						{
 							if (Properties.BAN_HACKERS == true)
 							{
-								DBBannedAccount b = new DBBannedAccount();
-								b.Author = "SERVER";
-								b.Ip = client.TcpEndpointAddress;
-								b.Account = client.Account.Name;
-								b.DateBan = DateTime.Now;
-								b.Type = "B";
-								b.Reason = String.Format("Autoban CharName '{0}' on wrong Account '{1}'", GameServer.Database.Escape(charName), GameServer.Database.Escape(client.Account.Name));
-								GameServer.Database.AddObject(b);
+								DBBannedAccount b = new DBBannedAccount
+								    {
+								        Author = "SERVER",
+								        Ip = client.TcpEndpointAddress,
+								        Account = client.Account.Name,
+								        DateBan = DateTime.Now,
+								        Type = "B",
+								        Reason =
+								            String.Format("Autoban CharName '{0}' on wrong Account '{1}'", GameServer.Database.Escape(charName),
+								                          GameServer.Database.Escape(client.Account.Name))
+								    };
+							    GameServer.Database.AddObject(b);
 								GameServer.Database.SaveObject(b);
 								GameServer.Instance.LogCheatAction(string.Format(b.Reason + ". Client Account: {0}, DB Account: {1}", client.Account.Name, character.AccountName));
 							}
@@ -238,14 +247,18 @@ namespace DOL.GS.PacketHandler.Client.v168
 				log.Error(client.Account.Name + " tried to create a character with wrong class ID: " + ch.Class + ", realm:" + ch.Realm);
 				if (ServerProperties.Properties.BAN_HACKERS)
 				{
-					DBBannedAccount b = new DBBannedAccount();
-					b.Author = "SERVER";
-					b.Ip = client.TcpEndpointAddress;
-					b.Account = client.Account.Name;
-					b.DateBan = DateTime.Now;
-					b.Type = "B";
-					b.Reason = string.Format("Autoban character create class: id:{0} realm:{1} name:{2} account:{3}", ch.Class, ch.Realm, ch.Name, account.Name);
-					GameServer.Database.AddObject(b);
+					DBBannedAccount b = new DBBannedAccount
+					    {
+					        Author = "SERVER",
+					        Ip = client.TcpEndpointAddress,
+					        Account = client.Account.Name,
+					        DateBan = DateTime.Now,
+					        Type = "B",
+					        Reason =
+					            string.Format("Autoban character create class: id:{0} realm:{1} name:{2} account:{3}", ch.Class, ch.Realm,
+					                          ch.Name, account.Name)
+					    };
+				    GameServer.Database.AddObject(b);
 					GameServer.Database.SaveObject(b);
 					GameServer.Instance.LogCheatAction(b.Reason + ". Account: " + b.Account);
 					client.Disconnect();
@@ -499,6 +512,19 @@ namespace DOL.GS.PacketHandler.Client.v168
 			GameServer.Database.AddObject(ch);
 			//Fire the character creation event
 			GameEventMgr.Notify(DatabaseEvent.CharacterCreated, null, new CharacterEventArgs(ch, client));
+
+            // On creating a new character, also create its privilege binding if we're using new system. - Ephemeral
+            if (Properties.USE_NEW_PRIVILEGE_SYSTEM)
+            {
+                DBPrivilegeBinding tmpPrivilege = new DBPrivilegeBinding()
+                {
+                    Identifier = ch.AccountName + "|" + ch.Name
+                };
+
+                GameServer.Database.AddObject(tmpPrivilege);
+                GameServer.Database.SaveObject(tmpPrivilege);
+            }
+
 			//add equipment
 			StartupEquipment.AddEquipment(ch);
 			//write changes
@@ -801,7 +827,26 @@ namespace DOL.GS.PacketHandler.Client.v168
 				{
 					if (character.AccountSlot == charSlot && client.ClientState == GameClient.eClientState.CharScreen)
 					{
-						log.WarnFormat("DB Character Delete:  Account {0}, Character: {1}, slot position: {2}, client slot {3}", accountName, character.Name, character.AccountSlot, slot);
+						log.WarnFormat("DB Character Delete:  Account {0}, Character: {1}, slot position: {2}, " +
+						               "client slot {3}", accountName, character.Name, character.AccountSlot, slot);
+
+                        // Delete privileges for character. - Ephemeral
+                        if (Properties.USE_NEW_PRIVILEGE_SYSTEM)
+                        {
+                            try
+                            {
+                                DBPrivilegeBinding binding =
+                                    PrivilegeManager.GetDBBindingForAcctPlayer(client.Account.Name, character.Name);
+
+                                GameServer.Database.DeleteObject(binding);
+                            }
+                            catch (Exception e)
+                            {
+                                if (log.IsErrorEnabled)
+                                    log.Error("Error deleting DBPrivilegeBinding for Player " +
+                                        character.Name, e);
+                            }
+                        }
 
 						GameEventMgr.Notify(DatabaseEvent.CharacterDeleted, null, new CharacterEventArgs(character, client));
 

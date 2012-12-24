@@ -18,7 +18,6 @@
  */
 using System;
 
-using DOL.Database;
 using DOL.Database.Attributes;
 
 namespace DOL
@@ -31,12 +30,18 @@ namespace DOL
 		[DataTable(TableName="Account")]
 		public class Account : DataObject
 		{
+		    public delegate uint GetLegacyPlvl(Account thisAccount);
+		    public delegate void SetLegacyPlvl(Account thisAccount, uint newValue);
+
+            public GetLegacyPlvl GetPLVL = account => account.m_plvl;
+            public SetLegacyPlvl SetPLVL = (account, value) => { account.m_plvl = value; account.Dirty = true; };
+
 			private string m_name;
 			private string m_password;
 			private DateTime m_creationDate;
 			private DateTime m_lastLogin;
 			private int m_realm;
-			private uint m_plvl;
+			public uint m_plvl;
 			private int m_state;
 			private String m_mail;
 			private string m_lastLoginIP;
@@ -150,12 +155,11 @@ namespace DOL
 			{
 				get
 				{
-					return m_plvl;
+                    return GetPLVL(this);
 				}
 				set
 				{
-					m_plvl = value;
-					Dirty = true;
+				    SetPLVL(this, value);
 				}
 			}
 			

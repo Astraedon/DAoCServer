@@ -74,12 +74,17 @@ namespace DOL.GS.ServerProperties
 		[ServerProperty("system", "max_rewardquest_description_length", "Maximum length for reward quest description text to prevent client crashes.", 255)]
 		public static int MAX_REWARDQUEST_DESCRIPTION_LENGTH;
 
-
 		/// <summary>
 		/// If the server should only accept connections from staff
 		/// </summary>
 		[ServerProperty("system", "staff_login", "Staff Login Only - Edit this to set weather you wish staff to be the only ones allowed to Log in values True,False", false)]
 		public static bool STAFF_LOGIN;
+
+        /// <summary>
+        /// Should the server use the group-based system or the legacy system?
+        /// </summary>
+        [ServerProperty("system", "use_new_priv", "Use new group based privilege system or the legacy system? Value values is True/False", false)]
+	    public static bool USE_NEW_PRIVILEGE_SYSTEM;
 
 		/// <summary>
 		/// The minimum client version required to connect
@@ -134,6 +139,7 @@ namespace DOL.GS.ServerProperties
 		/// </summary>
 		[ServerProperty("system", "disable_bug_reports", "Set to true to disable bug reporting, and false to enable bug reporting", true)]
 		public static bool DISABLE_BUG_REPORTS;
+
 		/// <summary>
 		/// The max number of players on the server
 		/// </summary>

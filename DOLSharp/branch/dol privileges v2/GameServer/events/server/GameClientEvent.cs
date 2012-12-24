@@ -56,5 +56,9 @@ namespace DOL.Events
 		/// The AccountLoaded event is fired whenever an account has been set for the GameClient
 		/// </summary>
 		public static readonly GameClientEvent AccountLoaded = new GameClientEvent("GameClient.AccountLoaded");
+        /// <summary>
+        /// The AccountLoaded event is fired whenever an account has been set for the GameClient
+        /// </summary>
+        public static readonly GameClientEvent PrivilegeLoaded = new GameClientEvent("GameClient.PrivilegeLoaded");
 	}
 }

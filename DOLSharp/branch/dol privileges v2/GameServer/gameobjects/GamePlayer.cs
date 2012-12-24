@@ -43,6 +43,7 @@ using DOL.GS.Styles;
 using DOL.GS.Utils;
 using DOL.Language;
 using log4net;
+using DOL.GS.Privilege;
 
 namespace DOL.GS
 {
@@ -58,39 +59,50 @@ namespace DOL.GS
 
 		#region Client/Character/VariousFlags
 
-
 		/// <summary>
 		/// This is our gameclient!
 		/// </summary>
 		protected readonly GameClient m_client;
+
+        /// <summary>
+        /// This player's invididual privileges, checked after the account's privileges.
+        /// </summary>
+	    protected PrivilegeBinding m_playerPrivileges;
+
 		/// <summary>
 		/// This holds the character this player is
 		/// based on!
 		/// (renamed and private, cause if derive is needed overwrite PlayerCharacter)
 		/// </summary>
 		protected DOLCharacters m_dbCharacter;
+
 		/// <summary>
 		/// The guild id this character belong to
 		/// </summary>
 		protected string m_guildId;
+
 		/// <summary>
 		/// Char spec points checked on load
 		/// </summary>
 		protected bool SpecPointsOk = true;
+
 		/// <summary>
 		/// Has this player entered the game, will be
 		/// true after the first time the char enters
 		/// the world
 		/// </summary>
 		protected bool m_enteredGame;
+
 		/// <summary>
 		/// Holds the objects that need update
 		/// </summary>
 		protected readonly BitArray[] m_objectUpdates;
+
 		/// <summary>
 		/// Holds the index into the last update array
 		/// </summary>
 		protected byte m_lastUpdateArray;
+
 		/// <summary>
 		/// Holds the tickcount when the objects around this player
 		/// were checked the last time for new npcs. Will be done
@@ -262,6 +274,14 @@ namespace DOL.GS
 		{
 			get { return m_client; }
 		}
+
+        /// <summary>
+        /// Return's the privileges that this player has.
+        /// </summary>
+	    public PrivilegeBinding PlayerPrivileges
+	    {
+            get { return m_playerPrivileges; }
+	    }
 
 		/// <summary>
 		/// Returns the PacketSender for this player
@@ -854,7 +874,7 @@ namespace DOL.GS
 				if (m_quitTimer == null)
 				{
 					m_quitTimer = new RegionTimer(this);
-					m_quitTimer.Callback = new RegionTimerCallback(QuitTimerCallback);
+					m_quitTimer.Callback = QuitTimerCallback;
 					m_quitTimer.Start(1);
 				}
 
@@ -16125,9 +16145,9 @@ namespace DOL.GS
 			m_lastWorldUpdate = Environment.TickCount;
 
 			CreateInventory();
-			GameEventMgr.AddHandler(m_inventory, PlayerInventoryEvent.ItemEquipped, new DOLEventHandler(OnItemEquipped));
-			GameEventMgr.AddHandler(m_inventory, PlayerInventoryEvent.ItemUnequipped, new DOLEventHandler(OnItemUnequipped));
-			GameEventMgr.AddHandler(m_inventory, PlayerInventoryEvent.ItemBonusChanged, new DOLEventHandler(OnItemBonusChanged));
+			GameEventMgr.AddHandler(m_inventory, PlayerInventoryEvent.ItemEquipped, OnItemEquipped);
+			GameEventMgr.AddHandler(m_inventory, PlayerInventoryEvent.ItemUnequipped, OnItemUnequipped);
+			GameEventMgr.AddHandler(m_inventory, PlayerInventoryEvent.ItemBonusChanged, OnItemBonusChanged);
 
 			m_enteredGame = false;
 			m_customDialogCallback = null;
@@ -16141,6 +16161,10 @@ namespace DOL.GS
 			LoadFromDatabase(dbChar);
 
 			CreateStatistics();
+
+            // Load the player's privileges. - Ephemeral
+            if(Properties.USE_NEW_PRIVILEGE_SYSTEM) m_playerPrivileges = 
+                new PrivilegeBinding(PrivilegeManager.GetDBBindingForPlayer(this));
 		}
 
 		/// <summary>
