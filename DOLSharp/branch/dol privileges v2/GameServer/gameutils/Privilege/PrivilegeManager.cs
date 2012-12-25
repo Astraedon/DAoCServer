@@ -31,7 +31,7 @@ namespace DOL.GS.Privilege
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static IDictionary<int, PrivilegeGroup> _groupCache;
+        private static IDictionary<int, PrivilegeGroup> m_groupCache;
 
         #region Initialization
 
@@ -49,7 +49,7 @@ namespace DOL.GS.Privilege
                 Log.Info("[Privilege Manager] Loading Groups Cache.");
                 UpdateDefaults();
 
-                _groupCache = new Dictionary<int, PrivilegeGroup>();
+                m_groupCache = new Dictionary<int, PrivilegeGroup>();
 
                 IList<PrivilegeGroup> tmpGroups = 
                     GameServer.Database.SelectAllObjects<DBPrivilegeGroup>().Select(dbGrp => new PrivilegeGroup(dbGrp)).ToList();
@@ -57,7 +57,7 @@ namespace DOL.GS.Privilege
                 foreach (PrivilegeGroup privilegeGroup in tmpGroups)
                 {
                     privilegeGroup.Initialize();
-                    _groupCache.Add(privilegeGroup.DBEntry.GroupIndex, privilegeGroup);
+                    m_groupCache.Add(privilegeGroup.DBEntry.GroupIndex, privilegeGroup);
                 }
 
                 foreach (PrivilegeGroup privilegeGroup in tmpGroups)
@@ -68,7 +68,7 @@ namespace DOL.GS.Privilege
                 foreach (PrivilegeGroup privGrp in tmpGroups.Where(privGrp => privGrp.HasCircularInheritanceChain()))
                 {
                     Log.Error("[Privilege Manager] Group has Circular Inheritance Chain -> " + privGrp.DBEntry.Name);
-                    _groupCache.Remove(privGrp.DBEntry.GroupIndex);
+                    m_groupCache.Remove(privGrp.DBEntry.GroupIndex);
                 }
             }
         }
@@ -82,22 +82,23 @@ namespace DOL.GS.Privilege
             GroupIndex = 1,
             Name = "player",
             DisplayName = "Player",
-            Privileges = "plvl_player"
+            Privileges = DefaultPrivileges.LegacyPlayer
         };
         private static readonly DBPrivilegeGroup GameMasterPrivilege = new DBPrivilegeGroup
         {
             GroupIndex = 2,
             Name = "gm",
             DisplayName = "Gamemaster",
-            Privileges = "plvl_gm"
+            Privileges = DefaultPrivileges.LegacyGM,
+            InheritedGroups = "player"
         };
         private static readonly DBPrivilegeGroup AdministratorPrivilege = new DBPrivilegeGroup
         {
             GroupIndex = 3,
             Name = "admin",
             DisplayName = "Administrator",
-            Commands = "*",
-            Privileges = "plvl_admin;*"
+            Privileges = DefaultPrivileges.LegacyAdministrator,
+            InheritedGroups = "gm"
         };
 
         private static void UpdateDefaults()
@@ -139,9 +140,9 @@ namespace DOL.GS.Privilege
         /// </summary>
         /// <param name="id">ID to find, null if not found.</param>
         /// <returns></returns>
-        public static PrivilegeGroup GetGroupFromID(ushort id)
+        public static PrivilegeGroup GetGroupFromID(int id)
         {
-            return _groupCache.ContainsKey(id) ? _groupCache[id] : null;
+            return m_groupCache.ContainsKey(id) ? m_groupCache[id] : null;
         }
 
         /// <summary>
@@ -151,7 +152,7 @@ namespace DOL.GS.Privilege
         /// <returns></returns>
         public static PrivilegeGroup GetGroupFromName(string name)
         {
-            return _groupCache.Values.FirstOrDefault(pg => pg.DBEntry.Name == name);
+            return m_groupCache.Values.FirstOrDefault(pg => pg.DBEntry.Name == name);
         }
 
         #endregion
@@ -237,14 +238,14 @@ namespace DOL.GS.Privilege
         {
             if (cli.Player != null)
             {
-                if (cli.Player.PlayerPrivileges.HasPrivilege("plvl_admin")) return 3;
-                if (cli.Player.PlayerPrivileges.HasPrivilege("plvl_gm")) return 2;
-                if (cli.Player.PlayerPrivileges.HasPrivilege("plvl_player")) return 1;
+                if (cli.Player.PlayerPrivileges.HasPrivilege(DefaultPrivileges.LegacyAdministrator)) return 3;
+                if (cli.Player.PlayerPrivileges.HasPrivilege(DefaultPrivileges.LegacyGM)) return 2;
+                if (cli.Player.PlayerPrivileges.HasPrivilege(DefaultPrivileges.LegacyPlayer)) return 1;
             }
 
-            if (cli.AccountPrivileges.HasPrivilege("plvl_admin")) return 3;
-            if (cli.AccountPrivileges.HasPrivilege("plvl_gm")) return 2;
-            if (cli.AccountPrivileges.HasPrivilege("plvl_player")) return 1;
+            if (cli.AccountPrivileges.HasPrivilege(DefaultPrivileges.LegacyAdministrator)) return 3;
+            if (cli.AccountPrivileges.HasPrivilege(DefaultPrivileges.LegacyGM)) return 2;
+            if (cli.AccountPrivileges.HasPrivilege(DefaultPrivileges.LegacyPlayer)) return 1;
             return 0;
         }
 

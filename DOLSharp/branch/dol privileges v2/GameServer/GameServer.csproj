@@ -372,6 +372,8 @@
     <Compile Include="gameutils\MarketSearch.cs" />
     <Compile Include="gameutils\InventoryLogging.cs" />
     <Compile Include="gameutils\MarketCache.cs" />
+    <Compile Include="gameutils\Privilege\DefaultPrivileges.cs" />
+    <Compile Include="gameutils\Privilege\PrivilegeEnumerations.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeBinding.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeException.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeGroup.cs" />

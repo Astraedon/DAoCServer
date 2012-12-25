@@ -24,10 +24,10 @@ namespace DOL.Database
     [DataTable(TableName = "Privilege_Binding")]
     public class DBPrivilegeBinding : DataObject
     {
-        private string _identifier;
-        private string _groups;
-        private string _additionalCommands;
-        private string _additionalPrivileges;
+        private string m_identifier;
+        private string m_groups;
+        private string m_additionalCommands;
+        private string m_additionalPrivileges;
 
         /// <summary>
         /// Sets/Gets Player ID or Account Name
@@ -39,24 +39,24 @@ namespace DOL.Database
         {
             get
             {
-                return _identifier;
+                return m_identifier;
             }
             set
             {
                 Dirty = true;
-                _identifier = value;
+                m_identifier = value;
             }
         }
 
         [DataElement]
         public string Groups
         {
-            get { return _groups; }
+            get { return m_groups; }
             set
             {
                 Dirty = true;
 
-                _groups = value;
+                m_groups = value;
             }
         }
 
@@ -65,12 +65,12 @@ namespace DOL.Database
         {
             get
             {
-                return _additionalCommands;
+                return m_additionalCommands;
             }
             set
             {
                 Dirty = true;
-                _additionalCommands = value;
+                m_additionalCommands = value;
             }
         }
 
@@ -79,12 +79,12 @@ namespace DOL.Database
         {
             get
             {
-                return _additionalPrivileges;
+                return m_additionalPrivileges;
             }
             set
             {
                 Dirty = true;
-                _additionalPrivileges = value;
+                m_additionalPrivileges = value;
             }
         }
     }

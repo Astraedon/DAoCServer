@@ -52,6 +52,7 @@ namespace DOL.GS.Commands
 			text.Append("using DOL.Database;\n");
 			text.Append("using DOL.GS;\n");
 			text.Append("using DOL.GS.Movement;\n");
+            text.Append("using DOL.GS.Privilege;\n");
 			text.Append("using DOL.GS.Housing;\n");
 			text.Append("using DOL.GS.Keeps;\n");
 			text.Append("using DOL.GS.Quests;\n");

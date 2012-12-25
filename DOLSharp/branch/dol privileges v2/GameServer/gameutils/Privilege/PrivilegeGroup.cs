@@ -17,7 +17,6 @@
  *
  */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using DOL.Database;
@@ -26,14 +25,16 @@ namespace DOL.GS.Privilege
 {
     public class PrivilegeGroup
     {
-        private readonly DBPrivilegeGroup _dbEntry;
-        private readonly IList<string> _privileges = new List<string>(); 
-        private readonly IList<PrivilegeGroup> _inheritedGroups = new List<PrivilegeGroup>();
+        private readonly DBPrivilegeGroup m_dbEntry;
+        private readonly IList<string> m_privileges = new List<string>(); 
+        private readonly IList<PrivilegeGroup> m_inheritedGroups = new List<PrivilegeGroup>();
 
         public PrivilegeGroup(DBPrivilegeGroup entry)
         {
-            _dbEntry = entry;
+            m_dbEntry = entry;
         }
+
+        #region Creation / Setup
 
         public void Initialize()
         {
@@ -42,7 +43,7 @@ namespace DOL.GS.Privilege
 
             if (!string.IsNullOrEmpty(DBEntry.Commands))
                 foreach (string str in DBEntry.Commands.Split(';'))
-                    Privileges.Add("cmd_" + str);
+                    Privileges.Add(DefaultPrivileges.CommandPrefix + str);
         }
 
         /// <summary>
@@ -65,26 +66,176 @@ namespace DOL.GS.Privilege
             }
         }
 
-        public bool HasPrivilege(string privilegeKey)
-        {
-            return Privileges.Any(s => s == "*" || s == privilegeKey) || _inheritedGroups.Any(sg => sg.HasPrivilege(privilegeKey));
-        }
+        #endregion
 
+        #region Accessors
+
+        /// <summary>
+        /// Database entry backing up this PrivilegeBinding.
+        /// </summary>
         public DBPrivilegeGroup DBEntry
         {
-            get { return _dbEntry; }
+            get { return m_dbEntry; }
         }
 
+        /// <summary>
+        /// Additional privileges specified to this binding on top of any in the groups.
+        /// </summary>
         public IList<PrivilegeGroup> InheritedGroups
         {
-            get { return _inheritedGroups; }
+            get { return m_inheritedGroups; }
         }
 
+        /// <summary>
+        /// Privileges specified to this group on top of any in the sub-groups.
+        /// </summary>
         public IList<string> Privileges
         {
-            get { return _privileges; }
+            get { return m_privileges; }
         }
 
+        #endregion
+
+        /// <summary>
+        /// Does this PrivilegeGroup have the right to use this key?
+        /// </summary>
+        /// <param name="privilegeKey">Key to search for rights.</param>
+        /// <returns></returns>
+        public bool HasPrivilege(string privilegeKey)
+        {
+            return Privileges.Any(s => s == "*" || s == privilegeKey) || m_inheritedGroups.Any(sg => sg.HasPrivilege(privilegeKey));
+        }
+
+        #region Add / Remove
+
+        #region Privileges
+
+        /// <summary>
+        /// Adds a privilege to the Group's privileges and syncs to the database.
+        /// </summary>
+        /// <param name="privilegeKey">Privilege to add.</param>
+        public ModificationStatus AddPrivilege(string privilegeKey)
+        {
+            Privileges.Add(privilegeKey);
+
+            DBEntry.Privileges = string.Join(";", Privileges.Where(s => !s.StartsWith(DefaultPrivileges.CommandPrefix)));
+            if (!GameServer.Database.SaveObject(DBEntry))
+                return ModificationStatus.FailedToSave;
+
+            return ModificationStatus.Success;
+        }
+
+        /// <summary>
+        /// Removes a privilege to the Group's privileges and syncs to the database.
+        /// </summary>
+        /// <param name="privilegeKey">Privilege to remove.</param>
+        public ModificationStatus RemovePrivilege(string privilegeKey)
+        {
+            Privileges.Remove(privilegeKey);
+
+            DBEntry.Privileges = string.Join(";", Privileges.Where(s => !s.StartsWith(DefaultPrivileges.CommandPrefix)));
+            if (!GameServer.Database.SaveObject(DBEntry))
+                return ModificationStatus.FailedToSave;
+
+            return ModificationStatus.Success;
+        }
+
+        #endregion
+
+        #region Command
+
+        /// <summary>
+        /// Adds a command to the Group's privileges and syncs to the database.
+        /// </summary>
+        /// <param name="commandString">Command to add.</param>
+        public ModificationStatus AddCommand(string commandString)
+        {
+            Privileges.Add(DefaultPrivileges.CommandPrefix + commandString);
+
+            string[] cmds = Privileges.Where(s => s.StartsWith(DefaultPrivileges.CommandPrefix)).ToArray();
+
+            for (int index = 0; index < cmds.Length; index++)
+            {
+                if (cmds[index].StartsWith(DefaultPrivileges.CommandPrefix))
+                    cmds[index] = cmds[index].Replace(DefaultPrivileges.CommandPrefix, "");
+            }
+
+            DBEntry.Commands = string.Join(";", cmds);
+            if (!GameServer.Database.SaveObject(DBEntry))
+                return ModificationStatus.FailedToSave;
+
+            return ModificationStatus.Success;
+        }
+
+        /// <summary>
+        /// Removes a command to the Group's privileges and syncs to the database.
+        /// </summary>
+        /// <param name="commandString">Command to Remove.</param>
+        public ModificationStatus RemoveCommand(string commandString)
+        {
+            Privileges.Remove(DefaultPrivileges.CommandPrefix + commandString);
+
+            string[] cmds = Privileges.Where(s => s.StartsWith(DefaultPrivileges.CommandPrefix)).ToArray();
+
+            for (int index = 0; index < cmds.Length; index++)
+            {
+                if (cmds[index].StartsWith(DefaultPrivileges.CommandPrefix))
+                    cmds[index] = cmds[index].Replace(DefaultPrivileges.CommandPrefix, "");
+            }
+
+            DBEntry.Commands = string.Join(";", cmds);
+            if (!GameServer.Database.SaveObject(DBEntry))
+                return ModificationStatus.FailedToSave;
+
+            return ModificationStatus.Success;
+        }
+
+        #endregion
+        
+        #region Groups
+
+        /// <summary>
+        /// Adds a group to this binding and syncs to database.
+        /// </summary>
+        /// <param name="grp">Group to add.</param>
+        /// <returns></returns>
+        public ModificationStatus AddGroup(PrivilegeGroup grp)
+        {
+            if (InheritedGroups.Contains(grp)) return ModificationStatus.AlreadyExists;
+            if (HasInherited(grp.DBEntry.GroupIndex)) return ModificationStatus.Circular;
+
+            InheritedGroups.Add(grp);
+
+            DBEntry.InheritedGroups = string.Join(";", InheritedGroups.Select(g => g.DBEntry.Name));
+            if (!GameServer.Database.SaveObject(DBEntry))
+                return ModificationStatus.FailedToSave;
+
+            return ModificationStatus.Success;
+        }
+
+        /// <summary>
+        /// Removes a group from this binding and syncs to database.
+        /// </summary>
+        /// <param name="grp">Group to remove.</param>
+        /// <returns></returns>
+        public ModificationStatus RemoveGroup(PrivilegeGroup grp)
+        {
+            if (!InheritedGroups.Contains(grp)) return ModificationStatus.DoesNotExist;
+
+            InheritedGroups.Remove(grp);
+
+            DBEntry.InheritedGroups = string.Join(";", InheritedGroups.Select(g => g.DBEntry.Name));
+            if (!GameServer.Database.SaveObject(DBEntry))
+                return ModificationStatus.FailedToSave;
+
+            return ModificationStatus.Success;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Overflow Protection
 
         /// <summary>
         /// Check if this group has a circular inheritance chain, ie does this group
@@ -102,9 +253,17 @@ namespace DOL.GS.Privilege
             return false;
         }
 
+        /// <summary>
+        /// Has this group inherited a specific group ID? Used to check for circular
+        /// inheritance to prevent stack overflows.
+        /// </summary>
+        /// <param name="groupID">ID to check for.</param>
+        /// <returns></returns>
         private bool HasInherited(int groupID)
         {
             return DBEntry.GroupIndex == groupID || InheritedGroups.Any(sg => sg.DBEntry.GroupIndex == groupID || sg.HasInherited(groupID));
         }
+
+        #endregion
     }
 }

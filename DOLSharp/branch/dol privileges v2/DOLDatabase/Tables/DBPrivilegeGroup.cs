@@ -24,78 +24,77 @@ namespace DOL.Database
     [DataTable(TableName = "Privilege_Group")]
     public class DBPrivilegeGroup : DataObject
     {   
-        private int _groupIndex;
-        private string _name;
-        private string _displayName;
-        private string _commands;
-        private string _privileges;
-        private string _inheritedGroups;
+        private int m_groupIndex;
+        private string m_name;
+        private string m__displayName;
+        private string m_commands;
+        private string m_privileges;
+        private string m_inheritedGroups;
 
-        [ReadOnly]
-        [DataElement(Index = true)]
+        [DataElement(Index = true, Unique = true, AllowDbNull = false)]
         [PrimaryKey(AutoIncrement = true)]
         public int GroupIndex
         {
-            get { return _groupIndex; }
+            get { return m_groupIndex; }
             set 
             { 
                 Dirty = true;
-                _groupIndex = value;
+                m_groupIndex = value;
             }
         }
 
         [DataElement]
         public string Name
         {
-            get { return _name; }
+            get { return m_name; }
             set
             {
                 Dirty = true;
-                _name = value;
+                m_name = value;
             }
         }
 
         [DataElement]
         public string DisplayName
         {
-            get { return _displayName; }
+            get { return m__displayName; }
             set
             {
                 Dirty = true;
-                _displayName = value;
+                m__displayName = value;
             }
         }
 
         [DataElement]
         public string Commands
         {
-            get { return _commands; }
+            get { return m_commands; }
             set
             {
                 Dirty = true;
-                _commands = value;
+                m_commands = value;
             }
         }
 
         [DataElement]
         public string Privileges
         {
-            get { return _privileges; }
+            get { return m_privileges; }
             set
             {
                 Dirty = true;
-                _privileges = value;
+                m_privileges = value;
             }
         }
 
         [DataElement]
         public string InheritedGroups
         {
-            get { return _inheritedGroups; }
+            get { return m_inheritedGroups; }
             set
             {
                 Dirty = true;
-                _inheritedGroups = value;
+                m_inheritedGroups = value;
             }
         }
     }

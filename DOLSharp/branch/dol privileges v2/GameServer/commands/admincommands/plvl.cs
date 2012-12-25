@@ -18,6 +18,8 @@
  */
 using System;
 using DOL.GS.PacketHandler;
+using DOL.GS.Privilege;
+using DOL.GS.ServerProperties;
 using DOL.Language;
 
 namespace DOL.GS.Commands
@@ -62,7 +64,12 @@ namespace DOL.GS.Commands
 								target = targetClient.Player;
 						}
 
-						SinglePermission.setPermission(target, args[2]);
+
+                        if (Properties.USE_NEW_PRIVILEGE_SYSTEM)
+                            target.PlayerPrivileges.AddCommand(args[2]);
+                        else
+						    SinglePermission.setPermission(target, args[2]);
+
 						DisplayMessage(client, LanguageMgr.GetTranslation(client.Account.Language, "AdminCommands.plvl.AddedSinglePermission", target.Name, args[2]));
 
 						break;
@@ -86,7 +93,11 @@ namespace DOL.GS.Commands
 								target = targetClient.Player;
 						}
 
-						SinglePermission.setPermissionAccount( target, args[2] );
+                        if(Properties.USE_NEW_PRIVILEGE_SYSTEM)
+                            target.Client.AccountPrivileges.AddCommand(args[2]);
+                        else
+                            SinglePermission.setPermissionAccount(target, args[2]);
+
 						DisplayMessage(client, LanguageMgr.GetTranslation(client.Account.Language, "AdminCommands.plvl.AddedSingleAccountPermission", target.Client.Account.Name, args[2]));
 
 						break;
@@ -110,7 +121,14 @@ namespace DOL.GS.Commands
 								target = targetClient.Player;
 						}
 
-						if( SinglePermission.removePermission( target, args[2] ) )
+					    bool removeSuccess = false;
+
+					    if (Properties.USE_NEW_PRIVILEGE_SYSTEM)
+					        removeSuccess = target.PlayerPrivileges.RemoveCommand(args[2]) == ModificationStatus.Success;
+					    else
+					        removeSuccess = SinglePermission.removePermission(target, args[2]);
+
+                        if (removeSuccess)
 							DisplayMessage(client, LanguageMgr.GetTranslation(client.Account.Language, "AdminCommands.plvl.RemoveSinglePermission", target.Name, args[2]));
 						else
 							DisplayMessage(client, LanguageMgr.GetTranslation(client.Account.Language, "AdminCommands.plvl.NoPermissionForCommand", target.Name, args[2]));
@@ -136,7 +154,14 @@ namespace DOL.GS.Commands
                                 target = targetClient.Player;
                         }
 
-                        if (SinglePermission.removePermissionAccount(target, args[2]))
+                        bool removeSuccess = false;
+
+                        if (Properties.USE_NEW_PRIVILEGE_SYSTEM)
+                            removeSuccess = target.Client.AccountPrivileges.RemoveCommand(args[2]) == ModificationStatus.Success;
+                        else
+                            removeSuccess = SinglePermission.removePermissionAccount(target, args[2]);
+
+                        if (removeSuccess)
                             DisplayMessage(client, LanguageMgr.GetTranslation(client.Account.Language, "AdminCommands.plvl.RemoveSingleAccountPermission", target.Client.Account.Name, args[2]));
                         else
                             DisplayMessage(client, LanguageMgr.GetTranslation(client.Account.Language, "AdminCommands.plvl.NoPermissionForCommand", target.Client.Account.Name, args[2]));
