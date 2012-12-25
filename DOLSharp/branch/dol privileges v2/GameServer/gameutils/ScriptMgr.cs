@@ -56,6 +56,7 @@ namespace DOL.GS
 			public String[] Usage { get; set; }
 			public string m_cmd;
 			public uint m_lvl;
+		    public string m_privilege;
 			public string m_desc;
 			public ICommandHandler m_cmdHandler;
 		}
@@ -237,13 +238,16 @@ namespace DOL.GS
 							if (log.IsDebugEnabled && quiet == false)
 								log.Debug("ScriptMgr: Command - '" + attrib.Cmd + "' - (" + attrib.Description + ") required plvl:" + attrib.Level);
 
-							GameCommand cmd = new GameCommand();
-							cmd.Usage = attrib.Usage;
-							cmd.m_cmd = attrib.Cmd;
-							cmd.m_lvl = attrib.Level;
-							cmd.m_desc = attrib.Description;
-							cmd.m_cmdHandler = (ICommandHandler)Activator.CreateInstance(type);
-							m_gameCommands.Add(attrib.Cmd, cmd);
+							GameCommand cmd = new GameCommand
+							    {
+							        Usage = attrib.Usage,
+							        m_cmd = attrib.Cmd,
+							        m_lvl = attrib.Level,
+							        m_privilege = attrib.Privilege,
+							        m_desc = attrib.Description,
+							        m_cmdHandler = (ICommandHandler) Activator.CreateInstance(type)
+							    };
+						    m_gameCommands.Add(attrib.Cmd, cmd);
 							if (attrib.Aliases != null)
 							{
 								foreach (string alias in attrib.Aliases)
@@ -283,6 +287,13 @@ namespace DOL.GS
 
                 if(client.CanUseCommand(myCommand, pars))
 				    ExecuteCommand(client, myCommand, pars);
+                else
+                {
+                    if (pars[0][0] == '&')
+                        pars[0] = '/' + pars[0].Remove(0, 1);
+
+                    client.Out.SendMessage("No such command (" + pars[0] + ")", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                }
 			}
 			catch (Exception e)
 			{

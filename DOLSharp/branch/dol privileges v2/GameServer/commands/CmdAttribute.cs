@@ -28,13 +28,7 @@ namespace DOL
 		[AttributeUsage(AttributeTargets.Class,AllowMultiple = true)]
 		public class CmdAttribute : Attribute
 		{
-			private	string		m_cmd;
-			private string[]	m_cmdAliases;
-			private uint		m_lvl;
-			private	string		m_description;
-			private string[]	m_usage;
-
-			/// <summary>
+		    /// <summary>
 			/// Constructor
 			/// </summary>
 			/// <param name="cmd">Command to handle</param>
@@ -44,13 +38,56 @@ namespace DOL
 			/// <param name="usage">How to use the command</param>
 			public CmdAttribute(string cmd, string[] alias, ePrivLevel lvl, string desc, params string[] usage)
 			{
-				m_cmd=cmd;
-				m_cmdAliases = alias;
-				m_lvl = (uint)lvl;
-				m_description = desc;
-				//m_usage = new string[1];
-				m_usage = usage;
+				Cmd = cmd;
+				Aliases = alias;
+				Level = (uint) lvl;
+				Description = desc;
+				Usage = usage;
 			}
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="cmd">Command to handle</param>
+            /// <param name="alias">Other names the command goes by</param>
+            /// <param name="lvl">Minimum required plvl for this command</param>
+            /// <param name="privKey">Privilege to index this command under for privileges 2.0</param>
+            /// <param name="desc">Description of the command</param>
+            /// <param name="usage">How to use the command</param>
+		    public CmdAttribute(string cmd, string[] alias, ePrivLevel lvl, string privKey, string desc, params string[] usage)
+		        : this(cmd, alias, lvl, desc, usage)
+            {
+                Privilege = privKey;
+            }
+
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="cmd">Command to handle</param>
+            /// <param name="alias">Other names the command goes by</param>
+            /// <param name="privKey">Privilege to index this command under for privileges 2.0</param>
+            /// <param name="desc">Description of the command</param>
+            /// <param name="usage">How to use the command</param>
+            public CmdAttribute(string cmd, string[] alias, string privKey, string desc, params string[] usage)
+                : this(cmd, alias, ePrivLevel.NotIndexed, desc, usage)
+            {
+                Privilege = privKey;
+            }
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="cmd">Command to handle</param>
+            /// <param name="privKey">Privilege to index this command under for privileges 2.0</param>
+            /// <param name="desc">Description of the command</param>
+            /// <param name="usage">How to use the command</param>
+            public CmdAttribute(string cmd, string privKey, string desc, params string[] usage)
+                : this(cmd, null, ePrivLevel.NotIndexed, desc, usage)
+            {
+                Privilege = privKey;
+            }
+
 
 			/// <summary>
 			/// Constructor
@@ -59,64 +96,40 @@ namespace DOL
 			/// <param name="lvl">Minimum required plvl for this command</param>
 			/// <param name="desc">Description of the command</param>
 			/// <param name="usage">How to use the command</param>
-			public CmdAttribute(string cmd, ePrivLevel lvl, string desc, params string[] usage) : this(cmd,null,lvl,desc,usage)
+			public CmdAttribute(string cmd, ePrivLevel lvl, string desc, params string[] usage) 
+                : this(cmd, null, lvl, desc, usage)
 			{
 			}
 
-			/// <summary>
-			/// Gets the command being handled
-			/// </summary>
-			public string Cmd
-			{
-				get 
-				{
-	  				return m_cmd;
-				}
-			}
+		    /// <summary>
+		    /// Gets the command being handled
+		    /// </summary>
+		    public string Cmd { get; private set; }
 
-			/// <summary>
-			/// Gets aliases for the command being handled
-			/// </summary>
-			public string[] Aliases
-			{
-				get
-				{
-					return m_cmdAliases;
-				}
-			}
+		    /// <summary>
+		    /// Gets aliases for the command being handled
+		    /// </summary>
+		    public string[] Aliases { get; private set; }
 
-			/// <summary>
-			/// Gets minimum required plvl for the command to be used
-			/// </summary>
-			public uint Level
-			{
-				get
-				{
-					return m_lvl;
-				}
-			}
+		    /// <summary>
+		    /// Gets minimum required plvl for the command to be used
+		    /// </summary>
+		    public uint Level { get; private set; }
 
-			/// <summary>
-			/// Gets the description of the command
-			/// </summary>
-			public string Description
-			{
-				get 
-				{
-					return m_description;
-				}
-			}
+		    /// <summary>
+		    /// The privilege that this command can be indexed under for usage under new privilege system.
+		    /// </summary>
+		    public string Privilege { get; private set; }
 
-			/// <summary>
-			/// Gets the command usage
-			/// </summary>
-			public string[] Usage
-			{
-				get
-				{
-					return m_usage;
-				}
-			}
+		    /// <summary>
+		    /// Gets the description of the command
+		    /// </summary>
+		    public string Description { get; private set; }
+
+		    /// <summary>
+		    /// Gets the command usage
+		    /// </summary>
+		    public string[] Usage { get; private set; }
 		}
 	}
 }

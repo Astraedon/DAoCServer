@@ -373,9 +373,9 @@
     <Compile Include="gameutils\InventoryLogging.cs" />
     <Compile Include="gameutils\MarketCache.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeBinding.cs" />
+    <Compile Include="gameutils\Privilege\PrivilegeException.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeGroup.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeManager.cs" />
-    <Compile Include="gameutils\Privilege\PrivilegeUtility.cs" />
     <Compile Include="keeps\IKeepManager.cs" />
     <Compile Include="keeps\Relics\GameInventoryRelic.cs" />
     <Compile Include="gameobjects\CustomNPC\RoyalTreasuryClerk.cs" />

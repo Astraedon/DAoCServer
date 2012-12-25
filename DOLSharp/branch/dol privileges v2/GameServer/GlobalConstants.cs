@@ -98,6 +98,11 @@ namespace DOL.GS
 		/// An Admin
 		/// </summary>
 		Admin = 3,
+
+        /// <summary>
+        /// ePrivLevel that cannot be used for validation, used under priv 2.0 system.
+        /// </summary>
+        NotIndexed = 255
 	}
 
 	/// <summary>
