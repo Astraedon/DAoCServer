@@ -311,7 +311,35 @@ namespace DOL.GS
                     AccountPrivileges = new PrivilegeBinding(PrivilegeManager.GetBindingForAccount(value));
 
                     Account.GetPLVL = account => this.AsPrivilegeLevel();
-                    Account.SetPLVL = (account, newValue) => { /* TODO: Write the Legacy PLVL Update Logic. */ };
+                    Account.SetPLVL = (account, newValue) =>
+                        {
+                            PrivilegeGroup pGrp = PrivilegeManager.GetGroupFromID((int) newValue);
+
+                            switch (newValue)
+                            {
+                                case 0:
+                                    AccountPrivileges.RemoveGroups(PrivilegeManager.GetGroupsFromIDs(1, 2, 3));
+                                    account.m_plvl = newValue;
+                                    break;
+                                case 1:
+                                    AccountPrivileges.RemoveGroups(PrivilegeManager.GetGroupsFromIDs(2, 3));
+                                    AccountPrivileges.AddGroup(pGrp);
+                                    account.m_plvl = newValue;
+                                    break;
+                                case 2:
+                                    AccountPrivileges.RemoveGroups(PrivilegeManager.GetGroupsFromIDs(1, 3));
+                                    AccountPrivileges.AddGroup(pGrp);
+                                    account.m_plvl = newValue;
+                                    break;
+                                case 3:
+                                    AccountPrivileges.RemoveGroups(PrivilegeManager.GetGroupsFromIDs(1, 2));
+                                    AccountPrivileges.AddGroup(pGrp);
+                                    account.m_plvl = newValue;
+                                    break;
+                            }
+
+                            account.Dirty = true;
+                        };
                 }
 
 				GameEventMgr.Notify(GameClientEvent.AccountLoaded, this);

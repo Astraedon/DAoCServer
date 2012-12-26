@@ -26,6 +26,5 @@ namespace DOL.GS.Privilege
         AlreadyExists,
         DoesNotExist,
         Circular
-        
     }
 }

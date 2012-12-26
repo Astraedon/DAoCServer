@@ -224,6 +224,16 @@ namespace DOL.GS.Privilege
             return ModificationStatus.Success;
         }
 
+        /// <summary>
+        /// Removes several groups from this binding and syncs to database
+        /// </summary>
+        /// <param name="grps"></param>
+        /// <returns></returns>
+        public bool RemoveGroups(IEnumerable<PrivilegeGroup> grps)
+        {
+            return grps.Aggregate(true, (current, privilegeGroup) => current & RemoveGroup(privilegeGroup) == ModificationStatus.Success);
+        }
+
         #endregion
 
         #endregion

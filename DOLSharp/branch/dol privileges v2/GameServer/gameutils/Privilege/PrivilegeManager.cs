@@ -146,6 +146,16 @@ namespace DOL.GS.Privilege
         }
 
         /// <summary>
+        /// Lookup several privilege groups from the cache by group ID's
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public static IList<PrivilegeGroup> GetGroupsFromIDs(params int[] ids)
+        {
+            return ids.Select(GetGroupFromID).ToList();
+        }
+
+        /// <summary>
         /// Lookup a privilege group from the cache by group Name.
         /// </summary>
         /// <param name="name">Name to use to look for the group.</param>

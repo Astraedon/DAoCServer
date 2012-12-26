@@ -33,7 +33,7 @@ namespace DOL.Database
         /// Sets/Gets Player ID or Account Name
         /// </summary>
         [ReadOnly]
-        [DataElement(Index = true)]
+        [DataElement(Index = true, AllowDbNull = false, Unique = true)]
         [PrimaryKey]
         public string Identifier
         {
