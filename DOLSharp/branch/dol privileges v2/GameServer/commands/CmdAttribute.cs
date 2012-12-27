@@ -28,6 +28,19 @@ namespace DOL
 		[AttributeUsage(AttributeTargets.Class,AllowMultiple = true)]
 		public class CmdAttribute : Attribute
 		{
+            /// <summary>
+            /// Constructor
+            /// </summary>
+		    public CmdAttribute()
+		    {
+		        Cmd = null;
+		        Aliases = null;
+		        Level = (uint) ePrivLevel.NotIndexed;
+		        Privilege = string.Empty;
+		        Description = string.Empty;
+		        Usage = null;
+		    }
+
 		    /// <summary>
 			/// Constructor
 			/// </summary>
@@ -60,7 +73,6 @@ namespace DOL
                 Privilege = privKey;
             }
 
-
             /// <summary>
             /// Constructor
             /// </summary>
@@ -88,7 +100,6 @@ namespace DOL
                 Privilege = privKey;
             }
 
-
 			/// <summary>
 			/// Constructor
 			/// </summary>
@@ -104,32 +115,32 @@ namespace DOL
 		    /// <summary>
 		    /// Gets the command being handled
 		    /// </summary>
-		    public string Cmd { get; private set; }
+		    public string Cmd { get; set; }
 
 		    /// <summary>
 		    /// Gets aliases for the command being handled
 		    /// </summary>
-		    public string[] Aliases { get; private set; }
+		    public string[] Aliases { get; set; }
 
 		    /// <summary>
 		    /// Gets minimum required plvl for the command to be used
 		    /// </summary>
-		    public uint Level { get; private set; }
+		    public uint Level { get; set; }
 
 		    /// <summary>
 		    /// The privilege that this command can be indexed under for usage under new privilege system.
 		    /// </summary>
-		    public string Privilege { get; private set; }
+		    public string Privilege { get; set; }
 
 		    /// <summary>
 		    /// Gets the description of the command
 		    /// </summary>
-		    public string Description { get; private set; }
+		    public string Description { get; set; }
 
 		    /// <summary>
 		    /// Gets the command usage
 		    /// </summary>
-		    public string[] Usage { get; private set; }
+		    public string[] Usage { get; set; }
 		}
 	}
 }

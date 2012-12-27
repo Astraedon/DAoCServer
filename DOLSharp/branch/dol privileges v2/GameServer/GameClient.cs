@@ -338,7 +338,7 @@ namespace DOL.GS
                                     break;
                             }
 
-                            account.Dirty = true;
+                            GameEventMgr.Notify(GameClientEvent.ClientPrivilegesModified, this);
                         };
                 }
 

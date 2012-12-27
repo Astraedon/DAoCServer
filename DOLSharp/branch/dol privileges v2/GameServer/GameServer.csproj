@@ -372,11 +372,13 @@
     <Compile Include="gameutils\MarketSearch.cs" />
     <Compile Include="gameutils\InventoryLogging.cs" />
     <Compile Include="gameutils\MarketCache.cs" />
-    <Compile Include="gameutils\Privilege\DefaultPrivileges.cs" />
+    <Compile Include="gameutils\Privilege\PrivilegeCommand.cs" />
+    <Compile Include="gameutils\Privilege\PrivilegeDefaults.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeEnumerations.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeBinding.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeException.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeGroup.cs" />
+    <Compile Include="gameutils\Privilege\PrivilegeGroupCommand.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeManager.cs" />
     <Compile Include="keeps\IKeepManager.cs" />
     <Compile Include="keeps\Relics\GameInventoryRelic.cs" />
@@ -2775,6 +2777,7 @@
     <Content Include="language\EN\GameObjects\GameGuard.txt" />
     <Content Include="language\EN\PlayerRealmTitles.txt" />
     <None Include="language\EN\Ability.txt" />
+    <Content Include="language\EN\Privilege.txt" />
     <Content Include="language\EN\Zones.txt" />
     <None Include="language\FR\GameObjects\CustomNPC\Enchanter.txt" />
     <None Include="language\FR\GameObjects\CustomNPC\GameBoatStableMaster.txt" />

@@ -60,5 +60,9 @@ namespace DOL.Events
         /// The AccountLoaded event is fired whenever an account has been set for the GameClient
         /// </summary>
         public static readonly GameClientEvent PrivilegeLoaded = new GameClientEvent("GameClient.PrivilegeLoaded");
+        /// <summary>
+        /// The ClientPrivilegesModified is fired anytime the client's privileges (account-wide) has been modified.
+        /// </summary>
+        public static readonly GameClientEvent ClientPrivilegesModified = new GameClientEvent("GameClient.PrivilegesModified");
 	}
 }

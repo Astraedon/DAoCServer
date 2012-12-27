@@ -4,7 +4,7 @@ namespace DOL.GS.Privilege
     /// <summary>
     /// Holds the default privilege keys used by the privilege system.
     /// </summary>
-    public static class DefaultPrivileges
+    public static class PrivilegeDefaults
     {
         /// <summary>
         /// Grants any and all permissions to a player with this, with great 
@@ -31,5 +31,18 @@ namespace DOL.GS.Privilege
         /// Key that allows the privileges system to return plvl 3 for groups.
         /// </summary>
         public const string LegacyAdministrator = "plvl_admin";
+
+        #region Lanaguage Manager Prefixes
+
+        public const string ErrorPrefix = "Privilege.Error.";
+        public const string GroupErrorPrefix = "PrivilegeGroup.Error.";
+        public const string GainPrefix = "Privilege.Notify.Gain.";
+        public const string LostPrefix = "Privilege.Notify.Lost.";
+        public const string GrantPrefix = "Privilege.Notify.Grant.";
+        public const string RevokePrefix = "Privilege.Notify.Revoke.";
+        public const string ReceivedPrefix = "Privilege.Notify.Received.";
+        public const string RevokedPrefix = "Privilege.Notify.Revoked.";
+
+        #endregion
     }
 }

@@ -43,7 +43,7 @@ namespace DOL.GS.Privilege
 
             if (!string.IsNullOrEmpty(DBEntry.Commands))
                 foreach (string str in DBEntry.Commands.Split(';'))
-                    Privileges.Add(DefaultPrivileges.CommandPrefix + str);
+                    Privileges.Add(PrivilegeDefaults.CommandPrefix + str);
         }
 
         /// <summary>
@@ -56,9 +56,7 @@ namespace DOL.GS.Privilege
             {
                 foreach (string privilegeGroup in DBEntry.InheritedGroups.Split(';'))
                 {
-                    ushort key;
-                    PrivilegeGroup toAdd = ushort.TryParse(privilegeGroup, out key) ?
-                        PrivilegeManager.GetGroupFromID(key) : PrivilegeManager.GetGroupFromName(privilegeGroup);
+                    PrivilegeGroup toAdd = PrivilegeManager.GetGroup(privilegeGroup);
 
                     if (toAdd != null)
                         InheritedGroups.Add(toAdd);
@@ -103,7 +101,7 @@ namespace DOL.GS.Privilege
         /// <returns></returns>
         public bool HasPrivilege(string privilegeKey)
         {
-            return Privileges.Any(s => s == "*" || s == privilegeKey) || m_inheritedGroups.Any(sg => sg.HasPrivilege(privilegeKey));
+            return Privileges.Any(s => s == PrivilegeDefaults.Wildcard || s == privilegeKey) || InheritedGroups.Any(sg => sg.HasPrivilege(privilegeKey));
         }
 
         #region Add / Remove
@@ -118,7 +116,7 @@ namespace DOL.GS.Privilege
         {
             Privileges.Add(privilegeKey);
 
-            DBEntry.Privileges = string.Join(";", Privileges.Where(s => !s.StartsWith(DefaultPrivileges.CommandPrefix)));
+            DBEntry.Privileges = string.Join(";", Privileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)));
             if (!GameServer.Database.SaveObject(DBEntry))
                 return ModificationStatus.FailedToSave;
 
@@ -133,7 +131,7 @@ namespace DOL.GS.Privilege
         {
             Privileges.Remove(privilegeKey);
 
-            DBEntry.Privileges = string.Join(";", Privileges.Where(s => !s.StartsWith(DefaultPrivileges.CommandPrefix)));
+            DBEntry.Privileges = string.Join(";", Privileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)));
             if (!GameServer.Database.SaveObject(DBEntry))
                 return ModificationStatus.FailedToSave;
 
@@ -150,14 +148,14 @@ namespace DOL.GS.Privilege
         /// <param name="commandString">Command to add.</param>
         public ModificationStatus AddCommand(string commandString)
         {
-            Privileges.Add(DefaultPrivileges.CommandPrefix + commandString);
+            Privileges.Add(PrivilegeDefaults.CommandPrefix + commandString);
 
-            string[] cmds = Privileges.Where(s => s.StartsWith(DefaultPrivileges.CommandPrefix)).ToArray();
+            string[] cmds = Privileges.Where(s => s.StartsWith(PrivilegeDefaults.CommandPrefix)).ToArray();
 
             for (int index = 0; index < cmds.Length; index++)
             {
-                if (cmds[index].StartsWith(DefaultPrivileges.CommandPrefix))
-                    cmds[index] = cmds[index].Replace(DefaultPrivileges.CommandPrefix, "");
+                if (cmds[index].StartsWith(PrivilegeDefaults.CommandPrefix))
+                    cmds[index] = cmds[index].Replace(PrivilegeDefaults.CommandPrefix, "");
             }
 
             DBEntry.Commands = string.Join(";", cmds);
@@ -173,14 +171,14 @@ namespace DOL.GS.Privilege
         /// <param name="commandString">Command to Remove.</param>
         public ModificationStatus RemoveCommand(string commandString)
         {
-            Privileges.Remove(DefaultPrivileges.CommandPrefix + commandString);
+            Privileges.Remove(PrivilegeDefaults.CommandPrefix + commandString);
 
-            string[] cmds = Privileges.Where(s => s.StartsWith(DefaultPrivileges.CommandPrefix)).ToArray();
+            string[] cmds = Privileges.Where(s => s.StartsWith(PrivilegeDefaults.CommandPrefix)).ToArray();
 
             for (int index = 0; index < cmds.Length; index++)
             {
-                if (cmds[index].StartsWith(DefaultPrivileges.CommandPrefix))
-                    cmds[index] = cmds[index].Replace(DefaultPrivileges.CommandPrefix, "");
+                if (cmds[index].StartsWith(PrivilegeDefaults.CommandPrefix))
+                    cmds[index] = cmds[index].Replace(PrivilegeDefaults.CommandPrefix, "");
             }
 
             DBEntry.Commands = string.Join(";", cmds);
@@ -245,12 +243,8 @@ namespace DOL.GS.Privilege
         /// <returns>Whether or not there's a circular inheritance chain.</returns>
         public bool HasCircularInheritanceChain()
         {
-            foreach (PrivilegeGroup sg in InheritedGroups)
-            {
-                if (sg.HasInherited(DBEntry.GroupIndex) || InheritedGroups.Any(ig => ig.HasInherited(DBEntry.GroupIndex)))
-                    return true;
-            }
-            return false;
+            return InheritedGroups.Any(sg => sg.HasInherited(DBEntry.GroupIndex) || 
+                InheritedGroups.Any(ig => ig.HasInherited(DBEntry.GroupIndex)));
         }
 
         /// <summary>
@@ -261,7 +255,9 @@ namespace DOL.GS.Privilege
         /// <returns></returns>
         private bool HasInherited(int groupID)
         {
-            return DBEntry.GroupIndex == groupID || InheritedGroups.Any(sg => sg.DBEntry.GroupIndex == groupID || sg.HasInherited(groupID));
+            return DBEntry.GroupIndex == groupID || 
+                InheritedGroups.Any(sg => sg.DBEntry.GroupIndex == groupID || 
+                    sg.HasInherited(groupID));
         }
 
         #endregion

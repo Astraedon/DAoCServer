@@ -1,0 +1,58 @@
+﻿# /privilege Command
+Privilege.Description:								Modify target's account or player permissions, groups, and commands.
+
+Privilege.Notify.Gain.CommandPlayer:				You gained the permission to use the {0} command.
+Privilege.Notify.Gain.CommandAccount:				Your account gained the permission to use the {0} command.
+Privilege.Notify.Gain.PrivilegePlayer:				You gained the privilege {0}.
+Privilege.Notify.Gain.PrivilegeAccount:				Your account gained the privilege {0}.
+Privilege.Notify.Gain.GroupPlayer:					You gained access to the group {0}.
+Privilege.Notify.Gain.GroupAccount:					Your account gained access to the group {0}.
+
+Privilege.Notify.Lost.CommandPlayer:				You lost the permission to use the {0} command.
+Privilege.Notify.Lost.CommandAccount:				Your account lost the permission to use the {0} command.
+Privilege.Notify.Lost.PrivilegePlayer:				You lost the privilege {0}.
+Privilege.Notify.Lost.PrivilegeAccount:				Your account lost the privilege {0}.
+Privilege.Notify.Lost.GroupPlayer:					You lost access to the group {0}.
+Privilege.Notify.Lost.GroupAccount:					Your account lost access to the group {0}.
+
+
+Privilege.Notify.Grant.CommandPlayer:				You granted the permission to use the command {0} to {1}.
+Privilege.Notify.Grant.CommandAccount:				You granted the permission to use the command {0} to {1}'s account.
+Privilege.Notify.Grant.PrivilegePlayer:				You granted access to the {0} privilege to {1}.
+Privilege.Notify.Grant.PrivilegeAccount:			You granted access to the {0} privilege to {1}'s account.
+Privilege.Notify.Grant.GroupPlayer:					You granted access to the {0} group to {1}.
+Privilege.Notify.Grant.GroupAccount:				You granted access to the {0} group to {1}'s account.
+
+Privilege.Notify.Revoke.CommandPlayer:				You revoked the permission to use the command {0} from {1}.
+Privilege.Notify.Revoke.CommandAccount:				You revoked the permission to use the command {0} from {1}'s account.
+Privilege.Notify.Revoke.PrivilegePlayer:			You revoked access to the {0} privilege from {1}.
+Privilege.Notify.Revoke.PrivilegeAccount:			You revoked access to the {0} privilege from {1}'s account.
+Privilege.Notify.Revoke.GroupPlayer:				You revoked access to the {0} group from {1}.
+Privilege.Notify.Revoke.GroupAccount:				You revoked access to the {0} group from {1}'s account.
+
+
+Privilege.Notify.Received.CommandPlayer:			You were granted the permission to use the command {0} by {1}.
+Privilege.Notify.Received.CommandAccount:			Your account was granted the permission to use the command {0} by {1}.
+Privilege.Notify.Received.PrivilegePlayer:			You were granted access to the {0} privilege by {1}.
+Privilege.Notify.Received.PrivilegeAccount:			Your account was granted access to the {0} privilege by {1}.
+Privilege.Notify.Received.GroupPlayer:				You were added to the {0} group by {1}.
+Privilege.Notify.Received.GroupAccount:				Your account was granted access to the {0} group by {1}.
+
+Privilege.Notify.Revoked.CommandPlayer:				Your permission to use the command {0} was Revoke by {1}.
+Privilege.Notify.Revoked.CommandAccount:			Your account's permission to use the command {0} was Revoke by {1}.
+Privilege.Notify.Revoked.PrivilegePlayer:			Your access to the {0} privilege was Revoke by {1}.
+Privilege.Notify.Revoked.PrivilegeAccount:			Your account's access to the {0} privilege was Revoke by {1}.
+Privilege.Notify.Revoked.GroupPlayer:				Your access to the {0} group was Revoke by {1}.
+Privilege.Notify.Revoked.GroupAccount:				Your account's access to the {0} group was Revoke by {1}.
+
+# /privilegegroup Command
+PrivilegeGroup.Description:							Create, modify or delete existing groups from the server.
+
+PrivilegeGroup.Error.CannotAddCircular:				Cannot add sub group {0} to group {1} as it would cause a circular inheritance chain.
+PrivilegeGroup.Error.CannotAddAlreadyExists:		Cannot add sub group {0} to group {1} as the sub group already exists.			
+
+# / Etc
+Privilege.Error.AlreadyHas:							Cannot add {0} {1} to {2} because {2} already has permission for that.
+Privilege.Error.DoesNotHave:						Cannot remove the privilege {0} from {1} because they lack that privilege.
+PrivilegeGroup.Error.NotFound:						Privilege Group not found in cache under key {0}.
+PrivilegeGroup.Error.DoesNotHave:					Cannot remove the group {0} from {1} because they lack that group.

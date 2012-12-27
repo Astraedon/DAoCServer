@@ -160,6 +160,7 @@ namespace DOL
 				set
 				{
 				    SetPLVL(this, value);
+				    Dirty = true;
 				}
 			}
 			

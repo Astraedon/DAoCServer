@@ -164,6 +164,11 @@ namespace DOL.Events
 		/// </summary>
 		public static readonly GamePlayerEvent ExecuteCommand = new GamePlayerEvent("GamePlayer.ExecuteCommand");
 
+        /// <summary>
+        /// The PlayerPrivilegesModified event is fired when a player's privileges change.
+        /// </summary>
+        public static readonly GamePlayerEvent PrivilegesModified = new GamePlayerEvent("GamePlayer.PrivilegesModified"); 
+
 		#region Statistics
 
 		/// <summary>

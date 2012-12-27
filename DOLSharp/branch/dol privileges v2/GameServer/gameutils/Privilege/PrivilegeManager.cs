@@ -82,14 +82,14 @@ namespace DOL.GS.Privilege
             GroupIndex = 1,
             Name = "player",
             DisplayName = "Player",
-            Privileges = DefaultPrivileges.LegacyPlayer
+            Privileges = PrivilegeDefaults.LegacyPlayer
         };
         private static readonly DBPrivilegeGroup GameMasterPrivilege = new DBPrivilegeGroup
         {
             GroupIndex = 2,
             Name = "gm",
             DisplayName = "Gamemaster",
-            Privileges = DefaultPrivileges.LegacyGM,
+            Privileges = PrivilegeDefaults.LegacyGM,
             InheritedGroups = "player"
         };
         private static readonly DBPrivilegeGroup AdministratorPrivilege = new DBPrivilegeGroup
@@ -97,7 +97,7 @@ namespace DOL.GS.Privilege
             GroupIndex = 3,
             Name = "admin",
             DisplayName = "Administrator",
-            Privileges = DefaultPrivileges.LegacyAdministrator,
+            Privileges = PrivilegeDefaults.LegacyAdministrator,
             InheritedGroups = "gm"
         };
 
@@ -135,6 +135,15 @@ namespace DOL.GS.Privilege
 
         #region Get PrivilegeGroup
 
+        public static PrivilegeGroup GetGroup(string grpKey)
+        {
+            int key;
+            PrivilegeGroup toAdd = int.TryParse(grpKey, out key) ?
+                GetGroupFromID(key) : GetGroupFromName(grpKey);
+
+            return toAdd;
+        }
+
         /// <summary>
         /// Lookup a privilege group from the cache by group ID.
         /// </summary>
@@ -150,9 +159,9 @@ namespace DOL.GS.Privilege
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        public static IList<PrivilegeGroup> GetGroupsFromIDs(params int[] ids)
+        public static IEnumerable<PrivilegeGroup> GetGroupsFromIDs(params int[] ids)
         {
-            return ids.Select(GetGroupFromID).ToList();
+            return ids.Select(GetGroupFromID);
         }
 
         /// <summary>
@@ -248,14 +257,14 @@ namespace DOL.GS.Privilege
         {
             if (cli.Player != null)
             {
-                if (cli.Player.PlayerPrivileges.HasPrivilege(DefaultPrivileges.LegacyAdministrator)) return 3;
-                if (cli.Player.PlayerPrivileges.HasPrivilege(DefaultPrivileges.LegacyGM)) return 2;
-                if (cli.Player.PlayerPrivileges.HasPrivilege(DefaultPrivileges.LegacyPlayer)) return 1;
+                if (cli.Player.PlayerPrivileges.HasPrivilege(PrivilegeDefaults.LegacyAdministrator)) return 3;
+                if (cli.Player.PlayerPrivileges.HasPrivilege(PrivilegeDefaults.LegacyGM)) return 2;
+                if (cli.Player.PlayerPrivileges.HasPrivilege(PrivilegeDefaults.LegacyPlayer)) return 1;
             }
 
-            if (cli.AccountPrivileges.HasPrivilege(DefaultPrivileges.LegacyAdministrator)) return 3;
-            if (cli.AccountPrivileges.HasPrivilege(DefaultPrivileges.LegacyGM)) return 2;
-            if (cli.AccountPrivileges.HasPrivilege(DefaultPrivileges.LegacyPlayer)) return 1;
+            if (cli.AccountPrivileges.HasPrivilege(PrivilegeDefaults.LegacyAdministrator)) return 3;
+            if (cli.AccountPrivileges.HasPrivilege(PrivilegeDefaults.LegacyGM)) return 2;
+            if (cli.AccountPrivileges.HasPrivilege(PrivilegeDefaults.LegacyPlayer)) return 1;
             return 0;
         }
 

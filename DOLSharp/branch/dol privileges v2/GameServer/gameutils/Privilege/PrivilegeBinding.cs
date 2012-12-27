@@ -38,9 +38,7 @@ namespace DOL.GS.Privilege
             {
                 foreach (string privilegeGroup in DBEntry.Groups.Split(';'))
                 {
-                    int key;
-                    PrivilegeGroup toAdd = int.TryParse(privilegeGroup, out key) ?
-                        PrivilegeManager.GetGroupFromID(key) : PrivilegeManager.GetGroupFromName(privilegeGroup);
+                    PrivilegeGroup toAdd = PrivilegeManager.GetGroup(privilegeGroup);
 
                     if (toAdd != null)
                         Groups.Add(toAdd);
@@ -55,7 +53,7 @@ namespace DOL.GS.Privilege
                 foreach (string str in DBEntry.AdditionalCommands.Split(';'))
                 {
                     if (str != "")
-                        AdditionalPrivileges.Add(DefaultPrivileges.CommandPrefix + str);
+                        AdditionalPrivileges.Add(PrivilegeDefaults.CommandPrefix + str);
                 }
             }
         }
@@ -102,7 +100,7 @@ namespace DOL.GS.Privilege
 
             AdditionalPrivileges.Add(privilegeKey);
 
-            DBEntry.AdditionalPrivileges = string.Join(";", AdditionalPrivileges.Where(s => !s.StartsWith(DefaultPrivileges.CommandPrefix)));
+            DBEntry.AdditionalPrivileges = string.Join(";", AdditionalPrivileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)));
             
             if (!GameServer.Database.SaveObject(DBEntry))
                 return ModificationStatus.FailedToSave;
@@ -120,7 +118,7 @@ namespace DOL.GS.Privilege
 
             AdditionalPrivileges.Remove(privilegeKey);
 
-            DBEntry.AdditionalPrivileges = string.Join(";", AdditionalPrivileges.Where(s => !s.StartsWith(DefaultPrivileges.CommandPrefix)));
+            DBEntry.AdditionalPrivileges = string.Join(";", AdditionalPrivileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)));
            
             if (!GameServer.Database.SaveObject(DBEntry))
                 return ModificationStatus.FailedToSave;
@@ -138,17 +136,17 @@ namespace DOL.GS.Privilege
         /// <param name="commandString">Command to add.</param>
         public ModificationStatus AddCommand(string commandString)
         {
-            if (AdditionalPrivileges.Contains(DefaultPrivileges.CommandPrefix + commandString)) 
+            if (AdditionalPrivileges.Contains(PrivilegeDefaults.CommandPrefix + commandString)) 
                 return ModificationStatus.AlreadyExists;
 
-            AdditionalPrivileges.Add(DefaultPrivileges.CommandPrefix + commandString);
+            AdditionalPrivileges.Add(PrivilegeDefaults.CommandPrefix + commandString);
 
-            string[] cmds = AdditionalPrivileges.Where(s => s.StartsWith(DefaultPrivileges.CommandPrefix)).ToArray();
+            string[] cmds = AdditionalPrivileges.Where(s => s.StartsWith(PrivilegeDefaults.CommandPrefix)).ToArray();
 
             for (int index = 0; index < cmds.Length; index++)
             {
-                if (cmds[index].StartsWith(DefaultPrivileges.CommandPrefix))
-                    cmds[index] = cmds[index].Replace(DefaultPrivileges.CommandPrefix, "");
+                if (cmds[index].StartsWith(PrivilegeDefaults.CommandPrefix))
+                    cmds[index] = cmds[index].Replace(PrivilegeDefaults.CommandPrefix, "");
             }
 
             DBEntry.AdditionalCommands = string.Join(";", cmds);
@@ -164,17 +162,17 @@ namespace DOL.GS.Privilege
         /// <param name="commandString">Command to Remove.</param>
         public ModificationStatus RemoveCommand(string commandString)
         {
-            if (!AdditionalPrivileges.Contains(DefaultPrivileges.CommandPrefix + commandString))
+            if (!AdditionalPrivileges.Contains(PrivilegeDefaults.CommandPrefix + commandString))
                 return ModificationStatus.DoesNotExist;
 
-            AdditionalPrivileges.Remove(DefaultPrivileges.CommandPrefix + commandString);
+            AdditionalPrivileges.Remove(PrivilegeDefaults.CommandPrefix + commandString);
 
-            string[] cmds = AdditionalPrivileges.Where(s => s.StartsWith(DefaultPrivileges.CommandPrefix)).ToArray();
+            string[] cmds = AdditionalPrivileges.Where(s => s.StartsWith(PrivilegeDefaults.CommandPrefix)).ToArray();
 
             for (int index = 0; index < cmds.Length; index++)
             {
-                if (cmds[index].StartsWith(DefaultPrivileges.CommandPrefix))
-                    cmds[index] = cmds[index].Replace(DefaultPrivileges.CommandPrefix, "");
+                if (cmds[index].StartsWith(PrivilegeDefaults.CommandPrefix))
+                    cmds[index] = cmds[index].Replace(PrivilegeDefaults.CommandPrefix, "");
             }
 
             DBEntry.AdditionalCommands = string.Join(";", cmds);
@@ -248,7 +246,7 @@ namespace DOL.GS.Privilege
         /// <returns>Allowed?</returns>
         public bool HasPrivilege(string privilegeKey)
         {
-            return AdditionalPrivileges.Any(s => s == DefaultPrivileges.Wildcard || s == privilegeKey) || Groups.Any(g => g.HasPrivilege(privilegeKey));
+            return AdditionalPrivileges.Any(s => s == PrivilegeDefaults.Wildcard || s == privilegeKey) || Groups.Any(g => g.HasPrivilege(privilegeKey));
         }
     }
 }
