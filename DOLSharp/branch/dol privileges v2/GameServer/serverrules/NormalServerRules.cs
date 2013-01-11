@@ -16,13 +16,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
-using System;
+
 using System.Collections;
 using DOL.AI.Brain;
 using DOL.Database;
 using DOL.GS.Keeps;
-using DOL.GS.PacketHandler;
-using DOL.GS.Styles;
+using DOL.GS.Privilege;
 
 namespace DOL.GS.ServerRules
 {
@@ -122,9 +121,9 @@ namespace DOL.GS.ServerRules
 				return true;
 
 			// clients with priv level > 1 are considered friendly by anyone
-			if(target is GamePlayer && ((GamePlayer)target).Client.Account.PrivLevel > 1) return true;
+            if (target is GamePlayer && (((GamePlayer)target).Client.Account.PrivLevel > 1 || ((GamePlayer)target).EnabledAndHasPrivilege(PrivilegeDefaults.Staff))) return true;
 			// checking as a gm, targets are considered friendly
-			if (source is GamePlayer && ((GamePlayer)source).Client.Account.PrivLevel > 1) return true;
+            if (source is GamePlayer && (((GamePlayer)source).Client.Account.PrivLevel > 1 || ((GamePlayer)source).EnabledAndHasPrivilege(PrivilegeDefaults.Staff))) return true;
 
 			//Peace flag NPCs are same realm
 			if (target is GameNPC)
@@ -145,7 +144,7 @@ namespace DOL.GS.ServerRules
 
 		public override bool IsAllowedCharsInAllRealms(GameClient client)
 		{
-			if (client.Account.PrivLevel > 1)
+			if (client.Account.PrivLevel > 1 || client.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 				return true;
 			if (ServerProperties.Properties.ALLOW_ALL_REALMS)
 				return true;
@@ -185,7 +184,8 @@ namespace DOL.GS.ServerRules
 			// clients with priv level > 1 are allowed to trade with anyone
 			if(source is GamePlayer && target is GamePlayer)
 			{
-				if ((source as GamePlayer).Client.Account.PrivLevel > 1 ||(target as GamePlayer).Client.Account.PrivLevel > 1)
+                if (((source as GamePlayer).Client.Account.PrivLevel > 1 || (source as GamePlayer).EnabledAndHasPrivilege(PrivilegeDefaults.Staff)) ||
+                    (target as GamePlayer).Client.Account.PrivLevel > 1 || (target as GamePlayer).EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 					return true;
 			}
 
@@ -211,8 +211,9 @@ namespace DOL.GS.ServerRules
 			if(source == null || target == null) return false;
 
 			// clients with priv level > 1 are allowed to talk and hear anyone
-			if(source is GamePlayer && ((GamePlayer)source).Client.Account.PrivLevel > 1) return true;
-			if(target.Client.Account.PrivLevel > 1) return true;
+            if (source is GamePlayer && (((GamePlayer)source).Client.Account.PrivLevel > 1 || 
+                (source as GamePlayer).EnabledAndHasPrivilege(PrivilegeDefaults.Staff))) return true;
+            if (target.Client.Account.PrivLevel > 1 || target.EnabledAndHasPrivilege(PrivilegeDefaults.Staff)) return true;
 
 			//Peace flag NPCs can be understood by everyone
 

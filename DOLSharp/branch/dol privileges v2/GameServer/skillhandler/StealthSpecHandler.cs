@@ -22,6 +22,7 @@ using DOL.GS.Effects;
 using DOL.GS.PacketHandler;
 using System.Collections;
 using DOL.AI.Brain;
+using DOL.GS.Privilege;
 using DOL.Language;
 
 namespace DOL.GS.SkillHandler
@@ -40,7 +41,7 @@ namespace DOL.GS.SkillHandler
 		public void Execute(Specialization spec, GamePlayer player)
 		{
 			// Can't stealth while in combat
-			if(player.InCombat && !player.IsStealthed && player.Client.Account.PrivLevel == (int)ePrivLevel.Player)
+            if (player.InCombat && !player.IsStealthed && player.Client.Account.PrivLevel == (int)ePrivLevel.Player || !player.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 			{
                 player.Out.SendMessage(LanguageMgr.GetTranslation(player.Client.Account.Language, "Skill.Ability.Stealth.CannotUseInCombat"), eChatType.CT_System, eChatLoc.CL_SystemWindow);
                 return;
@@ -113,7 +114,7 @@ namespace DOL.GS.SkillHandler
 					if (!GameServer.ServerRules.IsAllowedToAttack(ply, player, true)) continue;
 
 					//GM's don't prevent stealth
-					if (ply.Client.Account.PrivLevel > 1) continue;
+                    if (ply.Client.Account.PrivLevel > 1 || ply.EnabledAndHasPrivilege(PrivilegeDefaults.Staff)) continue;
 
 					//Range check
 					if (!IsObjectTooClose(ply, player)) continue;

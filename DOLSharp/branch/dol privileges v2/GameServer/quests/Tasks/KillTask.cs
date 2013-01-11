@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using DOL.Database;
 using DOL.Events;
 using DOL.GS.PacketHandler;
+using DOL.GS.Privilege;
 
 namespace DOL.GS.Quests
 {
@@ -214,7 +215,7 @@ namespace DOL.GS.Quests
 					}
 
 					// The following lines allow the GM to drop the task item
-					if (player.Client.Account.PrivLevel != 1)
+					if (player.Client.Account.PrivLevel != 1 || player.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 						lowestCon = 0;
 
 					//Only add task Loot if not killing grays

@@ -22,6 +22,7 @@ using System.Reflection;
 using DOL.GS;
 using DOL.Database;
 using DOL.GS.PacketHandler;
+using DOL.GS.Privilege;
 using log4net;
 
 namespace DOL.GS
@@ -443,7 +444,8 @@ namespace DOL.GS
 				if (!m_partnerWindow.m_tradeAccept) return false;
 
 				bool logTrade = ServerProperties.Properties.LOG_TRADES;
-				if (m_owner.Client.Account.PrivLevel > 1 || partner.Client.Account.PrivLevel > 1)
+                if ((m_owner.Client.Account.PrivLevel > 1 || m_owner.HasPrivilege(PrivilegeDefaults.LogTrades)) 
+                    || (partner.Client.Account.PrivLevel > 1 || partner.HasPrivilege(PrivilegeDefaults.LogTrades)))
 					logTrade = true;
 
 				//Test if we and our partner have enough money

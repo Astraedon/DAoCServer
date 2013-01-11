@@ -16,10 +16,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
-using System;
+
 using DOL.AI.Brain;
-using DOL.GS.PacketHandler;
 using DOL.Database;
+using DOL.GS.Privilege;
 
 namespace DOL.GS.ServerRules
 {
@@ -121,7 +121,8 @@ namespace DOL.GS.ServerRules
 				return true;
 
 			// clients with priv level > 1 are considered friendly by anyone
-			if(target is GamePlayer && ((GamePlayer)target).Client.Account.PrivLevel > 1) return true;
+            if (target is GamePlayer && (((GamePlayer)target).Client.Account.PrivLevel > 1 || 
+                (target as GamePlayer).EnabledAndHasPrivilege(PrivilegeDefaults.Staff))) return true;
 
 			// mobs can heal mobs, players heal players/NPC
 			if(source.Realm == 0 && target.Realm == 0) return true;

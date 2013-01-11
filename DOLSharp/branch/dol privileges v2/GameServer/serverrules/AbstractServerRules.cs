@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ using DOL.Database;
 using DOL.GS.Housing;
 using DOL.GS.Keeps;
 using DOL.GS.PacketHandler;
+using DOL.GS.Privilege;
 using DOL.GS.ServerProperties;
 using DOL.Language;
 using log4net;
@@ -166,7 +168,7 @@ namespace DOL.GS.ServerRules
 						if (cln == null || client == cln) continue;
 						if (cln.TcpEndpointAddress == client.TcpEndpointAddress)
 						{
-							if (cln.Account != null && cln.Account.PrivLevel > 1)
+							if (cln.Account != null && cln.Account.PrivLevel > 1 || cln.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 							{
 								break;
 							}
@@ -267,7 +269,7 @@ namespace DOL.GS.ServerRules
 					return false;
 			
 			// GMs can't be attacked
-			if (playerDefender != null && playerDefender.Client.Account.PrivLevel > 1)
+			if (playerDefender != null && (playerDefender.Client.Account.PrivLevel > 1 || playerDefender.EnabledAndHasPrivilege(PrivilegeDefaults.Staff)))
 				return false;
 
 			// Safe area support for defender
@@ -480,7 +482,7 @@ namespace DOL.GS.ServerRules
 		
 		public virtual bool CanTakeFallDamage(GamePlayer player)
 		{
-			if (player.Client.Account.PrivLevel > 1)
+			if (player.Client.Account.PrivLevel > 1 || player.EnabledAndHasPrivilege(PrivilegeDefaults.SafeFall))
 				return false;
 
 			if (player.CurrentRegion.IsHousing)
@@ -1106,7 +1108,7 @@ namespace DOL.GS.ServerRules
 					{
 						//If a gameplayer with privlevel > 1 attacked the
 						//mob, then the players won't gain xp ...
-						if (((GamePlayer)obj).Client.Account.PrivLevel > 1)
+                        if (((GamePlayer)obj).Client.Account.PrivLevel > 1 || ((GamePlayer)obj).EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 						{
 							dealNoXP = true;
 							break;
@@ -1259,7 +1261,7 @@ namespace DOL.GS.ServerRules
 					{
 						//If a gameplayer with privlevel > 1 attacked the
 						//mob, then the players won't gain xp ...
-						if (((GamePlayer)obj).Client.Account.PrivLevel > 1)
+                        if (((GamePlayer)obj).Client.Account.PrivLevel > 1 || ((GamePlayer)obj).EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 						{
 							dealNoXP = true;
 							break;
@@ -1520,7 +1522,9 @@ namespace DOL.GS.ServerRules
 
 			// clients with priv level > 1 are considered friendly by anyone
 			GamePlayer playerTarget = target as GamePlayer;
-			if (playerTarget != null && playerTarget.Client.Account.PrivLevel > 1) return (byte)player.Realm;
+			if (playerTarget != null && (playerTarget.Client.Account.PrivLevel > 1 || 
+                playerTarget.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))) 
+                return (byte) player.Realm;
 
 			return (byte)target.Realm;
 		}
@@ -1793,7 +1797,7 @@ namespace DOL.GS.ServerRules
 		/// <returns>true if the player is allowed to generate news</returns>
 		public virtual bool CanGenerateNews(GamePlayer player)
 		{
-			if (player.Client.Account.PrivLevel > 1)
+			if (player.Client.Account.PrivLevel > 1 || player.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 				return false;
 
 			return true;

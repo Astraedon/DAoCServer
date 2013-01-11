@@ -25,6 +25,7 @@ using System.Text;
 
 using DOL.Database;
 using DOL.Events;
+using DOL.GS.Privilege;
 using DOL.Language;
 using DOL.GS;
 using DOL.GS.PacketHandler;
@@ -422,7 +423,7 @@ namespace DOL.GS.PacketHandler.Client.v168
 					{
 						SHcount++;
 
-						if (SHcount > 1 && client.Account.PrivLevel > 1)
+                        if (SHcount > 1 && client.Account.PrivLevel > 1 || client.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 						{
 							//Apo: ?? no idea how to name the first parameter for language translation: 1: ??, 2: {detected} ?, 3: {count} ?
 							client.Out.SendMessage(string.Format("SH: ({0}) detected: {1}, count {2}", 500 / (environmentTick - SHlastTick), environmentTick - SHlastTick, SHcount), eChatType.CT_Staff, eChatLoc.CL_SystemWindow);
@@ -443,7 +444,7 @@ namespace DOL.GS.PacketHandler.Client.v168
 							builder.Append(client.TcpEndpointAddress);
 							GameServer.Instance.LogCheatAction(builder.ToString());
 
-							if (client.Account.PrivLevel > 1)
+                            if (client.Account.PrivLevel > 1 || client.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 							{
 								client.Out.SendMessage("SH: Logging SH cheat.", eChatType.CT_Damaged, eChatLoc.CL_SystemWindow);
 
@@ -451,7 +452,8 @@ namespace DOL.GS.PacketHandler.Client.v168
 									client.Out.SendMessage("SH: Player would have been banned!", eChatType.CT_Damaged, eChatLoc.CL_SystemWindow);
 							}
 
-							if ((client.Account.PrivLevel == 1) && SHcount >= ServerProperties.Properties.SPEEDHACK_TOLERANCE)
+                            if ((client.Account.PrivLevel == 1 && !client.EnabledAndHasPrivilege(PrivilegeDefaults.Staff)) && 
+                                SHcount >= ServerProperties.Properties.SPEEDHACK_TOLERANCE)
 							{
 								if (ServerProperties.Properties.BAN_HACKERS)
 								{

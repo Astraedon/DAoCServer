@@ -22,6 +22,7 @@ using System;
 using System.Reflection;
 
 using DOL.Database;
+using DOL.GS.Privilege;
 using DOL.Language;
 using DOL.AI.Brain;
 using DOL.GS.Keeps;
@@ -207,10 +208,10 @@ namespace DOL.GS.PacketHandler
 				}
 			}
 			if ((npc.Flags & GameNPC.eFlags.CANTTARGET) != 0)
-				if (m_gameClient.Account.PrivLevel > 1) add += "-DOR"; // indicates DOR flag for GMs
+                if (m_gameClient.Account.PrivLevel > 1 || m_gameClient.EnabledAndHasPrivilege(PrivilegeDefaults.Staff)) add += "-DOR"; // indicates DOR flag for GMs
 			else flags2 |= 0x01;
 			if ((npc.Flags & GameNPC.eFlags.DONTSHOWNAME) != 0)
-				if (m_gameClient.Account.PrivLevel > 1) add += "-NON"; // indicates NON flag for GMs
+                if (m_gameClient.Account.PrivLevel > 1 || m_gameClient.EnabledAndHasPrivilege(PrivilegeDefaults.Staff)) add += "-NON"; // indicates NON flag for GMs
 			else flags2 |= 0x02;
 
 			if( ( npc.Flags & GameNPC.eFlags.STEALTH ) > 0 )

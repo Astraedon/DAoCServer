@@ -17,7 +17,6 @@
  *
  */
 
-using System;
 using System.Text.RegularExpressions;
 using DOL.GS.Commands;
 using DOL.GS.ServerProperties;
@@ -29,14 +28,20 @@ namespace DOL.GS.Privilege
         Cmd = "&privilege",
         Aliases = new[]
             {
-                "&modpriv"
+                "&modpriv",
+                "&pmod"
             },
         Level = (uint) ePrivLevel.Admin, 
         Privilege = "privilege_mod",
-        Description = "Privilege.Description", 
-        Usage = new string[]
+        Description = "Privilege.Command.Description", 
+        Usage = new[]
             {
-             
+                "Privilege.Command.Usage.Modify",
+                "Privilege.Command.Usage.ModifyCompact",
+                "Privilege.Command.Usage.PlayerAccount",
+                "Privilege.Command.Usage.Type",
+                "Privilege.Command.Usage.Compact",
+                "Privilege.Command.Usage.CompactTarget"
             })]
     public class PrivilegeCommand : AbstractCommandHandler, ICommandHandler
     {
@@ -55,10 +60,11 @@ namespace DOL.GS.Privilege
                 if (CompactSyntaxRagex.IsMatch(args[1]))
                 {
                     HandleCompactSyntax(client, CompactSyntaxRagex.Match(args[1]), args.Length == 3 ? args[2] : null);
+                    return;
                 }
             }
 
-            if (args.Length < 2)
+            if (args.Length < 2 || args.Length != 5)
             {
                 DisplaySyntax(client);
                 return;
@@ -66,29 +72,22 @@ namespace DOL.GS.Privilege
 
             GamePlayer target = client.Player;
 
-            // Use a switch with space-separated arguments.
-            switch (args[1])
+            /// Commands
+            /// /priv <player/account> <add/del> <cmd/grp/priv> <value> <target>
+            ///              1             2           3          4        5
+
+            // Here we're going to create a 'Compact Syntax' string from the longhand command inputted.
+            // Then we'll check if it matches then pass it to the handler.
+            string compactSyn = string.Format(
+                "{0}{1}/{2}/{3}", 
+                args[2] == "add" ? "+" : "-",
+                (args[1] == "player" || args[1] == "p") ? "" : "a",
+                args[3],
+                args[4]);
+
+            if (CompactSyntaxRagex.IsMatch(compactSyn))
             {
-            #region Add to Target
-                case "+":
-                case "add":
-                    break;
-                
-                case "++":
-                case "addacct":
-                case "addaccount":
-                    break;
-            #endregion
-
-            #region Delete from Target
-                case "del":
-                case "remove":
-                    break;
-
-                case "delacct":
-                case "removeaccount":
-                    break;
-            #endregion
+                HandleCompactSyntax(client, CompactSyntaxRagex.Match(compactSyn), args.Length == 3 ? args[2] : null);
             }
         }
 
@@ -151,6 +150,8 @@ namespace DOL.GS.Privilege
             {
                 if (optionalTarget == "!" && client.Player.TargetObject is GamePlayer)
                     target = (client.Player.TargetObject as GamePlayer).Client;
+                else
+                    target = WorldMgr.GetClientByPlayerName(optionalTarget, true, true);
             }
 
             PrivilegeBinding targetBinding = targetAccount ? 
@@ -185,6 +186,9 @@ namespace DOL.GS.Privilege
                                     DisplayMessage(client, LanguageMgr.GetTranslation
                                         (target.Account.Language, PrivilegeDefaults.GainPrefix + (targetAccount ? "CommandAccount" : "CommandPlayer"), value));
                             }
+                            else if (result == ModificationStatus.AlreadyExists)
+                                DisplayMessage(client, LanguageMgr.GetTranslation
+                                    (target.Account.Language, PrivilegeDefaults.ErrorPrefix + "AlreadyHas", "command", value, target.Player.Name));
                         }
                         else
                         {
@@ -207,6 +211,9 @@ namespace DOL.GS.Privilege
                                     DisplayMessage(client, LanguageMgr.GetTranslation
                                         (target.Account.Language, PrivilegeDefaults.LostPrefix + (targetAccount ? "CommandAccount" : "CommandPlayer"), value));
                             }
+                            else if (result == ModificationStatus.DoesNotExist)
+                                DisplayMessage(client, LanguageMgr.GetTranslation
+                                    (target.Account.Language, PrivilegeDefaults.ErrorPrefix + "DoesNotHave", value, target.Player.Name));
                         }
                     }
                     break;
@@ -240,7 +247,7 @@ namespace DOL.GS.Privilege
                             }
                             else if (result == ModificationStatus.AlreadyExists)
                                 DisplayMessage(client, LanguageMgr.GetTranslation
-                                    (target.Account.Language, PrivilegeDefaults.ErrorPrefix + "AlreadyHas", value, target.Player.Name));
+                                    (target.Account.Language, PrivilegeDefaults.ErrorPrefix + "AlreadyHas", "privilege",  value, target.Player.Name));
                         }
                         else
                         {
@@ -300,6 +307,9 @@ namespace DOL.GS.Privilege
                                         DisplayMessage(client, LanguageMgr.GetTranslation
                                             (target.Account.Language, PrivilegeDefaults.GainPrefix + (targetAccount ? "GroupAccount" : "GroupPlayer"), targetGroup.DBEntry.Name));
                                 }
+                                else if (result == ModificationStatus.DoesNotExist)
+                                    DisplayMessage(client, LanguageMgr.GetTranslation
+                                        (target.Account.Language, PrivilegeDefaults.ErrorPrefix + "DoesNotHave", value, target.Player.Name));
                             }
                             else
                             {

@@ -14706,7 +14706,7 @@ namespace DOL.GS
 		/// </summary>
 		public virtual bool IsInvulnerableToAttack
 		{
-			get { return m_invulnerabilityTick > CurrentRegion.Time; }
+			get { return m_invulnerabilityTick > CurrentRegion.Time || this.EnabledAndHasPrivilege(PrivilegeDefaults.Invulnerable); }
 		}
 
 		/// <summary>

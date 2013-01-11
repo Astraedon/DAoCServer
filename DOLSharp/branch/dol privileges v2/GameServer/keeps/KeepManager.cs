@@ -23,6 +23,7 @@ using System.Linq;
 using System.Reflection;
 using DOL.Database;
 using DOL.GS.PacketHandler;
+using DOL.GS.Privilege;
 using log4net;
 
 namespace DOL.GS.Keeps
@@ -638,7 +639,7 @@ namespace DOL.GS.Keeps
 		/// <returns>true if the player is an enemy of the keep</returns>
 		public virtual bool IsEnemy(AbstractGameKeep keep, GamePlayer target, bool checkGroup)
 		{
-			if (target.Client.Account.PrivLevel != 1)
+			if (target.Client.Account.PrivLevel != 1 || target.EnabledAndHasPrivilege(PrivilegeDefaults.NeutralPlayer))
 				return false;
 
 			switch (GameServer.Instance.Configuration.ServerType)

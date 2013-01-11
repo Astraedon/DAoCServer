@@ -253,7 +253,7 @@ namespace DOL.GS.Privilege
         /// </summary>
         /// <param name="groupID">ID to check for.</param>
         /// <returns></returns>
-        private bool HasInherited(int groupID)
+        public bool HasInherited(int groupID)
         {
             return DBEntry.GroupIndex == groupID || 
                 InheritedGroups.Any(sg => sg.DBEntry.GroupIndex == groupID || 

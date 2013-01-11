@@ -17,6 +17,11 @@ namespace DOL.GS.Privilege
         /// </summary>
         public const string CommandPrefix = "cmd_";
 
+
+        #region Default Privilege Keys
+
+        #region Legacy Privilege Levels
+
         /// <summary>
         /// Key that allows the privileges system to return plvl 1 for groups.
         /// </summary>
@@ -31,6 +36,61 @@ namespace DOL.GS.Privilege
         /// Key that allows the privileges system to return plvl 3 for groups.
         /// </summary>
         public const string LegacyAdministrator = "plvl_admin";
+
+        #endregion
+
+        /// <summary>
+        /// Key that tells the server that this player has staff privileges for the 
+        /// purposes of command logging.
+        /// </summary>
+        public const string Staff = "staff";
+
+        /// <summary>
+        /// Key telling the server that trades performed by this player should be logged.
+        /// </summary>
+        public const string LogTrades = "log_trades";
+
+        /// <summary>
+        /// Key telling the server that commands being used by this player should be logged as GM Actions.
+        /// </summary>
+        public const string LogAllCommands = "log_all_commands";
+
+        /// <summary>
+        /// Key telling the server that a player with this flag should be ignored by mobs and guards for the purposes of aggro.
+        /// </summary>
+        public const string NeutralPlayer = "neutral";
+
+        /// <summary>
+        /// Key telling the server this player can ignore overencumbered speed slowdowns.
+        /// </summary>
+        public const string StrongBack = "strong_back";
+
+        /// <summary>
+        /// Key telling the server this player doesn't take fall damage.
+        /// </summary>
+        public const string SafeFall = "safe_fall";
+
+        /// <summary>
+        /// Key telling the server this player is invisible (Don't show it's model and have it stealthed?)
+        /// </summary>
+        public const string Invisible = "invisible";
+
+        /// <summary>
+        /// Key telling the server to multiply all damage done by this player to instagib their player targets.
+        /// </summary>
+        public const string InstakillPlayers = "instagib_player";
+
+        /// <summary>
+        /// Key telling the server to multiply all damage done by this player to instagib their non-player targets.
+        /// </summary>
+        public const string InstakillMobs = "instagib_mob";
+
+        /// <summary>
+        /// Key telling the server that this player is invulnerable.
+        /// </summary>
+        public const string Invulnerable = "invulnerable";
+
+        #endregion
 
         #region Lanaguage Manager Prefixes
 

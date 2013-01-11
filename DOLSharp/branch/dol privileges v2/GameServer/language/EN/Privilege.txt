@@ -1,5 +1,11 @@
 ﻿# /privilege Command
-Privilege.Description:								Modify target's account or player permissions, groups, and commands.
+Privilege.Command.Description:						Modify target's account or player permissions, groups, and commands.
+Privilege.Command.Usage.Modify:						Full Syntax /privilege (add/del) (p/a) (g/p/c) KEY.
+Privilege.Command.Usage.ModifyCompact:				Compact Syntax /privilege (+/-/+a/-a)/(g/p/c)/KEY.
+Privilege.Command.Usage.PlayerAccount:				P,A in commands are shorthand for player and account respectively.
+Privilege.Command.Usage.Type:						G,P,C in commands are shorthand for group, privilege, and command respectively.
+Privilege.Command.Usage.Compact:					In compact syntax the /'s are required for seperation of arguments.
+Privilege.Command.Usage.CompactTarget:				In compact syntax +/- are for add and remove, appending an a to either of those makes the target add/remove account instead.
 
 Privilege.Notify.Gain.CommandPlayer:				You gained the permission to use the {0} command.
 Privilege.Notify.Gain.CommandAccount:				Your account gained the permission to use the {0} command.

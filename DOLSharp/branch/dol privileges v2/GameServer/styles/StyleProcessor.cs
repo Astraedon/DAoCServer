@@ -20,7 +20,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-
+using DOL.GS.Privilege;
 using DOL.Language;
 using DOL.AI.Brain;
 using DOL.Database;
@@ -947,7 +947,7 @@ namespace DOL.GS.Styles
 				}
 			}
 
-			if (player.Client.Account.PrivLevel > 1)
+            if (player.Client.Account.PrivLevel > 1 || player.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 			{
 				delveInfo.Add(" ");
 				delveInfo.Add("--- Style Technical Information ---");

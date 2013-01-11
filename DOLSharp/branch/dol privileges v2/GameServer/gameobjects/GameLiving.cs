@@ -29,6 +29,7 @@ using DOL.Events;
 using DOL.GS.Effects;
 using DOL.GS.Keeps;
 using DOL.GS.PacketHandler;
+using DOL.GS.Privilege;
 using DOL.GS.PropertyCalc;
 using DOL.GS.SkillHandler;
 using DOL.GS.Spells;
@@ -4061,6 +4062,13 @@ namespace DOL.GS
 					LastAttackedByEnemyTickPvP = CurrentRegion.Time;
 					ad.Attacker.LastAttackTickPvP = CurrentRegion.Time;
 				}
+
+			    if (ad.Attacker is GamePlayer && ad.Target is GamePlayer &&
+			        (ad.Attacker as GamePlayer).EnabledAndHasPrivilege(PrivilegeDefaults.InstakillPlayers))
+			        ad.Target.Health -= ad.Target.MaxHealth;
+                else if (ad.Attacker is GamePlayer && ad.Target is GameNPC &&
+                    (ad.Attacker as GamePlayer).EnabledAndHasPrivilege(PrivilegeDefaults.InstakillMobs))
+                    ad.Target.Health -= ad.Target.MaxHealth;
 			}
 		}
 

@@ -21,6 +21,7 @@ using System.Collections;
 using System.Reflection;
 using DOL.Database;
 using DOL.GS.Keeps;
+using DOL.GS.Privilege;
 using DOL.GS.Quests;
 using DOL.GS.ServerRules;
 using log4net;
@@ -85,7 +86,7 @@ namespace DOL.GS.PacketHandler.Client.v168
 				zonePoint.ClassType = "DOL.GS.GameEvents.TutorialJumpPointHandler";
 			}
 
-			if (client.Account.PrivLevel > 1)
+            if (client.Account.PrivLevel > 1 || client.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 			{
 				client.Out.SendMessage("JumpSpotID = " + jumpSpotID, eChatType.CT_System, eChatLoc.CL_SystemWindow);
 				client.Out.SendMessage("ZonePoint Target: Region = " + zonePoint.TargetRegion + ", ClassType = '" + zonePoint.ClassType + "'", eChatType.CT_System, eChatLoc.CL_SystemWindow);
@@ -107,7 +108,7 @@ namespace DOL.GS.PacketHandler.Client.v168
 						     (client.Player.Mission as TaskDungeonMission).TaskRegion.Skin == reg.Skin) == false)
 						{
 							client.Out.SendMessage("This region has been disabled!", eChatType.CT_System, eChatLoc.CL_SystemWindow);
-							if (client.Account.PrivLevel == 1)
+                            if (client.Account.PrivLevel == 1 && !client.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 							{
 								return;
 							}

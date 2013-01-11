@@ -17,7 +17,6 @@
  *
  */
 
-using System;
 using DOL.GS.Commands;
 using DOL.GS.ServerProperties;
 
@@ -31,7 +30,7 @@ namespace DOL.GS.Privilege
             },
         Level = (uint) ePrivLevel.Admin,
         Privilege = "privilege_mod",
-        Description = "Use this to",
+        Description = "Use this to add, delete, and modify groups.",
         Usage = new string[]
             {
              

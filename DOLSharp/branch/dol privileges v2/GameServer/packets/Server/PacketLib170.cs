@@ -23,6 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using DOL.GS.Keeps;
+using DOL.GS.Privilege;
 using DOL.GS.Quests;
 
 using log4net;
@@ -363,7 +364,7 @@ namespace DOL.GS.PacketHandler
 				}
 
 				//Teleport
-				if (m_gameClient.Account.PrivLevel > (int)ePrivLevel.Player)
+                if (m_gameClient.Account.PrivLevel > (int)ePrivLevel.Player || m_gameClient.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 				{
 					flag |= (byte)eRealmWarmapKeepFlags.Teleportable;
 				}

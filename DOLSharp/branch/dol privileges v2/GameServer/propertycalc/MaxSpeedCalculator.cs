@@ -20,6 +20,7 @@ using System;
 using DOL.AI.Brain;
 using DOL.GS.PacketHandler;
 using DOL.GS.Effects;
+using DOL.GS.Privilege;
 using DOL.GS.RealmAbilities;
 using DOL.GS.Spells;
 
@@ -71,7 +72,7 @@ namespace DOL.GS.PropertyCalc
 						speed *= 1.25; // new run speed is 125% when no buff
 				}
 
-				if (player.IsOverencumbered && player.Client.Account.PrivLevel < 2 && ServerProperties.Properties.ENABLE_ENCUMBERANCE_SPEED_LOSS)
+				if (player.IsOverencumbered && player.Client.Account.PrivLevel < 2 && !player.EnabledAndHasPrivilege(PrivilegeDefaults.StrongBack) && ServerProperties.Properties.ENABLE_ENCUMBERANCE_SPEED_LOSS)
 				{
 					double Enc = player.Encumberance; // calculating player.Encumberance is a bit slow with all those locks, don't call it much
 					if (Enc > player.MaxEncumberance)

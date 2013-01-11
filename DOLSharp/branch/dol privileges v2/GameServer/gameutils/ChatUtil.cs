@@ -17,12 +17,8 @@
  *
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DOL.GS;
 using DOL.GS.PacketHandler;
+using DOL.GS.Privilege;
 using DOL.Language;
 
 namespace DOL.GS
@@ -118,7 +114,7 @@ namespace DOL.GS
 
 		public static void SendDebugMessage(GameClient target, string message)
 		{
-			if (target.Account.PrivLevel > (int)ePrivLevel.Player)
+			if (target.Account.PrivLevel > (int)ePrivLevel.Player || target.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 				target.Out.SendMessage(message, eChatType.CT_Staff, eChatLoc.CL_SystemWindow);
 		}
 	}

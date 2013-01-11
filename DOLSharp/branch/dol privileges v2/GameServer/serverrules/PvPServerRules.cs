@@ -17,12 +17,10 @@
  *
  */
 using System;
-using System.Collections;
-using DOL;
+using DOL.GS.Privilege;
 using DOL.Language;
 using DOL.AI.Brain;
 using DOL.Events;
-using DOL.GS;
 using DOL.GS.Keeps;
 using DOL.GS.PacketHandler;
 using System.Collections.Generic;
@@ -401,9 +399,9 @@ namespace DOL.GS.ServerRules
 				return true;
 
 			// clients with priv level > 1 are considered friendly by anyone
-			if (target is GamePlayer && ((GamePlayer)target).Client.Account.PrivLevel > 1) return true;
+            if (target is GamePlayer && (((GamePlayer)target).Client.Account.PrivLevel > 1 || (source as GamePlayer).EnabledAndHasPrivilege(PrivilegeDefaults.Staff))) return true;
 			// checking as a gm, targets are considered friendly
-			if (source is GamePlayer && ((GamePlayer)source).Client.Account.PrivLevel > 1) return true;
+            if (source is GamePlayer && (((GamePlayer)source).Client.Account.PrivLevel > 1 || (source as GamePlayer).EnabledAndHasPrivilege(PrivilegeDefaults.Staff))) return true;
 
 			// mobs can heal mobs, players heal players/NPC
 			if (source.Realm == 0 && target.Realm == 0) return true;

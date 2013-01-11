@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 
 using DOL.GS.Keeps;
+using DOL.GS.Privilege;
 
 namespace DOL.GS.PacketHandler.Client.v168
 {
@@ -44,7 +45,7 @@ namespace DOL.GS.PacketHandler.Client.v168
 				client.Out.SendKeepComponentHookPoint(((GameKeepComponent)keep.KeepComponents[wallId]), HPindex);
 			else if (responce == 0x02)//select an hookpoint
 			{
-				if (client.Account.PrivLevel > 1)
+                if (client.Account.PrivLevel > 1 || client.EnabledAndHasPrivilege(PrivilegeDefaults.Staff))
 					client.Out.SendMessage("DEBUG : selected hookpoint id " + HPindex, eChatType.CT_Say, eChatLoc.CL_SystemWindow);
 
 				GameKeepComponent hp = keep.KeepComponents[wallId] as GameKeepComponent;

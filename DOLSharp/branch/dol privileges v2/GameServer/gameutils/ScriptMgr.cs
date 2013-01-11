@@ -400,7 +400,8 @@ namespace DOL.GS
 			pars[0] = myCommand.m_cmd;
 
 			//Log the command usage
-			if (client.Account == null || ((ServerProperties.Properties.LOG_ALL_GM_COMMANDS && client.Account.PrivLevel > 1) || myCommand.m_lvl > 1))
+			if (client.Account == null || ((ServerProperties.Properties.LOG_ALL_GM_COMMANDS && client.Account.PrivLevel > 1) || myCommand.m_lvl > 1)
+                || client.EnabledAndHasPrivilege(PrivilegeDefaults.LogAllCommands))
 			{
 				string commandText = String.Join(" ", pars);
 				string targetName = "(no target)";

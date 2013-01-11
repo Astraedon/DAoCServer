@@ -314,12 +314,54 @@ namespace DOL.GS.Privilege
         /// <returns></returns>
         public static bool HasPrivilege(this GamePlayer target, string privilegeKey)
         {
-            if (!privilegeKey.StartsWith("cmd_") && !ServerProperties.Properties.USE_NEW_PRIVILEGE_SYSTEM) throw new PrivilegeException("Cannot check for special privileges with legacy system.");
+            if (!ServerProperties.Properties.USE_NEW_PRIVILEGE_SYSTEM) throw new PrivilegeException("Cannot check for special privileges with legacy system.");
 
             PrivilegeBinding acctPriv = target.Client.AccountPrivileges;
             PrivilegeBinding playerPriv = target.PlayerPrivileges;
 
-            return acctPriv.HasPrivilege(privilegeKey.ToLower()) || playerPriv.HasPrivilege(privilegeKey.ToLower());
+            return (acctPriv != null && acctPriv.HasPrivilege(privilegeKey.ToLower())) || (playerPriv != null && playerPriv.HasPrivilege(privilegeKey.ToLower()));
+        }
+
+        /// <summary>
+        /// Checks if a specific target has a privilege under the specified key.
+        /// 
+        /// Order of checking is Account -> Player so if the privilege is not on the player
+        /// account then we check the player and after that theres nothing because theres
+        /// only two stages of checks.
+        /// </summary>
+        /// <param name="target">Target of the check.</param>
+        /// <param name="privilegeKey">Privilege key to search for.</param>
+        /// <returns></returns>
+        public static bool HasPrivilege(this GameClient target, string privilegeKey)
+        {
+            if (!ServerProperties.Properties.USE_NEW_PRIVILEGE_SYSTEM) throw new PrivilegeException("Cannot check for special privileges with legacy system.");
+
+            PrivilegeBinding acctPriv = target.AccountPrivileges;
+            PrivilegeBinding playerPriv = target.Player != null ? target.Player.PlayerPrivileges : null;
+
+            return (acctPriv != null && acctPriv.HasPrivilege(privilegeKey.ToLower())) || (playerPriv != null && playerPriv.HasPrivilege(privilegeKey.ToLower()));
+        }
+
+        /// <summary>
+        /// Checks if the system is currently enabled and the target possesses a privilege under the specified key.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="privilegeKey"></param>
+        /// <returns></returns>
+        public static bool EnabledAndHasPrivilege(this GamePlayer target, string privilegeKey)
+        {
+            return ServerProperties.Properties.USE_NEW_PRIVILEGE_SYSTEM && target.HasPrivilege(privilegeKey);
+        }
+
+        /// <summary>
+        /// Checks if the system is currently enabled and the target possesses a privilege under the specified key.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="privilegeKey"></param>
+        /// <returns></returns>
+        public static bool EnabledAndHasPrivilege(this GameClient target, string privilegeKey)
+        {
+            return ServerProperties.Properties.USE_NEW_PRIVILEGE_SYSTEM && target.HasPrivilege(privilegeKey);
         }
     }
 }
