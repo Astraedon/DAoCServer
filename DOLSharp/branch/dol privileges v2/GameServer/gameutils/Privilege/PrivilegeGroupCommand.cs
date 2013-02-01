@@ -26,11 +26,12 @@ namespace DOL.GS.Privilege
         Cmd = "&privilegegroup",
         Aliases = new[]
             {
+                "&modgrp",
                 "&pgrp"
             },
         Level = (uint) ePrivLevel.Admin,
         Privilege = "privilege_mod",
-        Description = "Use this to add, delete, and modify groups.",
+        Description = "PrivilegeGroup.Command.Description",
         Usage = new string[]
             {
              

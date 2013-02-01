@@ -52,7 +52,7 @@ Privilege.Notify.Revoked.GroupPlayer:				Your access to the {0} group was Revoke
 Privilege.Notify.Revoked.GroupAccount:				Your account's access to the {0} group was Revoke by {1}.
 
 # /privilegegroup Command
-PrivilegeGroup.Description:							Create, modify or delete existing groups from the server.
+PrivilegeGroup.Command.Description:					Create, modify or delete existing groups from the server.
 
 PrivilegeGroup.Error.CannotAddCircular:				Cannot add sub group {0} to group {1} as it would cause a circular inheritance chain.
 PrivilegeGroup.Error.CannotAddAlreadyExists:		Cannot add sub group {0} to group {1} as the sub group already exists.			

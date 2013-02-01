@@ -712,7 +712,8 @@ namespace DOL.GS.PacketHandler.Client.v168
 					}
 				}
 
-				if (!client.Player.IsStealthed || player.CanDetect(client.Player))
+                if ((!client.Player.IsStealthed || player.CanDetect(client.Player)) 
+                    && !client.Player.EnabledAndHasPrivilege(PrivilegeDefaults.Invisible))
 				{
 					//forward the position packet like normal!
 					if (player.Client.Version >= GameClient.eClientVersion.Version190)

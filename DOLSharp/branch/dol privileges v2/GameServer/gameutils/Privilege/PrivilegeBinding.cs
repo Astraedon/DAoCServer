@@ -17,23 +17,19 @@
  *
  */
 
-using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using DOL.Database;
 
 namespace DOL.GS.Privilege
 {
-    public class PrivilegeBinding
+    /// <summary>
+    /// Binding that holds Privileges in memory cached from the database for either an account or user.
+    /// </summary>
+    public class PrivilegeBinding : PrivilegeContainer
     {
-        private readonly DBPrivilegeBinding m_dbEntry;
-
-        private readonly IList<PrivilegeGroup> m_groups = new List<PrivilegeGroup>();
-        private readonly IList<string> m_additionalPrivileges = new List<string>(); 
-
-        public PrivilegeBinding(DBPrivilegeBinding entry)
+        public PrivilegeBinding(DBPrivilegeBinding entry) : base(entry)
         {
-            m_dbEntry = entry;
-
             if (!string.IsNullOrEmpty(DBEntry.Groups))
             {
                 foreach (string privilegeGroup in DBEntry.Groups.Split(';'))
@@ -46,14 +42,27 @@ namespace DOL.GS.Privilege
             }
 
             if (!string.IsNullOrEmpty(DBEntry.AdditionalPrivileges))
-                AdditionalPrivileges.AddRange(DBEntry.AdditionalPrivileges.Split(';').Where(s => s != "").ToList());
+            {
+                string[] splitPrivileges = DBEntry.AdditionalPrivileges.Split(';').Where(s => !string.IsNullOrEmpty(s)).ToArray();
+
+                Privileges.AddRange(splitPrivileges.Where(s => !PrivilegeDefaults.ParameterizedRegex.IsMatch(s)).ToList());
+
+                foreach (string currentPrivilege in splitPrivileges.Where(s => PrivilegeDefaults.ParameterizedRegex.IsMatch(s)).ToList())
+                {
+                    Match m = PrivilegeDefaults.ParameterizedRegex.Match(currentPrivilege);
+
+                    ParameterizedPrivileges.Add(m.Groups[1].Value, m.Groups[2].Value.Split('|'));
+                    Privileges.Add(m.Groups[1].Value);
+                }
+            }
+                
 
             if (!string.IsNullOrEmpty(DBEntry.AdditionalCommands))
             {
                 foreach (string str in DBEntry.AdditionalCommands.Split(';'))
                 {
                     if (str != "")
-                        AdditionalPrivileges.Add(PrivilegeDefaults.CommandPrefix + str);
+                        Privileges.Add(PrivilegeDefaults.CommandPrefix + str);
                 }
             }
         }
@@ -65,188 +74,27 @@ namespace DOL.GS.Privilege
         /// </summary>
         public DBPrivilegeBinding DBEntry
         {
-            get { return m_dbEntry; }
+            get { return DBEntity as DBPrivilegeBinding; }
         }
 
-        /// <summary>
-        /// Additional privileges specified to this binding on top of any in the groups.
-        /// </summary>
-        public IList<string> AdditionalPrivileges
+        protected override string DBPrivileges
         {
-            get { return m_additionalPrivileges; }
+            get { return DBEntry.AdditionalPrivileges; }
+            set { DBEntry.AdditionalPrivileges = value; }
         }
 
-        /// <summary>
-        /// Groups that this binding belongs to.
-        /// </summary>
-        public IList<PrivilegeGroup> Groups
+        protected override string DBCommands
         {
-            get { return m_groups; }
+            get { return DBEntry.AdditionalCommands; }
+            set { DBEntry.AdditionalCommands = value; }
+        }
+
+        protected override string DBGroups
+        {
+            get { return DBEntry.Groups; }
+            set { DBEntry.Groups = value; }
         }
 
         #endregion
-
-        #region Add / Remove
-
-        #region Privileges
-
-        /// <summary>
-        /// Adds a privilege to the Group's privileges and syncs to the database.
-        /// </summary>
-        /// <param name="privilegeKey">Privilege to add.</param>
-        public ModificationStatus AddPrivilege(string privilegeKey)
-        {
-            if(AdditionalPrivileges.Contains(privilegeKey)) return ModificationStatus.AlreadyExists;
-
-            AdditionalPrivileges.Add(privilegeKey);
-
-            DBEntry.AdditionalPrivileges = string.Join(";", AdditionalPrivileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)));
-            
-            if (!GameServer.Database.SaveObject(DBEntry))
-                return ModificationStatus.FailedToSave;
-
-            return ModificationStatus.Success;
-        }
-
-        /// <summary>
-        /// Removes a privilege to the Group's privileges and syncs to the database.
-        /// </summary>
-        /// <param name="privilegeKey">Privilege to remove.</param>
-        public ModificationStatus RemovePrivilege(string privilegeKey)
-        {
-            if (!AdditionalPrivileges.Contains(privilegeKey)) return ModificationStatus.DoesNotExist;
-
-            AdditionalPrivileges.Remove(privilegeKey);
-
-            DBEntry.AdditionalPrivileges = string.Join(";", AdditionalPrivileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)));
-           
-            if (!GameServer.Database.SaveObject(DBEntry))
-                return ModificationStatus.FailedToSave;
-
-            return ModificationStatus.Success;
-        }
-
-        #endregion
-
-        #region Command
-
-        /// <summary>
-        /// Adds a command to the Group's privileges and syncs to the database.
-        /// </summary>
-        /// <param name="commandString">Command to add.</param>
-        public ModificationStatus AddCommand(string commandString)
-        {
-            if (AdditionalPrivileges.Contains(PrivilegeDefaults.CommandPrefix + commandString)) 
-                return ModificationStatus.AlreadyExists;
-
-            AdditionalPrivileges.Add(PrivilegeDefaults.CommandPrefix + commandString);
-
-            string[] cmds = AdditionalPrivileges.Where(s => s.StartsWith(PrivilegeDefaults.CommandPrefix)).ToArray();
-
-            for (int index = 0; index < cmds.Length; index++)
-            {
-                if (cmds[index].StartsWith(PrivilegeDefaults.CommandPrefix))
-                    cmds[index] = cmds[index].Replace(PrivilegeDefaults.CommandPrefix, "");
-            }
-
-            DBEntry.AdditionalCommands = string.Join(";", cmds);
-            if (!GameServer.Database.SaveObject(DBEntry))
-                return ModificationStatus.FailedToSave;
-
-            return ModificationStatus.Success;
-        }
-
-        /// <summary>
-        /// Removes a command to the Group's privileges and syncs to the database.
-        /// </summary>
-        /// <param name="commandString">Command to Remove.</param>
-        public ModificationStatus RemoveCommand(string commandString)
-        {
-            if (!AdditionalPrivileges.Contains(PrivilegeDefaults.CommandPrefix + commandString))
-                return ModificationStatus.DoesNotExist;
-
-            AdditionalPrivileges.Remove(PrivilegeDefaults.CommandPrefix + commandString);
-
-            string[] cmds = AdditionalPrivileges.Where(s => s.StartsWith(PrivilegeDefaults.CommandPrefix)).ToArray();
-
-            for (int index = 0; index < cmds.Length; index++)
-            {
-                if (cmds[index].StartsWith(PrivilegeDefaults.CommandPrefix))
-                    cmds[index] = cmds[index].Replace(PrivilegeDefaults.CommandPrefix, "");
-            }
-
-            DBEntry.AdditionalCommands = string.Join(";", cmds);
-            if (!GameServer.Database.SaveObject(DBEntry))
-                return ModificationStatus.FailedToSave;
-
-            return ModificationStatus.Success;
-        }
-
-        #endregion
-
-        #region Groups
-
-        /// <summary>
-        /// Adds a group to this binding and syncs to database.
-        /// </summary>
-        /// <param name="grp">Group to add.</param>
-        /// <returns></returns>
-        public ModificationStatus AddGroup(PrivilegeGroup grp)
-        {
-            if (Groups.Contains(grp)) return ModificationStatus.AlreadyExists;
-
-            Groups.Add(grp);
-
-            DBEntry.Groups = string.Join(";", Groups.Select(g => g.DBEntry.Name));
-            if (!GameServer.Database.SaveObject(DBEntry))
-                return ModificationStatus.FailedToSave;
-
-            return ModificationStatus.Success;
-        }
-
-        /// <summary>
-        /// Removes a group from this binding and syncs to database.
-        /// </summary>
-        /// <param name="grp">Group to remove.</param>
-        /// <returns></returns>
-        public ModificationStatus RemoveGroup(PrivilegeGroup grp)
-        {
-            if(!Groups.Contains(grp)) return ModificationStatus.DoesNotExist;
-
-            Groups.Remove(grp);
-
-            DBEntry.Groups = string.Join(";", Groups.Select(g => g.DBEntry.Name));
-            if (!GameServer.Database.SaveObject(DBEntry))
-                return ModificationStatus.FailedToSave;
-
-            return ModificationStatus.Success;
-        }
-
-        /// <summary>
-        /// Removes several groups from this binding and syncs to database
-        /// </summary>
-        /// <param name="grps"></param>
-        /// <returns></returns>
-        public bool RemoveGroups(IEnumerable<PrivilegeGroup> grps)
-        {
-            return grps.Aggregate(true, (current, privilegeGroup) => current & RemoveGroup(privilegeGroup) == ModificationStatus.Success);
-        }
-
-        #endregion
-
-        #endregion
-
-        /// <summary>
-        /// Check if this binding contains the rights to the specified privilege key.
-        /// 
-        /// Search Order is 
-        /// Wildcard > Additional Privileges > Group Checks.
-        /// </summary>
-        /// <param name="privilegeKey">Key to search on.</param>
-        /// <returns>Allowed?</returns>
-        public bool HasPrivilege(string privilegeKey)
-        {
-            return AdditionalPrivileges.Any(s => s == PrivilegeDefaults.Wildcard || s == privilegeKey) || Groups.Any(g => g.HasPrivilege(privilegeKey));
-        }
     }
 }

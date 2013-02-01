@@ -1,4 +1,6 @@
 ﻿
+using System.Text.RegularExpressions;
+
 namespace DOL.GS.Privilege
 {
     /// <summary>
@@ -6,6 +8,11 @@ namespace DOL.GS.Privilege
     /// </summary>
     public static class PrivilegeDefaults
     {
+        /// <summary>
+        /// Regex for easy discovery if a raw privilege contains a set of parameters.
+        /// </summary>
+        public static readonly Regex ParameterizedRegex = new Regex(@"(.+)\(([a-zA-Z|]+)\)");
+
         /// <summary>
         /// Grants any and all permissions to a player with this, with great 
         /// power comes great responsibility.

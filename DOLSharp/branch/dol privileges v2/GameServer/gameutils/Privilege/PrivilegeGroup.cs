@@ -17,29 +17,25 @@
  *
  */
 
-using System.Collections.Generic;
 using System.Linq;
 using DOL.Database;
 
 namespace DOL.GS.Privilege
 {
-    public class PrivilegeGroup
+    public class PrivilegeGroup : PrivilegeContainer
     {
-        private readonly DBPrivilegeGroup m_dbEntry;
-        private readonly IList<string> m_privileges = new List<string>(); 
-        private readonly IList<PrivilegeGroup> m_inheritedGroups = new List<PrivilegeGroup>();
-
-        public PrivilegeGroup(DBPrivilegeGroup entry)
-        {
-            m_dbEntry = entry;
-        }
+        public PrivilegeGroup(DBPrivilegeGroup entry) : base(entry) { }
 
         #region Creation / Setup
 
         public void Initialize()
         {
             if (!string.IsNullOrEmpty(DBEntry.Privileges))
-                Privileges.AddRange(DBEntry.Privileges.Split(';'));
+            {
+                Privileges.AddRange(DBEntry.Privileges.Split(';').
+                    Where(s => s != "" && !PrivilegeDefaults.ParameterizedRegex.IsMatch(s)).ToList());
+            }
+                
 
             if (!string.IsNullOrEmpty(DBEntry.Commands))
                 foreach (string str in DBEntry.Commands.Split(';'))
@@ -59,7 +55,7 @@ namespace DOL.GS.Privilege
                     PrivilegeGroup toAdd = PrivilegeManager.GetGroup(privilegeGroup);
 
                     if (toAdd != null)
-                        InheritedGroups.Add(toAdd);
+                        Groups.Add(toAdd);
                 }
             }
         }
@@ -73,165 +69,37 @@ namespace DOL.GS.Privilege
         /// </summary>
         public DBPrivilegeGroup DBEntry
         {
-            get { return m_dbEntry; }
+            get { return DBEntity as DBPrivilegeGroup; }
         }
 
-        /// <summary>
-        /// Additional privileges specified to this binding on top of any in the groups.
-        /// </summary>
-        public IList<PrivilegeGroup> InheritedGroups
+
+        protected override string DBPrivileges
         {
-            get { return m_inheritedGroups; }
+            get { return DBEntry.Privileges; }
+            set { DBEntry.Privileges = value; }
         }
 
-        /// <summary>
-        /// Privileges specified to this group on top of any in the sub-groups.
-        /// </summary>
-        public IList<string> Privileges
+        protected override string DBCommands
         {
-            get { return m_privileges; }
+            get { return DBEntry.Commands; }
+            set { DBEntry.Commands = value; }
         }
 
-        #endregion
-
-        /// <summary>
-        /// Does this PrivilegeGroup have the right to use this key?
-        /// </summary>
-        /// <param name="privilegeKey">Key to search for rights.</param>
-        /// <returns></returns>
-        public bool HasPrivilege(string privilegeKey)
+        protected override string DBGroups
         {
-            return Privileges.Any(s => s == PrivilegeDefaults.Wildcard || s == privilegeKey) || InheritedGroups.Any(sg => sg.HasPrivilege(privilegeKey));
-        }
-
-        #region Add / Remove
-
-        #region Privileges
-
-        /// <summary>
-        /// Adds a privilege to the Group's privileges and syncs to the database.
-        /// </summary>
-        /// <param name="privilegeKey">Privilege to add.</param>
-        public ModificationStatus AddPrivilege(string privilegeKey)
-        {
-            Privileges.Add(privilegeKey);
-
-            DBEntry.Privileges = string.Join(";", Privileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)));
-            if (!GameServer.Database.SaveObject(DBEntry))
-                return ModificationStatus.FailedToSave;
-
-            return ModificationStatus.Success;
-        }
-
-        /// <summary>
-        /// Removes a privilege to the Group's privileges and syncs to the database.
-        /// </summary>
-        /// <param name="privilegeKey">Privilege to remove.</param>
-        public ModificationStatus RemovePrivilege(string privilegeKey)
-        {
-            Privileges.Remove(privilegeKey);
-
-            DBEntry.Privileges = string.Join(";", Privileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)));
-            if (!GameServer.Database.SaveObject(DBEntry))
-                return ModificationStatus.FailedToSave;
-
-            return ModificationStatus.Success;
+            get { return DBEntry.InheritedGroups; }
+            set { DBEntry.InheritedGroups = value; }
         }
 
         #endregion
 
-        #region Command
-
-        /// <summary>
-        /// Adds a command to the Group's privileges and syncs to the database.
-        /// </summary>
-        /// <param name="commandString">Command to add.</param>
-        public ModificationStatus AddCommand(string commandString)
+        public override ModificationStatus AddGroup(PrivilegeGroup grp)
         {
-            Privileges.Add(PrivilegeDefaults.CommandPrefix + commandString);
-
-            string[] cmds = Privileges.Where(s => s.StartsWith(PrivilegeDefaults.CommandPrefix)).ToArray();
-
-            for (int index = 0; index < cmds.Length; index++)
-            {
-                if (cmds[index].StartsWith(PrivilegeDefaults.CommandPrefix))
-                    cmds[index] = cmds[index].Replace(PrivilegeDefaults.CommandPrefix, "");
-            }
-
-            DBEntry.Commands = string.Join(";", cmds);
-            if (!GameServer.Database.SaveObject(DBEntry))
-                return ModificationStatus.FailedToSave;
-
-            return ModificationStatus.Success;
-        }
-
-        /// <summary>
-        /// Removes a command to the Group's privileges and syncs to the database.
-        /// </summary>
-        /// <param name="commandString">Command to Remove.</param>
-        public ModificationStatus RemoveCommand(string commandString)
-        {
-            Privileges.Remove(PrivilegeDefaults.CommandPrefix + commandString);
-
-            string[] cmds = Privileges.Where(s => s.StartsWith(PrivilegeDefaults.CommandPrefix)).ToArray();
-
-            for (int index = 0; index < cmds.Length; index++)
-            {
-                if (cmds[index].StartsWith(PrivilegeDefaults.CommandPrefix))
-                    cmds[index] = cmds[index].Replace(PrivilegeDefaults.CommandPrefix, "");
-            }
-
-            DBEntry.Commands = string.Join(";", cmds);
-            if (!GameServer.Database.SaveObject(DBEntry))
-                return ModificationStatus.FailedToSave;
-
-            return ModificationStatus.Success;
-        }
-
-        #endregion
-        
-        #region Groups
-
-        /// <summary>
-        /// Adds a group to this binding and syncs to database.
-        /// </summary>
-        /// <param name="grp">Group to add.</param>
-        /// <returns></returns>
-        public ModificationStatus AddGroup(PrivilegeGroup grp)
-        {
-            if (InheritedGroups.Contains(grp)) return ModificationStatus.AlreadyExists;
             if (HasInherited(grp.DBEntry.GroupIndex)) return ModificationStatus.Circular;
 
-            InheritedGroups.Add(grp);
-
-            DBEntry.InheritedGroups = string.Join(";", InheritedGroups.Select(g => g.DBEntry.Name));
-            if (!GameServer.Database.SaveObject(DBEntry))
-                return ModificationStatus.FailedToSave;
-
-            return ModificationStatus.Success;
+            return base.AddGroup(grp);
         }
 
-        /// <summary>
-        /// Removes a group from this binding and syncs to database.
-        /// </summary>
-        /// <param name="grp">Group to remove.</param>
-        /// <returns></returns>
-        public ModificationStatus RemoveGroup(PrivilegeGroup grp)
-        {
-            if (!InheritedGroups.Contains(grp)) return ModificationStatus.DoesNotExist;
-
-            InheritedGroups.Remove(grp);
-
-            DBEntry.InheritedGroups = string.Join(";", InheritedGroups.Select(g => g.DBEntry.Name));
-            if (!GameServer.Database.SaveObject(DBEntry))
-                return ModificationStatus.FailedToSave;
-
-            return ModificationStatus.Success;
-        }
-
-        #endregion
-
-        #endregion
 
         #region Overflow Protection
 
@@ -243,8 +111,8 @@ namespace DOL.GS.Privilege
         /// <returns>Whether or not there's a circular inheritance chain.</returns>
         public bool HasCircularInheritanceChain()
         {
-            return InheritedGroups.Any(sg => sg.HasInherited(DBEntry.GroupIndex) || 
-                InheritedGroups.Any(ig => ig.HasInherited(DBEntry.GroupIndex)));
+            return Groups.Any(sg => sg.HasInherited(DBEntry.GroupIndex) ||
+                Groups.Any(ig => ig.HasInherited(DBEntry.GroupIndex)));
         }
 
         /// <summary>
@@ -255,8 +123,8 @@ namespace DOL.GS.Privilege
         /// <returns></returns>
         public bool HasInherited(int groupID)
         {
-            return DBEntry.GroupIndex == groupID || 
-                InheritedGroups.Any(sg => sg.DBEntry.GroupIndex == groupID || 
+            return DBEntry.GroupIndex == groupID ||
+                Groups.Any(sg => sg.DBEntry.GroupIndex == groupID || 
                     sg.HasInherited(groupID));
         }
 

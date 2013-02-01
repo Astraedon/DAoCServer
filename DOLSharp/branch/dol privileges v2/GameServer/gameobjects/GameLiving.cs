@@ -4065,10 +4065,18 @@ namespace DOL.GS
 
 			    if (ad.Attacker is GamePlayer && ad.Target is GamePlayer &&
 			        (ad.Attacker as GamePlayer).EnabledAndHasPrivilege(PrivilegeDefaults.InstakillPlayers))
-			        ad.Target.Health -= ad.Target.MaxHealth;
+			    {
+                    int damage = ad.Target.Health;
+			        if (damage > 0)
+				        TakeDamage(ad.Attacker, eDamageType.Natural, damage, 0);
+			    }
                 else if (ad.Attacker is GamePlayer && ad.Target is GameNPC &&
                     (ad.Attacker as GamePlayer).EnabledAndHasPrivilege(PrivilegeDefaults.InstakillMobs))
-                    ad.Target.Health -= ad.Target.MaxHealth;
+			    {
+                    int damage = ad.Target.Health;
+			        if (damage > 0)
+				        TakeDamage(ad.Attacker, eDamageType.Natural, damage, 0);
+			    }
 			}
 		}
 

@@ -373,6 +373,7 @@
     <Compile Include="gameutils\InventoryLogging.cs" />
     <Compile Include="gameutils\MarketCache.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeCommand.cs" />
+    <Compile Include="gameutils\Privilege\PrivilegeContainer.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeDefaults.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeEnumerations.cs" />
     <Compile Include="gameutils\Privilege\PrivilegeBinding.cs" />
