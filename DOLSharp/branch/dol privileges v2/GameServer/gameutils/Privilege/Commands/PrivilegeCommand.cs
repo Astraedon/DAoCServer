@@ -21,8 +21,9 @@ using System.Text.RegularExpressions;
 using DOL.GS.Commands;
 using DOL.GS.ServerProperties;
 using DOL.Language;
+using DOL.gameutils.Privilege.Container;
 
-namespace DOL.GS.Privilege
+namespace DOL.GS.Privilege.Command
 {
     [CmdAttribute(
         Cmd = "&privilege",

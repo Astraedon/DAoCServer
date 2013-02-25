@@ -23,6 +23,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using DOL.Database;
 using DOL.Events;
+using DOL.GS.Privilege.Attributes;
+using DOL.GS.Privilege.ParameterizedBindings;
+using DOL.gameutils.Privilege.Container;
 using log4net;
 
 namespace DOL.GS.Privilege
@@ -32,6 +35,7 @@ namespace DOL.GS.Privilege
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private static IDictionary<int, PrivilegeGroup> m_groupCache;
+        private static IDictionary<string, Tuple<ParameterizedPrivilege, Type>> m_parameterizedTypeCache;
 
         #region Initialization
 
@@ -50,6 +54,11 @@ namespace DOL.GS.Privilege
                 UpdateDefaults();
 
                 m_groupCache = new Dictionary<int, PrivilegeGroup>();
+
+
+                m_parameterizedTypeCache = LoadParameterizedCache();
+                Log.Info("[Privilege Manager] Loaded " + m_parameterizedTypeCache.Count + " Parameterized Type Bindings.");
+                
 
                 IList<PrivilegeGroup> tmpGroups = 
                     GameServer.Database.SelectAllObjects<DBPrivilegeGroup>().Select(dbGrp => new PrivilegeGroup(dbGrp)).ToList();
@@ -70,7 +79,36 @@ namespace DOL.GS.Privilege
                     Log.Error("[Privilege Manager] Group has Circular Inheritance Chain -> " + privGrp.DBEntry.Name);
                     m_groupCache.Remove(privGrp.DBEntry.GroupIndex);
                 }
+
+                WhoBinding whoBinding = (WhoBinding) GetParameterizedPrivilege("who", new[]{"derp", "herp"});
+
+                Log.Error(String.Format("[Privilege Manager] Has Indexed under derp? {0}{1}", whoBinding.IsIndexedAs("derp"), whoBinding.IsIndexedAs("derp") ? " yes it is as -> " + whoBinding.GetAliasFor("derp") : " is not indexed"));
             }
+        }
+
+        /// <summary>
+        /// Retrieve all declared Parameter bindings in the assemblies.
+        /// </summary>
+        /// <param name="asm">The assembly to search through</param>
+        /// <returns>Hashmap consisting of keyName => AbilityActionHandler Type</returns>
+        private static Dictionary<string, Tuple<ParameterizedPrivilege, Type>> LoadParameterizedCache()
+        {
+            var bindings = new Dictionary<string, Tuple<ParameterizedPrivilege, Type>>(StringComparer.OrdinalIgnoreCase);
+
+
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                var subclasses =
+                    from type in assembly.GetTypes()
+                    let paramPrivAttribute = type.GetCustomAttributes(typeof(ParameterizedPrivilege), true).OfType<ParameterizedPrivilege>().Select(t1 => t1).FirstOrDefault()
+                    where type.IsSubclassOf(typeof(ParameterizedPrivilegeBinding)) && type.IsDefined(typeof(ParameterizedPrivilege), true)
+                    select new { PrivilegeKey = paramPrivAttribute.Privilege, Attrib = paramPrivAttribute, ParamType = type };
+
+                foreach (var subclass in subclasses)
+                    bindings[subclass.PrivilegeKey] = new Tuple<ParameterizedPrivilege, Type>(subclass.Attrib, subclass.ParamType);
+            }
+
+            return bindings;
         }
 
         #endregion
@@ -176,6 +214,39 @@ namespace DOL.GS.Privilege
 
         #endregion
 
+        #region Get Parameterized Privilege from Arguments
+
+        /// <summary>
+        /// Generates a ParameterizedPrivilegeBinding from a type specified in the global cache as specified
+        /// by the privilege key and feeds it the arguments.
+        /// </summary>
+        /// <param name="privilege">Key to try and grab the type to instantiate with.</param>
+        /// <param name="arguments">Arguments to be passed.</param>
+        /// <returns></returns>
+        public static ParameterizedPrivilegeBinding GetParameterizedPrivilege(string privilege, string[] arguments)
+        {
+            if (!m_parameterizedTypeCache.ContainsKey(privilege))
+            {
+                Log.Error(String.Format("[Privilege Manager] Attempted to instantiate a Privilege Binding that doesn't exist [{0}] or isn't registered properly.", privilege));
+                return null;
+            }
+
+            var data = m_parameterizedTypeCache[privilege];
+
+            ParameterizedPrivilege paramAttrib = data.Item1;
+            Type paramType = data.Item2;
+
+            if ((arguments.Length == paramAttrib.RequiredParameters) || (arguments.Length > paramAttrib.RequiredParameters && paramAttrib.OptionalParameters))
+                return (ParameterizedPrivilegeBinding) Activator.CreateInstance(paramType, new object[]{arguments});
+
+            Log.Error(String.Format(
+                "[Privilege Manager] Error creating Parameterized Privilege Binding from Arguments for [{0}] expected [{2}] arguments{3} and found ({1})", 
+                privilege, string.Join(",", arguments), paramAttrib.RequiredParameters, paramAttrib.OptionalParameters ? " with allowance for extra arguments" : ""));
+            return null;
+        }
+
+        #endregion
+
         #region Get DBPrivilegeGroup
 
         /// <summary>
@@ -239,6 +310,16 @@ namespace DOL.GS.Privilege
         public static DBPrivilegeBinding GetDBBindingForAcctPlayer(string acctName, string playerName)
         {
             return GameServer.Database.SelectObject<DBPrivilegeBinding>("Identifier = '" + acctName + "|" + playerName + "'");
+        }
+
+        /// <summary>
+        /// Gets a DBPrivilegeBinding from an existing in memory one, used to pull database changes.
+        /// </summary>
+        /// <param name="existing"></param>
+        /// <returns></returns>
+        public static DBPrivilegeBinding GetDBBindingFromExisting(DBPrivilegeBinding existing)
+        {
+            return GameServer.Database.SelectObject<DBPrivilegeBinding>("Identifier = '" + existing.Identifier + "'");
         }
 
         #endregion

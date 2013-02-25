@@ -1,4 +1,4 @@
-﻿/*
+/*
  * DAWN OF LIGHT - The first free open source DAoC server emulator
  * 
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,9 @@
 
 using System.Linq;
 using DOL.Database;
+using DOL.GS.Privilege;
 
-namespace DOL.GS.Privilege
+namespace DOL.gameutils.Privilege.Container
 {
     public class PrivilegeGroup : PrivilegeContainer
     {
@@ -30,16 +31,8 @@ namespace DOL.GS.Privilege
 
         public void Initialize()
         {
-            if (!string.IsNullOrEmpty(DBEntry.Privileges))
-            {
-                Privileges.AddRange(DBEntry.Privileges.Split(';').
-                    Where(s => s != "" && !PrivilegeDefaults.ParameterizedRegex.IsMatch(s)).ToList());
-            }
-                
-
-            if (!string.IsNullOrEmpty(DBEntry.Commands))
-                foreach (string str in DBEntry.Commands.Split(';'))
-                    Privileges.Add(PrivilegeDefaults.CommandPrefix + str);
+            InitializePrivileges(DBEntry.Privileges);
+            InitializeCommands(DBEntry.Commands);
         }
 
         /// <summary>
@@ -99,7 +92,6 @@ namespace DOL.GS.Privilege
 
             return base.AddGroup(grp);
         }
-
 
         #region Overflow Protection
 

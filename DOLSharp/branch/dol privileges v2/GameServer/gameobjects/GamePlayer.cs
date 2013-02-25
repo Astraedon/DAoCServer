@@ -42,6 +42,7 @@ using DOL.GS.Spells;
 using DOL.GS.Styles;
 using DOL.GS.Utils;
 using DOL.Language;
+using DOL.gameutils.Privilege.Container;
 using log4net;
 using DOL.GS.Privilege;
 

@@ -20,7 +20,7 @@
 using DOL.GS.Commands;
 using DOL.GS.ServerProperties;
 
-namespace DOL.GS.Privilege
+namespace DOL.GS.Privilege.Command
 {
     [CmdAttribute(
         Cmd = "&privilegegroup",

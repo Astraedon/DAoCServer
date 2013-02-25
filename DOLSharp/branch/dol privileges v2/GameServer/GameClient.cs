@@ -27,6 +27,7 @@ using DOL.GS.PacketHandler;
 using DOL.GS.Privilege;
 using DOL.GS.ServerProperties;
 using DOL.Network;
+using DOL.gameutils.Privilege.Container;
 using log4net;
 
 namespace DOL.GS

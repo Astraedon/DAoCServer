@@ -1,22 +1,127 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DOL.Database;
+/*
+ * DAWN OF LIGHT - The first free open source DAoC server emulator
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ */
 
-namespace DOL.GS.Privilege
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using DOL.Database;
+using DOL.GS;
+using DOL.GS.Privilege;
+using DOL.GS.Privilege.ParameterizedBindings;
+
+namespace DOL.gameutils.Privilege.Container
 {
     public abstract class PrivilegeContainer
     {
-        protected readonly DataObject DBEntity;
+        protected DataObject DBEntity;
 
         private readonly IList<PrivilegeGroup> m_groups = new List<PrivilegeGroup>();
         private readonly IList<string> m_privileges = new List<string>();
-        private readonly IDictionary<string, IList<string>> m_parameterizedPrivileges = new Dictionary<string, IList<string>>(); 
+        private readonly IDictionary<string, ParameterizedPrivilegeBinding> m_parameterizedPrivileges = 
+                new Dictionary<string, ParameterizedPrivilegeBinding>(StringComparer.OrdinalIgnoreCase); 
 
 
         protected PrivilegeContainer(DataObject databaseEntry)
         {
             DBEntity = databaseEntry;
         }
+
+        /// <summary>
+        /// Initializes the privileges by pulling straight from the supplied string
+        /// Optionally will clear the existing privileges from the cache that aren't
+        /// related to the commands.
+        /// </summary>
+        /// <param name="fromString">Semicolon delimited string of privileges.</param>
+        /// <param name="clearExisting">Clear existing privileges that are not command related?</param>
+        public void InitializePrivileges(string fromString, bool clearExisting)
+        {
+            if (clearExisting)
+            {
+                foreach (string currentPriv in Privileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)).ToList())
+                {
+                    Privileges.Remove(currentPriv);
+                }
+            }
+
+            InitializePrivileges(fromString);
+        }
+
+        /// <summary>
+        /// Initializes the privileges by pulling straight from the supplied string.
+        /// </summary>
+        /// <param name="fromString">Semicolon delimited string of privileges.</param>
+        protected void InitializePrivileges(string fromString)
+        {
+            if (!string.IsNullOrEmpty(fromString))
+            {
+                string[] splitPrivileges = fromString.Split(';').Where(s => !string.IsNullOrEmpty(s)).ToArray();
+
+                Privileges.AddRange(splitPrivileges.Where(s => !PrivilegeDefaults.ParameterizedRegex.IsMatch(s)).ToList());
+
+                foreach (string currentPrivilege in splitPrivileges.Where(s => PrivilegeDefaults.ParameterizedRegex.IsMatch(s)).ToList())
+                {
+                    Match m = PrivilegeDefaults.ParameterizedRegex.Match(currentPrivilege);
+
+                    ParameterizedPrivileges.Add(m.Groups[1].Value, PrivilegeManager.GetParameterizedPrivilege(m.Groups[1].Value, m.Groups[2].Value.Split('|')));
+                    Privileges.Add(m.Groups[1].Value);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Initializes the privileges by pulling straight from the supplied string
+        /// Optionally will clear the existing privileges from the cache that aren't
+        /// related to the commands.
+        /// </summary>
+        /// <param name="fromString">Semicolon delimited string of privileges.</param>
+        /// <param name="clearExisting">Clear existing privileges that are not command related?</param>
+        public void InitializeCommands(string fromString, bool clearExisting)
+        {
+            if (clearExisting)
+            {
+                foreach (string currentPriv in Privileges.Where(s => s.StartsWith(PrivilegeDefaults.CommandPrefix)).ToList())
+                {
+                    Privileges.Remove(currentPriv);
+                }
+            }
+
+            InitializeCommands(fromString);
+        }
+
+        /// <summary>
+        /// Initializes the commands by pulling straight from the supplied string.
+        /// </summary>
+        /// <param name="fromString">Semicolon delimited string of commands.</param>
+        protected void InitializeCommands(string fromString)
+        {
+            if (!string.IsNullOrEmpty(fromString))
+            {
+                foreach (string str in fromString.Split(';'))
+                {
+                    if (str != "")
+                        Privileges.Add(PrivilegeDefaults.CommandPrefix + str);
+                }
+            }
+        }
+
 
         protected virtual string DBPrivileges { get; set; }
         protected virtual string DBCommands { get; set; }
@@ -33,7 +138,7 @@ namespace DOL.GS.Privilege
         /// <summary>
         /// Dictionary of Parameterized Privileges.
         /// </summary>
-        public IDictionary<string, IList<string>> ParameterizedPrivileges
+        public IDictionary<string, ParameterizedPrivilegeBinding> ParameterizedPrivileges
         {
             get { return m_parameterizedPrivileges; }
         }
@@ -65,6 +170,8 @@ namespace DOL.GS.Privilege
         /// <param name="privilegeKey">Privilege to add.</param>
         public ModificationStatus AddPrivilege(string privilegeKey)
         {
+            // TODO: Add a sort of pre-processor for the privilege key to allow you to add a param'ed privilege to someone.
+
             Privileges.Add(privilegeKey);
 
             DBPrivileges = string.Join(";", Privileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)));
@@ -81,6 +188,8 @@ namespace DOL.GS.Privilege
         public ModificationStatus RemovePrivilege(string privilegeKey)
         {
             Privileges.Remove(privilegeKey);
+
+            if (ParameterizedPrivileges.ContainsKey(privilegeKey)) ParameterizedPrivileges.Remove(privilegeKey); 
 
             DBPrivileges = string.Join(";", Privileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)));
             if (!SaveEntry())
@@ -193,7 +302,6 @@ namespace DOL.GS.Privilege
 
         #endregion
 
-
         /// <summary>
         /// Check if this binding contains the rights to the specified privilege key.
         /// 
@@ -205,6 +313,21 @@ namespace DOL.GS.Privilege
         public bool HasPrivilege(string privilegeKey)
         {
             return Privileges.Any(s => s == PrivilegeDefaults.Wildcard || s == privilegeKey) || Groups.Any(g => g.HasPrivilege(privilegeKey));
+        }
+
+        /// <summary>
+        /// Retrieves a parameter-bound privilege's associated object if it exists, or just null.
+        /// </summary>
+        /// <typeparam name="T">Type of the parameter bound privilege object</typeparam>
+        /// <param name="privilege">Key found under</param>
+        /// <returns></returns>
+        public T GetParameterBinding<T>(string privilege) where T : ParameterizedPrivilegeBinding
+        {
+            if (!ParameterizedPrivileges.ContainsKey(privilege)) return null;
+
+            if (ParameterizedPrivileges[privilege] is T)
+                return ParameterizedPrivileges[privilege] as T;
+            return null;
         }
     }
 }

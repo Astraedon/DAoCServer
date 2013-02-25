@@ -18,7 +18,6 @@
  */
 using System;
 using System.Reflection;
-using System.Collections;
 using System.Collections.Generic;
 using DOL.Language;
 using DOL.GS.PacketHandler;
@@ -77,7 +76,7 @@ namespace DOL.GS
 		{
 			get 
 			{
-				if (Id_nb == InventoryItem.BLANK_ITEM)
+				if (Id_nb == BLANK_ITEM)
 					return false;
 
 				return true;
@@ -373,7 +372,7 @@ namespace DOL.GS
 				delve.Add(LanguageMgr.GetTranslation(player.Client.Account.Language, "DetailDisplayHandler.HandlePacket.CrafterName", Creator));
 				delve.Add(" ");
 			}
-			else if (Description != null && Description != "")
+			else if (!string.IsNullOrEmpty(Description))
 			{
 				delve.Add(Description);
 				delve.Add(" ");

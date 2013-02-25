@@ -1,4 +1,4 @@
-﻿/*
+/*
  * DAWN OF LIGHT - The first free open source DAoC server emulator
  * 
  * This program is free software; you can redistribute it and/or
@@ -17,11 +17,10 @@
  *
  */
 
-using System.Linq;
-using System.Text.RegularExpressions;
 using DOL.Database;
+using DOL.GS.Privilege;
 
-namespace DOL.GS.Privilege
+namespace DOL.gameutils.Privilege.Container
 {
     /// <summary>
     /// Binding that holds Privileges in memory cached from the database for either an account or user.
@@ -41,30 +40,8 @@ namespace DOL.GS.Privilege
                 }
             }
 
-            if (!string.IsNullOrEmpty(DBEntry.AdditionalPrivileges))
-            {
-                string[] splitPrivileges = DBEntry.AdditionalPrivileges.Split(';').Where(s => !string.IsNullOrEmpty(s)).ToArray();
-
-                Privileges.AddRange(splitPrivileges.Where(s => !PrivilegeDefaults.ParameterizedRegex.IsMatch(s)).ToList());
-
-                foreach (string currentPrivilege in splitPrivileges.Where(s => PrivilegeDefaults.ParameterizedRegex.IsMatch(s)).ToList())
-                {
-                    Match m = PrivilegeDefaults.ParameterizedRegex.Match(currentPrivilege);
-
-                    ParameterizedPrivileges.Add(m.Groups[1].Value, m.Groups[2].Value.Split('|'));
-                    Privileges.Add(m.Groups[1].Value);
-                }
-            }
-                
-
-            if (!string.IsNullOrEmpty(DBEntry.AdditionalCommands))
-            {
-                foreach (string str in DBEntry.AdditionalCommands.Split(';'))
-                {
-                    if (str != "")
-                        Privileges.Add(PrivilegeDefaults.CommandPrefix + str);
-                }
-            }
+            InitializePrivileges(DBEntry.AdditionalPrivileges);
+            InitializeCommands(DBEntry.AdditionalCommands);
         }
 
         #region Accessors
@@ -75,6 +52,7 @@ namespace DOL.GS.Privilege
         public DBPrivilegeBinding DBEntry
         {
             get { return DBEntity as DBPrivilegeBinding; }
+            private set { DBEntity = value; }
         }
 
         protected override string DBPrivileges
