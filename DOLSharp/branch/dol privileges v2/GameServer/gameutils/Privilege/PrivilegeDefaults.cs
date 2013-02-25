@@ -97,6 +97,17 @@ namespace DOL.GS.Privilege
         /// </summary>
         public const string Invulnerable = "invulnerable";
 
+        /// <summary>
+        /// Key holding the 'who' key for the WhoBinding
+        /// </summary>
+        public const string Who = "who";
+
+
+        /// <summary>
+        /// Key holding the 'masquerade' key for the masquerading mechanic.
+        /// </summary>
+        public const string Masquerade = "masquerade";
+
         #endregion
 
         #region Lanaguage Manager Prefixes

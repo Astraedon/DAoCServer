@@ -79,8 +79,19 @@ namespace DOL.gameutils.Privilege.Container
                 {
                     Match m = PrivilegeDefaults.ParameterizedRegex.Match(currentPrivilege);
 
-                    ParameterizedPrivileges.Add(m.Groups[1].Value, PrivilegeManager.GetParameterizedPrivilege(m.Groups[1].Value, m.Groups[2].Value.Split('|')));
-                    Privileges.Add(m.Groups[1].Value);
+                    ParameterizedPrivilegeBinding binding = PrivilegeManager.GetParameterizedPrivilege(m.Groups[1].Value, m.Groups[2].Value.Split('|'));
+
+                    if (binding != null)
+                    {
+                        ParameterizedPrivileges.Add(m.Groups[1].Value, binding);
+                        Privileges.Add(m.Groups[1].Value);
+                    }
+                    else
+                    {
+                        PrivilegeManager.Log.Error(String.Format
+                            ("[Privilege Container] Error Initializing Parameterized Privilege {0} dropping privilege from container.", m.Groups[1].Value));
+                    }
+                    
                 }
             }
         }
@@ -317,17 +328,26 @@ namespace DOL.gameutils.Privilege.Container
 
         /// <summary>
         /// Retrieves a parameter-bound privilege's associated object if it exists, or just null.
-        /// </summary>
+        /// </summary>g
         /// <typeparam name="T">Type of the parameter bound privilege object</typeparam>
         /// <param name="privilege">Key found under</param>
         /// <returns></returns>
         public T GetParameterBinding<T>(string privilege) where T : ParameterizedPrivilegeBinding
         {
-            if (!ParameterizedPrivileges.ContainsKey(privilege)) return null;
+            T retVal = null;
 
-            if (ParameterizedPrivileges[privilege] is T)
-                return ParameterizedPrivileges[privilege] as T;
-            return null;
+            if (ParameterizedPrivileges.ContainsKey(privilege) && ParameterizedPrivileges[privilege] is T)
+                retVal = (ParameterizedPrivileges[privilege] as T);
+            else
+            {
+                foreach (T temp in Groups.Select(binding => binding.GetParameterBinding<T>(privilege)).Where(temp => temp != null))
+                {
+                    retVal = temp;
+                    break;
+                }
+            }
+
+            return retVal;
         }
     }
 }

@@ -24,8 +24,6 @@ namespace DOL.GS.Privilege.Attributes
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class ParameterizedPrivilege : Attribute
     {
-        public ParameterizedPrivilege(){ }
-
         public string Privilege { get; set; }
         public int RequiredParameters { get; set; }
         public bool OptionalParameters { get; set; }

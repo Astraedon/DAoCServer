@@ -21,7 +21,7 @@ using DOL.GS.Privilege.Attributes;
 
 namespace DOL.GS.Privilege.ParameterizedBindings
 {
-    [ParameterizedPrivilege(Privilege = "masquerade", RequiredParameters = 4, OptionalParameters = false)]
+    [ParameterizedPrivilege(Privilege = PrivilegeDefaults.Masquerade, RequiredParameters = 4, OptionalParameters = false)]
     public class MasqueradeBinding : ParameterizedPrivilegeBinding
     {
         public MasqueradeBinding(string[] rawArguments) : base(rawArguments)
@@ -41,17 +41,29 @@ namespace DOL.GS.Privilege.ParameterizedBindings
 
         public static string GetMaskPublic(GameClient client)
         {
-            return client.Player.Name;
+            if (!client.EnabledAndHasPrivilege(PrivilegeDefaults.Masquerade)) return client.Player.Name;
+
+            MasqueradeBinding mbind = client.GetBinding<MasqueradeBinding>(PrivilegeDefaults.Masquerade);
+
+            return mbind != null ? mbind.PublicChat : client.Player.Name;
         }
 
         public static string GetMaskPrivate(GameClient client)
         {
-            return client.Player.Name;
+            if (!client.EnabledAndHasPrivilege(PrivilegeDefaults.Masquerade)) return client.Player.Name;
+
+            MasqueradeBinding mbind = client.GetBinding<MasqueradeBinding>(PrivilegeDefaults.Masquerade);
+
+            return mbind != null ? mbind.PrivateChat : client.Player.Name;
         }
 
         public static string GetMaskCommand(GameClient client)
         {
-            return client.Player.Name;
+            if (!client.EnabledAndHasPrivilege(PrivilegeDefaults.Masquerade)) return client.Player.Name;
+
+            MasqueradeBinding mbind = client.GetBinding<MasqueradeBinding>(PrivilegeDefaults.Masquerade);
+
+            return mbind != null ? mbind.Command : client.Player.Name;
         }
     }
 }

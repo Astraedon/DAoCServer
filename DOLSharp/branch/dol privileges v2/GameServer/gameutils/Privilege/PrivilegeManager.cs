@@ -32,7 +32,7 @@ namespace DOL.GS.Privilege
 {
     public static class PrivilegeManager
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        public static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private static IDictionary<int, PrivilegeGroup> m_groupCache;
         private static IDictionary<string, Tuple<ParameterizedPrivilege, Type>> m_parameterizedTypeCache;
@@ -421,6 +421,74 @@ namespace DOL.GS.Privilege
             PrivilegeBinding playerPriv = target.Player != null ? target.Player.PlayerPrivileges : null;
 
             return (acctPriv != null && acctPriv.HasPrivilege(privilegeKey.ToLower())) || (playerPriv != null && playerPriv.HasPrivilege(privilegeKey.ToLower()));
+        }
+
+        /// <summary>
+        /// Retrieves the specified binding type on the target.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="target"></param>
+        /// <param name="privilegeKey"></param>
+        /// <returns></returns>
+        public static T GetBinding<T>(this GamePlayer target, string privilegeKey) where T : ParameterizedPrivilegeBinding
+        {
+            if (!ServerProperties.Properties.USE_NEW_PRIVILEGE_SYSTEM) throw new PrivilegeException("Cannot check for special privileges with legacy system.");
+
+            PrivilegeBinding acctPriv = target.Client.AccountPrivileges;
+            PrivilegeBinding playerPriv = target.PlayerPrivileges;
+
+            if ((acctPriv != null && acctPriv.HasPrivilege(privilegeKey.ToLower())) ||
+                (playerPriv != null && playerPriv.HasPrivilege(privilegeKey.ToLower())))
+            {
+                T retVal = null;
+
+                if(acctPriv != null)
+                    retVal = acctPriv.GetParameterBinding<T>(privilegeKey);
+                if (playerPriv != null)
+                {
+                    T pbind = playerPriv.GetParameterBinding<T>(privilegeKey);
+                    if (pbind != null)
+                        retVal = pbind;
+                }
+
+                return retVal;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Retrieves the specified binding type on the target.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="target"></param>
+        /// <param name="privilegeKey"></param>
+        /// <returns></returns>
+        public static T GetBinding<T>(this GameClient target, string privilegeKey) where T : ParameterizedPrivilegeBinding
+        {
+            if (!ServerProperties.Properties.USE_NEW_PRIVILEGE_SYSTEM) throw new PrivilegeException("Cannot check for special privileges with legacy system.");
+
+            PrivilegeBinding acctPriv = target.AccountPrivileges;
+            PrivilegeBinding playerPriv = target.Player != null ? target.Player.PlayerPrivileges : null;
+
+            if ((acctPriv != null && acctPriv.HasPrivilege(privilegeKey.ToLower())) ||
+                (playerPriv != null && playerPriv.HasPrivilege(privilegeKey.ToLower())))
+            {
+                T retVal = null;
+
+                if (acctPriv != null)
+                    retVal = acctPriv.GetParameterBinding<T>(privilegeKey);
+                if (playerPriv != null)
+                {
+                    T pbind = playerPriv.GetParameterBinding<T>(privilegeKey);
+                    if (pbind != null)
+                        retVal = pbind;
+                }
+
+                return retVal;
+            }
+
+            return null;
         }
 
         /// <summary>

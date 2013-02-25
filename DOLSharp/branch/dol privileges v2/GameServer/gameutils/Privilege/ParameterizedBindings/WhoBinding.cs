@@ -23,7 +23,7 @@ using DOL.GS.Privilege.Attributes;
 
 namespace DOL.GS.Privilege.ParameterizedBindings
 {
-    [ParameterizedPrivilege(Privilege = "who", RequiredParameters = 2, OptionalParameters = true)]
+    [ParameterizedPrivilege(Privilege = PrivilegeDefaults.Who, RequiredParameters = 2, OptionalParameters = true)]
     public class WhoBinding : ParameterizedPrivilegeBinding
     {
         private readonly Dictionary<string, string> m_searchAliases = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
