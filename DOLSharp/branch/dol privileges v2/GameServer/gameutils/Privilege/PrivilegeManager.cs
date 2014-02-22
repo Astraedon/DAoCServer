@@ -392,7 +392,7 @@ namespace DOL.GS.Privilege
         /// </summary>
         /// <param name="target">Target of the check.</param>
         /// <param name="privilegeKey">Privilege key to search for.</param>
-        /// <returns></returns>
+        /// <returns>Does this GamePlayer/Account have the target privilege?</returns>
         public static bool HasPrivilege(this GamePlayer target, string privilegeKey)
         {
             if (!ServerProperties.Properties.USE_NEW_PRIVILEGE_SYSTEM) throw new PrivilegeException("Cannot check for special privileges with legacy system.");
@@ -412,7 +412,7 @@ namespace DOL.GS.Privilege
         /// </summary>
         /// <param name="target">Target of the check.</param>
         /// <param name="privilegeKey">Privilege key to search for.</param>
-        /// <returns></returns>
+        /// <returns>Does the GameClient have the target privilege?</returns>
         public static bool HasPrivilege(this GameClient target, string privilegeKey)
         {
             if (!ServerProperties.Properties.USE_NEW_PRIVILEGE_SYSTEM) throw new PrivilegeException("Cannot check for special privileges with legacy system.");
