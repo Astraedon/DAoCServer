@@ -50,14 +50,10 @@ namespace DOL.GS.Privilege
         {
             if (ServerProperties.Properties.USE_NEW_PRIVILEGE_SYSTEM)
             {
-                Log.Info("[Privilege Manager] Loading Groups Cache.");
                 UpdateDefaults();
 
                 m_groupCache = new Dictionary<int, PrivilegeGroup>();
-
-
                 m_parameterizedTypeCache = LoadParameterizedCache();
-                Log.Info("[Privilege Manager] Loaded " + m_parameterizedTypeCache.Count + " Parameterized Type Bindings.");
                 
 
                 IList<PrivilegeGroup> tmpGroups = 
@@ -80,9 +76,13 @@ namespace DOL.GS.Privilege
                     m_groupCache.Remove(privGrp.DBEntry.GroupIndex);
                 }
 
-                WhoBinding whoBinding = (WhoBinding) GetParameterizedPrivilege("who", new[]{"derp", "herp"});
+                Log.Info(String.Format("[Privilege Manager] Loaded {0} Groups into Cache.", m_groupCache.Count));
+                Log.Info(String.Format("[Privilege Manager] Loaded {0} Parameterized Type Bindings.", m_parameterizedTypeCache.Count));
 
-                Log.Error(String.Format("[Privilege Manager] Has Indexed under derp? {0}{1}", whoBinding.IsIndexedAs("derp"), whoBinding.IsIndexedAs("derp") ? " yes it is as -> " + whoBinding.GetAliasFor("derp") : " is not indexed"));
+//                 WhoBinding whoBinding = (WhoBinding) GetParameterizedPrivilege("who", new[]{"derp", "herp"});
+// 
+//                 Log.Error(String.Format("[Privilege Manager] Has Indexed under derp? {0}{1}", whoBinding.IsIndexedAs("derp"), whoBinding.IsIndexedAs("derp") ? " yes it is as -> " + whoBinding.GetAliasFor("derp") : " is not indexed"));
+//             
             }
         }
 
@@ -240,8 +240,8 @@ namespace DOL.GS.Privilege
                 return (ParameterizedPrivilegeBinding) Activator.CreateInstance(paramType, new object[]{arguments});
 
             Log.Error(String.Format(
-                "[Privilege Manager] Error creating Parameterized Privilege Binding from Arguments for [{0}] expected [{2}] arguments{3} and found ({1})", 
-                privilege, string.Join(",", arguments), paramAttrib.RequiredParameters, paramAttrib.OptionalParameters ? " with allowance for extra arguments" : ""));
+                "[Privilege Manager] Error creating Parameterized Privilege Binding from Arguments for [{0}] expected [{2}] arguments{3} and found [{1}]", 
+                privilege, arguments.Length, paramAttrib.RequiredParameters, paramAttrib.OptionalParameters ? " with allowance for extra arguments" : ""));
             return null;
         }
 

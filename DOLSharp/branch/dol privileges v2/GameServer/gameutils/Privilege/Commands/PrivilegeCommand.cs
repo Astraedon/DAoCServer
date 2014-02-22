@@ -46,7 +46,7 @@ namespace DOL.GS.Privilege.Command
             })]
     public class PrivilegeCommand : AbstractCommandHandler, ICommandHandler
     {
-        private static readonly Regex CompactSyntaxRagex = new Regex(@"(\+|-)(a)?/(cmd|c|grp|g|priv|p)/([a-zA-Z_0-9]+)");
+        private static readonly Regex CompactSyntaxRagex = new Regex(@"(\+|-)(a)?/(cmd|c|grp|g|priv|p)/([a-zA-Z_0-9,=]+)");
 
         public void OnCommand(GameClient client, string[] args)
         {
@@ -126,6 +126,7 @@ namespace DOL.GS.Privilege.Command
             bool performAdd = compactParts.Groups[1].Value == "+";
             bool targetAccount = compactParts.Groups[2].Success;
             ModificationType type = ModificationType.None;
+
             switch (compactParts.Groups[3].Value)
             {
                 case "c":
@@ -145,13 +146,14 @@ namespace DOL.GS.Privilege.Command
             }
             string value = compactParts.Groups[4].Value;
 
+
             GameClient target = client;
 
             if (!string.IsNullOrEmpty(optionalTarget))
             {
                 if (optionalTarget == "!" && client.Player.TargetObject is GamePlayer)
                     target = (client.Player.TargetObject as GamePlayer).Client;
-                else
+                else if(client.Player.TargetObject is GamePlayer)
                     target = WorldMgr.GetClientByPlayerName(optionalTarget, true, true);
             }
 
@@ -249,6 +251,9 @@ namespace DOL.GS.Privilege.Command
                             else if (result == ModificationStatus.AlreadyExists)
                                 DisplayMessage(client, LanguageMgr.GetTranslation
                                     (target.Account.Language, PrivilegeDefaults.ErrorPrefix + "AlreadyHas", "privilege",  value, target.Player.Name));
+                            else if (result == ModificationStatus.InvalidArguments)
+                                DisplayMessage(client, LanguageMgr.GetTranslation
+                                    (target.Account.Language, PrivilegeDefaults.ErrorPrefix + "ArgumentsInvalid", value, target.Player.Name));
                         }
                         else
                         {

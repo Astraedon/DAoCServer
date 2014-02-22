@@ -4,7 +4,7 @@ Privilege.Command.Usage.Modify:						Full Syntax /privilege (add/del) (p/a) (g/p
 Privilege.Command.Usage.ModifyCompact:				Compact Syntax /privilege (+/-/+a/-a)/(g/p/c)/KEY.
 Privilege.Command.Usage.PlayerAccount:				P,A in commands are shorthand for player and account respectively.
 Privilege.Command.Usage.Type:						G,P,C in commands are shorthand for group, privilege, and command respectively.
-Privilege.Command.Usage.Compact:					In compact syntax the /'s are required for seperation of arguments.
+Privilege.Command.Usage.Compact:					In compact syntax the /'s are required for separation of arguments.
 Privilege.Command.Usage.CompactTarget:				In compact syntax +/- are for add and remove, appending an a to either of those makes the target add/remove account instead.
 
 Privilege.Notify.Gain.CommandPlayer:				You gained the permission to use the {0} command.
@@ -60,5 +60,6 @@ PrivilegeGroup.Error.CannotAddAlreadyExists:		Cannot add sub group {0} to group 
 # / Etc
 Privilege.Error.AlreadyHas:							Cannot add {0} {1} to {2} because {2} already has permission for that.
 Privilege.Error.DoesNotHave:						Cannot remove the privilege {0} from {1} because they lack that privilege.
+Privilege.Error.ArgumentsInvalid:					Cannot set parameterized binding {0} on {1} because the arguments were invalid.
 PrivilegeGroup.Error.NotFound:						Privilege Group not found in cache under key {0}.
 PrivilegeGroup.Error.DoesNotHave:					Cannot remove the group {0} from {1} because they lack that group.

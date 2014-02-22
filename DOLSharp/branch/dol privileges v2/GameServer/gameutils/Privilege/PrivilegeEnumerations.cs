@@ -25,6 +25,7 @@ namespace DOL.GS.Privilege
         FailedToSave,
         AlreadyExists,
         DoesNotExist,
-        Circular
+        Circular,
+        InvalidArguments
     }
 }

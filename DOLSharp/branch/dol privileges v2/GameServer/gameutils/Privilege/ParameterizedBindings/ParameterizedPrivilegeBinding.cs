@@ -27,7 +27,5 @@ namespace DOL.GS.Privilege.ParameterizedBindings
         }
 
         public string[] RawArguments { get; private set; }
-
-
     }
 }

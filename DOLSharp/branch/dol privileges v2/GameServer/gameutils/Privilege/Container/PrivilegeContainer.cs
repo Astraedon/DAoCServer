@@ -181,11 +181,34 @@ namespace DOL.gameutils.Privilege.Container
         /// <param name="privilegeKey">Privilege to add.</param>
         public ModificationStatus AddPrivilege(string privilegeKey)
         {
+            bool isParameterized = privilegeKey.Contains("=");
+
+            string pName = null;
+            string[] pParams = null;
+
+            if (isParameterized)
+            {
+                pName = privilegeKey.Split('=')[0];
+                pParams = privilegeKey.Split('=')[1].Split(',');
+            }
+
+            if(isParameterized && HasParameterizedBinding(pName)) return ModificationStatus.AlreadyExists; 
+            if (HasPrivilege(privilegeKey)) return ModificationStatus.AlreadyExists;
+
             // TODO: Add a sort of pre-processor for the privilege key to allow you to add a param'ed privilege to someone.
 
-            Privileges.Add(privilegeKey);
+            if (!isParameterized)
+                Privileges.Add(privilegeKey);
+            else
+            {
+                ParameterizedPrivilegeBinding ppb = PrivilegeManager.GetParameterizedPrivilege(pName, pParams);
 
-            DBPrivileges = string.Join(";", Privileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)));
+                if(ppb != null)
+                    ParameterizedPrivileges.Add(pName, ppb);
+                else return ModificationStatus.InvalidArguments;
+            }
+
+            DBPrivileges = FormatPrivileges();
             if (!SaveEntry())
                 return ModificationStatus.FailedToSave;
 
@@ -198,15 +221,26 @@ namespace DOL.gameutils.Privilege.Container
         /// <param name="privilegeKey">Privilege to remove.</param>
         public ModificationStatus RemovePrivilege(string privilegeKey)
         {
+            if (!HasPrivilege(privilegeKey) && !ParameterizedPrivileges.ContainsKey(privilegeKey)) return ModificationStatus.DoesNotExist;
+
             Privileges.Remove(privilegeKey);
 
-            if (ParameterizedPrivileges.ContainsKey(privilegeKey)) ParameterizedPrivileges.Remove(privilegeKey); 
+            if (ParameterizedPrivileges.ContainsKey(privilegeKey)) ParameterizedPrivileges.Remove(privilegeKey);
 
-            DBPrivileges = string.Join(";", Privileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)));
+            DBPrivileges = FormatPrivileges();
             if (!SaveEntry())
                 return ModificationStatus.FailedToSave;
 
             return ModificationStatus.Success;
+        }
+
+        private string FormatPrivileges()
+        {
+            IList<string> rawPrivileges = new List<string>();
+            rawPrivileges.AddRange(Privileges.Where(s => !s.StartsWith(PrivilegeDefaults.CommandPrefix)).ToList());
+            rawPrivileges.AddRange(ParameterizedPrivileges.Select(pp => string.Format("{0}({1})", pp.Key, string.Join("|", pp.Value.RawArguments))).ToList());
+
+            return string.Join(";", rawPrivileges);
         }
 
         #endregion
@@ -334,6 +368,8 @@ namespace DOL.gameutils.Privilege.Container
         /// <returns></returns>
         public T GetParameterBinding<T>(string privilege) where T : ParameterizedPrivilegeBinding
         {
+            if (!HasParameterizedBinding(privilege)) return null;
+
             T retVal = null;
 
             if (ParameterizedPrivileges.ContainsKey(privilege) && ParameterizedPrivileges[privilege] is T)
@@ -348,6 +384,11 @@ namespace DOL.gameutils.Privilege.Container
             }
 
             return retVal;
+        }
+
+        public bool HasParameterizedBinding(string name)
+        {
+            return ParameterizedPrivileges.ContainsKey(name) || Groups.Any(g => g.HasParameterizedBinding(name));
         }
     }
 }
